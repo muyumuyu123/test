@@ -1,0 +1,30 @@
+# Copy to config.yaml and edit. Only enable the sources you actually want.
+
+scanner:
+  poll_interval_s: 5
+  min_net_edge_pct: 0.1   # ignore opportunities smaller than this, after fees
+  max_iterations: null    # null = run until interrupted
+  report_every: 20        # log Law-of-Large-Numbers stats every N opportunities
+
+sources:
+  # --- Crypto: compare the same pair across exchanges via public order books ---
+  - type: crypto_ccxt
+    exchange: binance
+    symbols: ["BTC/USDT", "ETH/USDT"]
+
+  - type: crypto_ccxt
+    exchange: kraken
+    symbols: ["BTC/USDT", "ETH/USDT"]
+
+  # --- Sports betting odds (needs a free key from the-odds-api.com) ---
+  # - type: odds_api
+  #   api_key: ""            # or set ODDS_API_KEY env var
+  #   sport: "soccer_epl"
+  #   regions: "eu,us"
+
+  # --- E-commerce example against a scraping-practice sandbox site ---
+  - type: html_product
+    name: books-toscrape
+    instrument: "book:a-light-in-the-attic"
+    url: "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+    parser: books_toscrape
