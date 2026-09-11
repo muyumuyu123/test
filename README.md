@@ -18,12 +18,31 @@ instruments and sources:
   like `1/sqrt(n)`, so a confidence interval you can act on emerges after
   enough repetitions.
 
-`arbitrage/stats.py` implements this with Welford's online mean/variance
-and reports a confidence interval and a "statistically significant" flag
-once the lower bound clears zero. This only works if the edge is *real*
-(not a stale-quote artifact) and opportunities are close to independent —
-it can't turn a genuinely negative-EV strategy positive, it just tells you
-honestly when a real small edge has accumulated enough samples to trust.
+`arbitrage/stats.py` implements this with Welford's online mean/variance and
+reports a confidence interval plus a significance flag once the lower bound
+clears zero.
+
+**That machinery is only as good as what you feed it, and the obvious thing
+to feed it is wrong.** Scoring each opportunity by the spread displayed when
+it was spotted samples only the right tail of quote noise, because the
+threshold selects for a wide spread. `python simulate.py` runs this against a
+synthetic market with no real edge: the displayed-spread measurement reports a
+statistically significant `+0.18%` per trade and a `+205.9%` total, while the
+trades actually lose `173.2%`.
+
+So opportunities go through a paper book (`arbitrage/paper.py`) instead. An
+opportunity is recorded, not scored; it is scored `settle_after_polls` later
+against the prices prevailing then — what a real order would fill at, having
+been decided on data already stale. And a route that just produced a trade is
+suppressed for `cooldown_polls`, because a spread that persists for an hour is
+one observation, not one per poll. `Scanner.stats` holds those realized
+returns; `Scanner.detected_stats` keeps the displayed spread alongside, and
+the gap between them is the slippage the naive measurement books as profit.
+
+Even then, the interval covers **sampling uncertainty only**. It cannot tell
+you whether the edge survives tomorrow — a spread resampled from one
+unchanging condition has near-zero variance and so an arbitrarily tight
+interval regardless of regime risk.
 
 ## What this does and doesn't do
 

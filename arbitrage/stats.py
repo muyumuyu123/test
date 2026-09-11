@@ -23,7 +23,9 @@ when that confidence interval has clearly separated from zero.
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+MIN_SAMPLES = 30  # below this, the CLT approximation behind the CI is unreliable
 
 
 @dataclass
@@ -57,15 +59,22 @@ class RunningStats:
         """Sum of per-trade edges ~= n * mean, by linearity of expectation."""
         return self.n * self.mean
 
-    def is_significantly_positive(self, z: float = 1.96) -> bool:
-        """True once the lower confidence bound has cleared zero.
+    def is_significantly_positive(self, z: float = 1.96, min_samples: int = MIN_SAMPLES) -> bool:
+        """True once the lower confidence bound has cleared zero, on enough samples.
 
-        This is the practical payoff of the Law of Large Numbers here:
-        even a tiny, hard-to-trust-by-eye per-trade edge becomes a
-        statistically solid aggregate edge once enough independent
-        observations have come in.
+        Two things this does NOT establish, both of which have bitten this
+        project already (see simulate.py):
+
+        - That the samples measure anything real. Fed the displayed spread of
+          opportunities selected *for* having a wide spread, it returns True
+          on a market with no edge at all. Feed it realized returns from the
+          paper book, not detected spreads.
+        - That the edge will persist. The interval covers sampling
+          uncertainty only. A spread resampled from one unchanging condition
+          has near-zero variance and so an arbitrarily tight interval, which
+          says nothing about whether that condition holds tomorrow.
         """
-        if self.n <= 1:
+        if self.n < max(min_samples, 2):
             return False
         lo, _ = self.confidence_interval(z)
         return lo > 0
