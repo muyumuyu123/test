@@ -3,3 +3,11 @@ PyYAML>=6.0
 beautifulsoup4>=4.12
 ccxt>=4.0
 pytest>=7.4
+
+# stock_forecast (Indonesian stock forecasting with Chronos)
+yfinance>=0.2.40
+pandas>=2.0
+numpy>=1.24
+torch>=2.2
+chronos-forecasting>=1.4.1
+matplotlib>=3.7
