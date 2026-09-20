@@ -7,18 +7,29 @@ from stock_forecast.forecast import ChronosStockForecaster, _next_business_days
 
 
 class _FakePipeline:
-    """Stands in for a Chronos pipeline without downloading real model weights."""
+    """Stands in for a Chronos pipeline without downloading real model weights.
 
-    def __init__(self, quantile_levels, prediction_length):
+    ``shape_mode`` mimics the two ``predict_quantiles`` return shapes actually
+    used by chronos-forecasting:
+    - "classic": the Chronos/Chronos-Bolt pipelines return one
+      ``(batch, prediction_length, num_quantiles)`` tensor.
+    - "chronos2": Chronos-2 returns a list with one
+      ``(n_variates, prediction_length, num_quantiles)`` tensor per input series.
+    """
+
+    def __init__(self, quantile_levels, prediction_length, shape_mode="classic"):
         self.quantile_levels = quantile_levels
         self.prediction_length = prediction_length
-        self.received_context = None
+        self.shape_mode = shape_mode
+        self.received_inputs = None
 
-    def predict_quantiles(self, context, prediction_length, quantile_levels):
-        self.received_context = context
+    def predict_quantiles(self, inputs, prediction_length, quantile_levels):
+        self.received_inputs = inputs
         assert prediction_length == self.prediction_length
         assert quantile_levels == self.quantile_levels
+        assert isinstance(inputs, list) and len(inputs) == 1
 
+        context = inputs[0]
         base = context[-1].item()
         num_q = len(quantile_levels)
         # Increasing values across quantiles, flat across the horizon, so the
@@ -27,8 +38,16 @@ class _FakePipeline:
             [[base + q * 10 for q in range(num_q)] for _ in range(prediction_length)],
             dtype=torch.float32,
         )
-        quantiles = values.unsqueeze(0)  # (batch=1, prediction_length, num_quantiles)
-        mean = values[:, num_q // 2].unsqueeze(0)
+
+        if self.shape_mode == "classic":
+            quantiles = values.unsqueeze(0)  # (batch=1, prediction_length, num_quantiles)
+            mean = values[:, num_q // 2].unsqueeze(0)
+        elif self.shape_mode == "chronos2":
+            quantiles = [values.unsqueeze(0)]  # [(n_variates=1, prediction_length, num_quantiles)]
+            mean = [values[:, num_q // 2].unsqueeze(0)]
+        else:
+            raise ValueError(self.shape_mode)
+
         return quantiles, mean
 
 
@@ -39,9 +58,11 @@ def history():
     return pd.Series(values, index=dates)
 
 
-def _install_fake_pipeline(monkeypatch, prediction_length, quantile_low=0.1, quantile_high=0.9):
+def _install_fake_pipeline(
+    monkeypatch, prediction_length, quantile_low=0.1, quantile_high=0.9, shape_mode="classic"
+):
     expected_levels = sorted({quantile_low, 0.5, quantile_high})
-    fake = _FakePipeline(expected_levels, prediction_length)
+    fake = _FakePipeline(expected_levels, prediction_length, shape_mode=shape_mode)
     monkeypatch.setattr(
         "stock_forecast.forecast.BaseChronosPipeline.from_pretrained",
         lambda *a, **kw: fake,
@@ -49,8 +70,9 @@ def _install_fake_pipeline(monkeypatch, prediction_length, quantile_low=0.1, qua
     return fake
 
 
-def test_forecast_returns_expected_shape_and_ordering(monkeypatch, history):
-    fake = _install_fake_pipeline(monkeypatch, prediction_length=7)
+@pytest.mark.parametrize("shape_mode", ["classic", "chronos2"])
+def test_forecast_returns_expected_shape_and_ordering(monkeypatch, history, shape_mode):
+    fake = _install_fake_pipeline(monkeypatch, prediction_length=7, shape_mode=shape_mode)
 
     forecaster = ChronosStockForecaster()
     result = forecaster.forecast(history, prediction_length=7)
@@ -64,7 +86,7 @@ def test_forecast_returns_expected_shape_and_ordering(monkeypatch, history):
     assert np.all(result.median < result.high)
     # forecast should start after the last historical date.
     assert result.dates[0] > history.index[-1]
-    assert torch.equal(fake.received_context, torch.tensor(history.to_numpy(), dtype=torch.float32))
+    assert torch.equal(fake.received_inputs[0], torch.tensor(history.to_numpy(), dtype=torch.float32))
 
 
 def test_forecast_rejects_too_short_history(monkeypatch, history):

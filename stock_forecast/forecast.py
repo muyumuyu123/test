@@ -15,10 +15,11 @@ import pandas as pd
 import torch
 from chronos import BaseChronosPipeline
 
-# A small, CPU-friendly Chronos-Bolt model. Swap for "amazon/chronos-bolt-base"
-# or a classic "amazon/chronos-t5-*" checkpoint for higher accuracy at the
-# cost of more compute.
-DEFAULT_MODEL = "amazon/chronos-bolt-small"
+# Chronos-2 (https://huggingface.co/amazon/chronos-2) is Amazon's current
+# generation forecasting model: a single checkpoint that handles univariate,
+# multivariate and covariate-aware forecasting. Swap for a "amazon/chronos-bolt-*"
+# or classic "amazon/chronos-t5-*" checkpoint for a smaller/faster model.
+DEFAULT_MODEL = "amazon/chronos-2"
 
 
 @dataclass
@@ -70,13 +71,15 @@ class ChronosStockForecaster:
         context = torch.tensor(history.to_numpy(), dtype=torch.float32)
         quantile_levels = sorted({quantile_low, 0.5, quantile_high})
 
+        # A one-element list is the input form both the classic/Bolt pipelines
+        # (which stack it into a (1, length) batch) and Chronos-2 (which keeps
+        # it as a one-item list, univariate) accept identically.
         quantiles, _mean = self.pipeline.predict_quantiles(
-            context,
+            [context],
             prediction_length=prediction_length,
             quantile_levels=quantile_levels,
         )
-        # quantiles: (batch=1, prediction_length, num_quantiles)
-        quantiles = quantiles[0].numpy()
+        quantiles = _first_series_quantiles(quantiles)
 
         low_idx = quantile_levels.index(quantile_low)
         median_idx = quantile_levels.index(0.5)
@@ -97,3 +100,17 @@ class ChronosStockForecaster:
 def _next_business_days(last_date, n: int) -> pd.DatetimeIndex:
     """The ``n`` business days following ``last_date`` (exclusive of it)."""
     return pd.bdate_range(start=last_date, periods=n + 1, freq="B")[1:]
+
+
+def _first_series_quantiles(quantiles) -> np.ndarray:
+    """Normalize a single-series ``predict_quantiles`` result to (prediction_length, num_quantiles).
+
+    The classic/Bolt pipelines return one ``(batch, prediction_length, num_quantiles)``
+    tensor; Chronos-2 returns a list with one ``(n_variates, prediction_length,
+    num_quantiles)`` tensor per input series. Both were called with a single
+    univariate series, so either shape reduces to the same 2D array.
+    """
+    first = quantiles[0]
+    if first.ndim == 3:
+        first = first[0]
+    return first.numpy()

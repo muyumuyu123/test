@@ -4,3 +4,4 @@ __pycache__/
 config.yaml
 .venv/
 *.egg-info/
+stock_forecast/idx_stock_list.csv
