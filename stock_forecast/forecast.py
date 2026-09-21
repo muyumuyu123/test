@@ -15,11 +15,14 @@ import pandas as pd
 import torch
 from chronos import BaseChronosPipeline
 
-# Chronos-2 (https://huggingface.co/amazon/chronos-2) is Amazon's current
-# generation forecasting model: a single checkpoint that handles univariate,
-# multivariate and covariate-aware forecasting. Swap for a "amazon/chronos-bolt-*"
-# or classic "amazon/chronos-t5-*" checkpoint for a smaller/faster model.
-DEFAULT_MODEL = "amazon/chronos-2"
+# Chronos-2 (https://huggingface.co/autogluon/chronos-2) is the current
+# generation forecasting model from the Chronos/AutoGluon team: a single
+# checkpoint that handles univariate, multivariate and covariate-aware
+# forecasting. Chronos-2 and Chronos-Bolt checkpoints are published under the
+# "autogluon" Hugging Face org (not "amazon"); only the classic Chronos-T5
+# checkpoints live under "amazon/chronos-t5-*". Swap for
+# "autogluon/chronos-bolt-small" for a much smaller/faster model.
+DEFAULT_MODEL = "autogluon/chronos-2"
 
 
 @dataclass

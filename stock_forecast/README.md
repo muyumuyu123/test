@@ -1,7 +1,8 @@
 # Indonesian Stock Forecasting with Chronos
 
 Forecasts closing prices for Indonesia Stock Exchange (IDX) tickers using
-[Chronos-2](https://huggingface.co/amazon/chronos-2) from Amazon's
+[Chronos-2](https://huggingface.co/autogluon/chronos-2), the current
+generation model from Amazon's
 [chronos-forecasting](https://github.com/amazon-science/chronos-forecasting)
 library, a pretrained time series foundation model. OHLC data comes straight
 from Yahoo Finance via `yfinance`; no historical training or fine-tuning is
@@ -24,8 +25,8 @@ python -m stock_forecast.cli --ticker BBCA --prediction-length 14 --plot forecas
 - `--period` / `--interval` are passed straight to `yfinance.download`
   (default: 2 years of daily bars).
 - `--prediction-length` is how many future trading days to forecast.
-- `--model` selects the Chronos checkpoint (default `amazon/chronos-2`; try
-  `amazon/chronos-bolt-small` for a much smaller/faster model, at a cost in
+- `--model` selects the Chronos checkpoint (default `autogluon/chronos-2`; try
+  `autogluon/chronos-bolt-small` for a much smaller/faster model, at a cost in
   accuracy). The first run downloads the model from Hugging Face and caches
   it locally.
 - `--plot forecast.png` saves a chart of recent history plus the forecast
@@ -84,7 +85,7 @@ from stock_forecast.forecast import ChronosStockForecaster
 
 df = fetch_ohlc("BBCA", period="2y", interval="1d")
 
-forecaster = ChronosStockForecaster()  # loads amazon/chronos-2
+forecaster = ChronosStockForecaster()  # loads autogluon/chronos-2
 result = forecaster.forecast(df["close"], prediction_length=14)
 
 print(result.to_frame())

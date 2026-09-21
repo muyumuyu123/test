@@ -9,5 +9,5 @@ yfinance>=0.2.40
 pandas>=2.0
 numpy>=1.24
 torch>=2.2
-chronos-forecasting>=2.1.0  # needs Chronos-2 support (amazon/chronos-2)
+chronos-forecasting>=2.1.0  # needs Chronos-2 support (autogluon/chronos-2)
 matplotlib>=3.7
