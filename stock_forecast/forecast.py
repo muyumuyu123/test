@@ -13,7 +13,7 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 import torch
-from chronos import BaseChronosPipeline
+from chronos import BaseChronosPipeline, Chronos2Pipeline
 
 # Chronos-2 (https://huggingface.co/autogluon/chronos-2) is the current
 # generation forecasting model from the Chronos/AutoGluon team: a single
@@ -60,11 +60,18 @@ class ChronosStockForecaster:
         prediction_length: int = 14,
         quantile_low: float = 0.1,
         quantile_high: float = 0.9,
+        past_covariates: dict[str, pd.Series] | None = None,
     ) -> ForecastResult:
         """Forecast ``prediction_length`` future bars from a price series.
 
         ``history`` must be indexed by date and sorted oldest to newest
         (e.g. the ``close`` column returned by ``data.fetch_ohlc``).
+
+        ``past_covariates`` (Chronos-2 only) are extra historical series --
+        e.g. ``{"volume": df["volume"]}`` -- that inform the forecast without
+        being forecast themselves. Each must have the same length as
+        ``history``. Ignored/rejected on classic Chronos or Chronos-Bolt
+        models, which only accept the target series.
         """
         if len(history) < 2:
             raise ValueError("Need at least two historical observations to forecast.")
@@ -74,11 +81,35 @@ class ChronosStockForecaster:
         context = torch.tensor(history.to_numpy(), dtype=torch.float32)
         quantile_levels = sorted({quantile_low, 0.5, quantile_high})
 
-        # A one-element list is the input form both the classic/Bolt pipelines
-        # (which stack it into a (1, length) batch) and Chronos-2 (which keeps
-        # it as a one-item list, univariate) accept identically.
+        if past_covariates:
+            if not isinstance(self.pipeline, Chronos2Pipeline):
+                raise ValueError(
+                    f"past_covariates requires a Chronos-2 model; '{self.model_id}' "
+                    "only accepts a plain target series."
+                )
+            for name, series in past_covariates.items():
+                if len(series) != len(history):
+                    raise ValueError(
+                        f"Covariate '{name}' has {len(series)} points, expected "
+                        f"{len(history)} (same length as history)."
+                    )
+            inputs = [
+                {
+                    "target": context,
+                    "past_covariates": {
+                        name: torch.tensor(series.to_numpy(), dtype=torch.float32)
+                        for name, series in past_covariates.items()
+                    },
+                }
+            ]
+        else:
+            # A one-element list is the input form both the classic/Bolt pipelines
+            # (which stack it into a (1, length) batch) and Chronos-2 (which keeps
+            # it as a one-item list, univariate) accept identically.
+            inputs = [context]
+
         quantiles, _mean = self.pipeline.predict_quantiles(
-            [context],
+            inputs,
             prediction_length=prediction_length,
             quantile_levels=quantile_levels,
         )

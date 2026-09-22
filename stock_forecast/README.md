@@ -31,6 +31,15 @@ python -m stock_forecast.cli --ticker BBCA --prediction-length 14 --plot forecas
   it locally.
 - `--plot forecast.png` saves a chart of recent history plus the forecast
   and its uncertainty band.
+- `--end-date 2025-08-31` cuts history off at that date instead of today, so
+  the forecast starts from the next trading day after it (e.g. `--end-date
+  2025-08-31 --prediction-length 10` forecasts roughly through mid-September;
+  the exact end date depends on how many of those days are IDX holidays,
+  which this tool doesn't know about -- it only skips weekends).
+- `--use-volume` / `--no-use-volume` (default: on) feeds traded volume to the
+  model as a covariate, in addition to the closing price, when using a
+  Chronos-2 model; ignored with a warning on classic Chronos or Chronos-Bolt
+  models, which only accept a single target series.
 
 Some well-known IDX blue chips (see `stock_forecast.data.POPULAR_IDX_TICKERS`):
 `BBCA`, `BBRI`, `BMRI`, `BBNI`, `TLKM`, `ASII`, `UNVR`, `ICBP`, `ANTM`, `GOTO`.
@@ -87,6 +96,11 @@ df = fetch_ohlc("BBCA", period="2y", interval="1d")
 
 forecaster = ChronosStockForecaster()  # loads autogluon/chronos-2
 result = forecaster.forecast(df["close"], prediction_length=14)
+
+# Optionally feed volume as a covariate (Chronos-2 only):
+result = forecaster.forecast(
+    df["close"], prediction_length=14, past_covariates={"volume": df["volume"]}
+)
 
 print(result.to_frame())
 ```
