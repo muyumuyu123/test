@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Blender Street — 3D rendered background overlay</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --cyan: #6ef3ff; --pink: #ff4fa3; --amber: #ffc861; }
+    .screen { color: #fff; font-family: "Rajdhani", sans-serif; background: #000; }
+    .art { position: absolute; inset: 0; background: url("art/neon_street.png") center / cover no-repeat; }
+    .rain { inset: 0; pointer-events: none; opacity: 0.3;
+      background: repeating-linear-gradient(100deg, transparent 0 14px, rgba(200, 230, 255, 0.22) 14px 15px, transparent 15px 37px) 0 0 / 240px 240px;
+      animation: rain 0.5s linear infinite; }
+    @keyframes rain { to { background-position: -40px 240px; } }
+    .corner { left: 0; bottom: 0; width: 1100px; height: 380px; background: radial-gradient(ellipse 900px 340px at 0% 100%, rgba(3, 3, 10, 0.8), rgba(3, 3, 10, 0.45) 55%, transparent 80%); }
+    .standby { left: 70px; top: 60px; display: flex; align-items: center; gap: 14px; font: 600 22px "Rajdhani"; letter-spacing: 0.4em; text-shadow: 0 2px 6px #000; }
+    .standby i { width: 12px; height: 12px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 12px #ff3b5c; animation: blink 1.2s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0.2; } }
+    .who { left: 74px; top: 820px; font: 700 24px "Rajdhani"; letter-spacing: 0.34em; color: var(--cyan); text-shadow: 0 2px 6px #000; }
+    .name { left: 70px; top: 850px; font: 700 96px/1 "Barlow Condensed"; text-transform: uppercase; text-shadow: 0 4px 16px rgba(0, 0, 0, 0.7); }
+    .row { left: 74px; top: 962px; display: flex; align-items: center; gap: 28px; }
+    .count { font: 500 62px/1 "Barlow Condensed"; font-variant-numeric: tabular-nums; color: var(--amber); text-shadow: 0 0 18px rgba(255, 200, 97, 0.45); }
+    .vr { width: 2px; height: 56px; background: rgba(255, 255, 255, 0.35); }
+    .tonight small { display: block; font: 600 16px "Rajdhani"; letter-spacing: 0.4em; color: rgba(255, 255, 255, 0.6); }
+    .tonight b { font: 600 30px "Rajdhani"; }
+    .socials { right: 56px; bottom: 44px; padding: 14px 22px; text-align: right; font: 600 22px/1.6 "Rajdhani"; background: rgba(3, 3, 10, 0.55); backdrop-filter: blur(6px); }
+    .socials span { color: var(--cyan); letter-spacing: 0.3em; font-size: 15px; margin-right: 12px; }
+  </style>
+</head>
+<body>
+  <section class="screen">
+    <div class="art"></div>
+    <div class="abs rain"></div>
+    <div class="abs corner"></div>
+    <div class="abs standby"><i></i>STANDBY</div>
+    <div class="abs who">STREAM 147 · TONIGHT 20:00</div>
+    <div class="abs name">Nova Moonpetal</div>
+    <div class="abs row">
+      <span class="count">04:59</span><span class="vr"></span>
+      <span class="tonight"><small>UP NEXT</small><b>Ranked grind: road to champion</b></span>
+    </div>
+    <div class="abs socials">
+      <div><span>TWITCH</span>novamoonpetal</div>
+      <div><span>YOUTUBE</span>@NovaMoonpetal</div>
+      <div><span>X</span>@nova_moonpetal</div>
+    </div>
+  </section>
+</body>
+</html>
