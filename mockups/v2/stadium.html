@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Matchday — stadium mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --paper: #f1eee4; --navy: #0c1a3d; --navy2: #172a5e; --red: #e8322b; --gold: #e7c064; --white: #fff; }
+    .screen { font-family: "Archivo", sans-serif; color: var(--navy); }
+    .x { font-stretch: 125%; font-style: italic; font-weight: 900; }
+    .c { font-stretch: 75%; }
+
+    /* ---------- START ---------- */
+    .start { background: var(--paper); }
+    .halftone { right: -80px; top: -80px; width: 900px; height: 700px; background: radial-gradient(circle, rgba(12, 26, 61, 0.16) 3.5px, transparent 4px) 0 0 / 18px 18px;
+      -webkit-mask: radial-gradient(ellipse at 100% 0, #000 10%, transparent 70%); mask: radial-gradient(ellipse at 100% 0, #000 10%, transparent 70%); }
+    .grain { inset: 0; opacity: 0.35; mix-blend-mode: multiply; pointer-events: none;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 .25 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+    .slab { inset: 0; background: var(--navy); clip-path: polygon(0 0, 900px 0, 630px 1080px, 0 1080px); }
+    .slab .big { position: absolute; left: -40px; bottom: -120px; font: italic 900 520px/1 "Archivo"; font-stretch: 125%; color: transparent; -webkit-text-stroke: 3px rgba(255, 255, 255, 0.07); }
+    .slab .lines { position: absolute; inset: 0; background: repeating-linear-gradient(104deg, transparent 0 60px, rgba(255, 255, 255, 0.04) 60px 62px); }
+    .stripe { inset: 0; background: var(--red); clip-path: polygon(918px 0, 952px 0, 682px 1080px, 648px 1080px); }
+    .stripe2 { inset: 0; background: var(--navy); clip-path: polygon(968px 0, 978px 0, 708px 1080px, 698px 1080px); }
+
+    .card { left: 150px; top: 112px; width: 540px; height: 790px; padding: 14px; border-radius: 28px; transform: rotate(-5deg);
+      background: linear-gradient(135deg, #f7e6a6 0%, #c89a36 28%, #fff3c6 48%, #b5832a 70%, #f2d78a 100%); box-shadow: 0 40px 70px rgba(0, 0, 0, 0.45); }
+    .card .inner { position: relative; height: 100%; border-radius: 18px; overflow: hidden;
+      background: radial-gradient(circle at 70% 26%, rgba(232, 50, 43, 0.55), transparent 55%), repeating-linear-gradient(135deg, transparent 0 22px, rgba(255, 255, 255, 0.04) 22px 44px), var(--navy); }
+    .card .dots { position: absolute; right: -40px; top: 30px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(247, 230, 166, 0.35) 3px, transparent 3.5px) 0 0 / 14px 14px; }
+    .card .rating { position: absolute; left: 30px; top: 22px; z-index: 2; color: #f7e6a6; text-align: center; }
+    .card .rating b { display: block; font: italic 900 112px/0.9 "Archivo"; }
+    .card .rating span { display: block; font: 800 30px "Archivo"; letter-spacing: 0.12em; margin-top: 4px; }
+    .card .rating svg { width: 58px; margin: 14px auto 0; }
+    .card .player { position: absolute; right: -10px; top: 40px; width: 430px; height: 450px; }
+    .card .name { position: absolute; left: -20px; right: -20px; top: 488px; padding: 10px 0 12px; background: var(--red); text-align: center; color: #fff;
+      font: italic 900 60px/1 "Archivo"; font-stretch: 75%; letter-spacing: 0.01em; transform: skewY(-3deg); box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+    .card .stats { position: absolute; left: 30px; right: 30px; bottom: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 0; color: #fff; }
+    .card .stats div { padding-left: 14px; border-left: 3px solid rgba(247, 230, 166, 0.5); }
+    .card .stats b { display: block; font: italic 900 42px/1 "Archivo"; color: #f7e6a6; }
+    .card .stats span { display: block; margin-top: 2px; font: 800 15px "Archivo"; letter-spacing: 0.16em; }
+
+    .kicker { left: 1010px; top: 112px; display: flex; align-items: center; gap: 14px; font: 800 25px "Archivo"; font-stretch: 112%; letter-spacing: 0.16em; }
+    .kicker i { width: 18px; height: 18px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 6px rgba(232, 50, 43, 0.2); }
+    .speed { left: 1500px; top: 150px; width: 360px; height: 260px; background: repeating-linear-gradient(-76deg, transparent 0 26px, rgba(12, 26, 61, 0.14) 26px 30px);
+      -webkit-mask: linear-gradient(90deg, transparent, #000 60%); mask: linear-gradient(90deg, transparent, #000 60%); }
+    .headline { left: 1000px; top: 168px; margin: 0; font: italic 900 158px/0.86 "Archivo"; font-stretch: 106%; letter-spacing: -0.02em; }
+    .headline span { display: block; }
+    .headline .a { color: var(--navy); text-shadow: 9px 9px 0 var(--red); }
+    .headline .b { color: var(--red); text-shadow: 9px 9px 0 var(--navy); margin-left: 70px; }
+    .clock { left: 1010px; top: 540px; display: flex; box-shadow: 14px 14px 0 rgba(12, 26, 61, 0.15); }
+    .clock .l { width: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: var(--red); color: #fff; font: 900 22px "Archivo"; letter-spacing: 0.12em; text-align: center; line-height: 1.1; }
+    .clock .l svg { width: 56px; }
+    .clock .r { padding: 8px 40px 14px 34px; background: var(--navy); color: #fff; }
+    .clock .r small { display: block; font: 800 20px "Archivo"; letter-spacing: 0.3em; color: var(--gold); }
+    .clock .r b { font: italic 900 150px/0.92 "Archivo"; font-variant-numeric: tabular-nums; }
+    .fixture { left: 1010px; top: 770px; width: 840px; }
+    .fixture h3 { margin: 0 0 12px; display: flex; justify-content: space-between; font: italic 900 30px "Archivo"; font-stretch: 112%; letter-spacing: 0.04em; }
+    .fixture h3 span { color: var(--red); font-style: normal; font-weight: 800; font-size: 20px; letter-spacing: 0.2em; align-self: center; }
+    .fixture .row { display: flex; align-items: center; gap: 22px; padding: 10px 0; border-top: 3px solid var(--navy); font: 700 28px "Archivo"; }
+    .fixture .row .d { width: 110px; padding: 4px 0; text-align: center; background: var(--navy); color: #fff; font: italic 900 24px "Archivo"; }
+    .fixture .row .d.hot { background: var(--red); }
+    .fixture .row .t { margin-left: auto; font: 800 26px "Archivo"; font-variant-numeric: tabular-nums; color: var(--red); }
+    .partners { left: 0; right: 0; bottom: 0; height: 64px; display: flex; align-items: center; justify-content: center; gap: 0; background: #fff; border-top: 4px solid var(--navy); font: 800 24px "Archivo"; letter-spacing: 0.04em; z-index: 3; }
+    .partners span { padding: 0 34px; border-left: 2px solid rgba(12, 26, 61, 0.2); }
+    .partners span:first-child { border: 0; }
+    .partners b { color: var(--red); margin-right: 10px; font-style: italic; }
+
+    /* ---------- LIVE ---------- */
+    .live { background: #000; }
+    .bug { left: 40px; top: 40px; display: flex; height: 66px; font: 800 30px "Archivo"; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35); }
+    .bug > div { display: flex; align-items: center; gap: 12px; padding: 0 20px; }
+    .bug svg { width: 34px; }
+    .bug .home { background: var(--navy); color: #fff; }
+    .bug .sc { background: #fff; color: var(--navy); font: italic 900 38px "Archivo"; min-width: 64px; justify-content: center; }
+    .bug .sc + .sc { border-left: 2px solid #d6d2c6; }
+    .bug .away { background: var(--red); color: #fff; }
+    .bug .t { background: #111; color: #fff; font-variant-numeric: tabular-nums; font-weight: 700; }
+    .bug .lv { background: #fff; color: var(--red); font: italic 900 24px "Archivo"; letter-spacing: 0.1em; }
+    .brand { right: 40px; top: 40px; display: flex; align-items: center; gap: 12px; color: #fff; font: italic 900 30px "Archivo"; font-stretch: 125%; opacity: 0.9; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); }
+    .brand i { width: 30px; height: 30px; background: var(--red); transform: skewX(-12deg); }
+
+    .fan { left: 1500px; top: 150px; width: 380px; }
+    .fan .h { display: inline-block; margin-bottom: 12px; padding: 6px 22px; background: var(--red); color: #fff; font: italic 900 30px "Archivo"; font-stretch: 112%; transform: skewX(-8deg); }
+    .fan .m { position: relative; margin-bottom: 10px; padding: 12px 18px 14px 22px; background: #fff; border-left: 8px solid var(--navy); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3); }
+    .fan .m b { display: block; font: 800 18px "Archivo"; letter-spacing: 0.08em; color: var(--red); }
+    .fan .m span { font: 600 24px/1.25 "Archivo"; }
+    .fan .m::after { content: "”"; position: absolute; right: 12px; top: -6px; font: 900 60px "Archivo"; color: rgba(12, 26, 61, 0.12); }
+
+    .podium { left: 1400px; top: 780px; width: 600px; height: 400px; background: var(--red); clip-path: polygon(120px 0, 100% 0, 100% 100%, 0 100%); }
+    .podium::after { content: ""; position: absolute; inset: 0; background: var(--navy); clip-path: polygon(150px 0, 172px 0, 52px 100%, 30px 100%); }
+    .livemodel { left: 1490px; top: 600px; width: 400px; height: 480px; }
+
+    .l3 { left: 40px; top: 866px; display: flex; height: 150px; box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4); }
+    .l3 .num { width: 150px; display: grid; place-items: center; background: var(--red); color: #fff; font: italic 900 96px "Archivo"; }
+    .l3 .txt { display: flex; flex-direction: column; }
+    .l3 .nm { flex: 1; display: flex; align-items: center; padding: 0 44px 0 30px; background: var(--navy); color: #fff; font: italic 900 66px "Archivo"; font-stretch: 112%; letter-spacing: -0.01em; }
+    .l3 .sub { padding: 8px 30px; background: #fff; font: 800 22px "Archivo"; letter-spacing: 0.16em; }
+    .l3 .sub b { color: var(--red); }
+    .target { left: 1000px; top: 900px; width: 440px; padding: 14px 20px 18px; background: #fff; box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35); }
+    .target .top { display: flex; justify-content: space-between; align-items: baseline; font: 800 18px "Archivo"; letter-spacing: 0.18em; }
+    .target .top b { font: italic 900 32px "Archivo"; letter-spacing: 0; color: var(--red); white-space: nowrap; }
+    .target .top span { white-space: nowrap; }
+    .target .seg { display: flex; gap: 4px; margin-top: 8px; }
+    .target .seg i { flex: 1; height: 22px; background: #dcd8cc; transform: skewX(-14deg); }
+    .target .seg i.on { background: var(--navy); }
+    .target .seg i.half { background: linear-gradient(90deg, var(--red) 40%, #dcd8cc 40%); }
+
+    .sign { left: 560px; top: 150px; width: 800px; background: #fff; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5); z-index: 5; }
+    .sign .top { padding: 12px 28px; background: var(--navy); color: #fff; font: 800 22px "Archivo"; letter-spacing: 0.3em; }
+    .sign .top b { color: var(--gold); }
+    .sign .body { display: flex; align-items: center; gap: 26px; padding: 26px 28px 30px; }
+    .sign .av { width: 150px; height: 150px; flex: none; border-radius: 50%; overflow: hidden; background: radial-gradient(circle, rgba(12, 26, 61, 0.14) 3px, transparent 3.5px) 0 0 / 12px 12px, #f1eee4; border: 6px solid var(--red); }
+    .sign .nm { font: italic 900 76px/0.95 "Archivo"; font-stretch: 92%; letter-spacing: -0.02em; }
+    .sign .role { margin-top: 10px; font: 800 22px "Archivo"; letter-spacing: 0.14em; color: var(--red); }
+    .sign .stamp { position: absolute; right: -34px; top: -34px; padding: 8px 20px; border: 5px solid var(--red); color: var(--red); background: rgba(255, 255, 255, 0.94); font: italic 900 36px "Archivo"; font-stretch: 112%; transform: rotate(9deg); letter-spacing: 0.02em; }
+    .sign .foot { display: flex; justify-content: space-between; padding: 10px 28px; background: var(--red); color: #fff; font: 800 20px "Archivo"; letter-spacing: 0.2em; }
+
+    .ticker { left: 0; right: 0; bottom: 0; height: 44px; display: flex; align-items: center; background: var(--navy); color: #fff; font: 700 21px "Archivo"; white-space: nowrap; overflow: hidden; z-index: 6; }
+    .ticker .lab { height: 100%; display: grid; place-items: center; padding: 0 24px; background: var(--red); font: italic 900 22px "Archivo"; letter-spacing: 0.12em; }
+    .ticker .run span { margin-left: 30px; }
+    .ticker .run span b { color: var(--gold); margin-right: 8px; }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <div class="abs halftone"></div>
+    <div class="abs slab"><div class="big">07</div><div class="lines"></div></div>
+    <div class="abs stripe"></div>
+    <div class="abs stripe2"></div>
+
+    <div class="abs card">
+      <div class="inner">
+        <div class="dots"></div>
+        <div class="rating"><b>99</b><span>VTB</span><span id="crest1"></span></div>
+        <div class="player" id="m1"></div>
+        <div class="name">NOVA MOONPETAL</div>
+        <div class="stats">
+          <div><b>99</b><span>CHAT</span></div><div><b>97</b><span>COZY</span></div><div><b>42</b><span>AIM</span></div>
+          <div><b>88</b><span>CLUTCH</span></div><div><b>100</b><span>SNACK</span></div><div><b>99</b><span>VIBES</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="abs speed"></div>
+    <div class="abs kicker"><i></i>LIVE TONIGHT · 20:00 WIB · TWITCH</div>
+    <h1 class="abs headline"><span class="a">KICKOFF</span><span class="b">SOON</span></h1>
+    <div class="abs clock">
+      <div class="l"><span id="crest2"></span>KICK-OFF<br>IN</div>
+      <div class="r"><small>MIN · SEC</small><b>04:59</b></div>
+    </div>
+    <div class="abs fixture">
+      <h3>THIS WEEK'S FIXTURES <span>ALL TIMES WIB</span></h3>
+      <div class="row"><span class="d hot">TODAY</span>Ranked grind: road to champion<span class="t">20:00</span></div>
+      <div class="row"><span class="d">WED</span>Just chatting + Q&amp;A<span class="t">19:00</span></div>
+      <div class="row"><span class="d">FRI</span>Horror night (lights off)<span class="t">21:00</span></div>
+    </div>
+    <div class="abs partners">
+      <span><b>TWITCH</b>novamoonpetal</span><span><b>YOUTUBE</b>@NovaMoonpetal</span><span><b>X</b>@nova_moonpetal</span><span><b>DISCORD</b>/moonpetal</span>
+    </div>
+    <div class="abs grain"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <canvas class="abs game" id="g1" style="inset:0; width:1920px; height:1080px"></canvas>
+
+    <div class="abs bug">
+      <div class="home"><span class="cr"></span>NOVA</div>
+      <div class="sc">2</div><div class="sc">1</div>
+      <div class="away">CHAT<span class="cr2"></span></div>
+      <div class="lv">LIVE</div>
+      <div class="t">1:42:07</div>
+    </div>
+    <div class="abs brand"><i></i>MATCHDAY</div>
+
+    <div class="abs fan">
+      <div class="h">FAN ZONE</div>
+      <div class="m"><b>STARRYMOCHI</b><span>what a goal omg</span></div>
+      <div class="m"><b>MOONLIT_KAY</b><span>ref is blind lol</span></div>
+      <div class="m"><b>PIXELPUDDING</b><span>MVP MVP MVP</span></div>
+      <div class="m"><b>HANABI</b><span>that pass was clean</span></div>
+    </div>
+
+    <div class="abs podium"></div>
+    <div class="abs livemodel" id="m2"></div>
+
+    <div class="abs l3">
+      <div class="num">07</div>
+      <div class="txt"><div class="nm">NOVA MOONPETAL</div><div class="sub"><b>CAPTAIN</b> · VTUBER · TWITCH.TV/NOVAMOONPETAL</div></div>
+    </div>
+    <div class="abs target">
+      <div class="top"><span>SEASON TARGET</span><b>742 / 1,000</b></div>
+      <div class="seg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i><i></i><i></i></div>
+    </div>
+
+    <div class="abs sign">
+      <div class="stamp">HERE WE GO!</div>
+      <div class="top">OFFICIAL · <b>NEW SIGNING</b></div>
+      <div class="body">
+        <div class="av" id="av"></div>
+        <div><div class="nm">STARRYMOCHI</div><div class="role">JOINS THE SQUAD</div></div>
+      </div>
+      <div class="foot"><span>FOLLOWER #743</span><span>CONTRACT: FOREVER</span></div>
+    </div>
+
+    <div class="abs ticker"><div class="lab">LATEST</div><div class="run">
+      <span><b>SIGNED</b>StarryMochi joins the squad</span>
+      <span><b>EXTENDED</b>moonlit_kay · 6 months</span>
+      <span><b>TRANSFER FEE</b>pixelpudding tipped $5</span>
+      <span><b>RAID</b>CometCat arrives with 42 fans</span>
+    </div></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    const crest = (a, b) => `<svg viewBox="0 0 64 76"><path fill="${a}" d="M32 2 60 10v26c0 18-12 30-28 38C16 66 4 54 4 36V10z"/><path fill="${b}" d="M40 16a18 18 0 1 0 12 30A15 15 0 0 1 40 16z"/></svg>`;
+    const chatCrest = `<svg viewBox="0 0 64 76"><path fill="#fff" d="M32 2 60 10v26c0 18-12 30-28 38C16 66 4 54 4 36V10z"/><path fill="#e8322b" d="M16 20h32v22H30l-9 9v-9h-5z"/></svg>`;
+    document.getElementById("crest1").innerHTML = crest("#f7e6a6", "#0c1a3d");
+    document.getElementById("crest2").innerHTML = crest("#fff", "#e8322b");
+    document.querySelector(".bug .cr").innerHTML = crest("#fff", "#0c1a3d");
+    document.querySelector(".bug .cr2").innerHTML = chatCrest;
+    const grad = `<defs><linearGradient id="pl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6d6"/><stop offset="1" stop-color="#c9b27a"/></linearGradient></defs>`;
+    document.getElementById("m1").innerHTML = M2.model({ fill: "url(#pl)", stroke: "#0c1a3d", width: 4, extra: grad });
+    document.getElementById("m2").innerHTML = M2.model({ fill: "#f1eee4", stroke: "#0c1a3d", width: 5 });
+    document.getElementById("av").innerHTML = M2.model({ fill: "#0c1a3d" });
+    M2.ready(() => M2.game(document.getElementById("g1"), 11, { minimap: false, bars: false }));
+  </script>
+</body>
+</html>

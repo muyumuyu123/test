@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Study Desk — lofi flat-lay mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --paper: #fffdf6; --ink: #3c3a4a; --blush: #f4c2c2; --butter: #f7e2a1; --sage: #b5c9a8; --lilac: #cdbfe6; --mint: #bfe3d0;
+      --pink-pen: #e2798f; --blue-pen: #5a7fb5; --green-pen: #5f9a6b; --drop: 0 18px 30px rgba(70, 45, 20, 0.2), 0 4px 8px rgba(70, 45, 20, 0.14); }
+    .screen { color: var(--ink); font-family: "Patrick Hand", cursive;
+      background: repeating-linear-gradient(91deg, rgba(120, 80, 40, 0.07) 0 3px, transparent 3px 13px), repeating-linear-gradient(89deg, rgba(255, 255, 255, 0.1) 0 2px, transparent 2px 29px), linear-gradient(170deg, #dfc6a0, #d0b286); }
+    .brush { font-family: "Caveat Brush", cursive; }
+    .type { font-family: "Special Elite", monospace; }
+    .grain { inset: 0; z-index: 40; pointer-events: none; opacity: 0.4; mix-blend-mode: multiply;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2'/><feColorMatrix values='0 0 0 0 .5  0 0 0 0 .4  0 0 0 0 .3  0 0 0 .16 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+    .mat { border-radius: 20px; background: linear-gradient(rgba(255, 255, 255, 0.25) 2px, transparent 2px) 0 0 / 200px 200px, linear-gradient(90deg, rgba(255, 255, 255, 0.25) 2px, transparent 2px) 0 0 / 200px 200px,
+      linear-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px) 0 0 / 40px 40px, linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px) 0 0 / 40px 40px, #aec6a6; box-shadow: var(--drop); }
+    .tape { position: absolute; height: 46px; opacity: 0.88; z-index: 6;
+      clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 16% 8%, 100% 0, 96% 12%, 100% 22%, 96% 34%, 100% 46%, 96% 58%, 100% 70%, 96% 82%, 100% 92%, 96% 100%, 0 100%, 4% 88%, 0 76%, 4% 64%, 0 52%, 4% 40%, 0 28%, 4% 18%); }
+    .tape.dots { background: radial-gradient(circle, rgba(255, 255, 255, 0.85) 3px, transparent 3.5px) 0 0 / 16px 16px, var(--blush); }
+    .tape.stripe { background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.6) 0 8px, transparent 8px 18px), var(--sage); }
+    .tape.grid { background: linear-gradient(rgba(255, 255, 255, 0.6) 2px, transparent 2px) 0 0 / 12px 12px, linear-gradient(90deg, rgba(255, 255, 255, 0.6) 2px, transparent 2px) 0 0 / 12px 12px, var(--butter); }
+    .paper { background: var(--paper); box-shadow: var(--drop); }
+    .lined { background: linear-gradient(90deg, transparent 70px, rgba(226, 121, 143, 0.55) 70px 72px, transparent 72px), repeating-linear-gradient(transparent 0 43px, rgba(90, 127, 181, 0.28) 43px 45px), var(--paper); }
+    .dotgrid { background: radial-gradient(circle, rgba(60, 58, 74, 0.2) 1.6px, transparent 2px) 0 0 / 30px 30px, var(--paper); }
+    .sticky { position: absolute; padding: 24px 22px; font: 32px/1.2 "Patrick Hand"; box-shadow: 0 14px 22px rgba(70, 45, 20, 0.22); }
+    .sticky b { display: block; font: 26px "Special Elite"; color: rgba(60, 58, 74, 0.7); }
+
+    /* ---------- START ---------- */
+    .book { left: 230px; top: 140px; width: 1100px; height: 760px; transform: rotate(-3deg); z-index: 3; }
+    .book .pg { position: absolute; top: 0; bottom: 0; width: 50%; box-shadow: 3px 3px 0 #eee7d6, 6px 6px 0 #e3dac5, var(--drop); }
+    .book .pg.l { left: 0; border-radius: 10px 0 0 10px; }
+    .book .pg.r { right: 0; border-radius: 0 10px 10px 0; }
+    .book .spine { position: absolute; left: 50%; top: 0; bottom: 0; width: 60px; margin-left: -30px; background: linear-gradient(90deg, transparent, rgba(60, 40, 20, 0.14) 45%, rgba(60, 40, 20, 0.2) 50%, rgba(60, 40, 20, 0.14) 55%, transparent); }
+    .book .rings { position: absolute; left: 50%; top: 30px; bottom: 30px; width: 36px; margin-left: -18px; background: radial-gradient(ellipse 16px 8px at 50% 50%, #8a8a94 60%, transparent 64%) 0 0 / 36px 40px; }
+    .plan { position: absolute; left: 96px; top: 42px; }
+    .plan h2 { margin: 0 0 18px; font: 64px/1 "Caveat Brush"; }
+    .plan h2 span { background: linear-gradient(transparent 55%, rgba(244, 194, 194, 0.85) 55% 88%, transparent 88%); padding: 0 8px; }
+    .plan li { list-style: none; display: flex; align-items: center; gap: 16px; font: 40px/88px "Patrick Hand"; height: 88px; }
+    .plan ul { margin: 0; padding: 0; }
+    .plan li svg { width: 40px; height: 40px; flex: none; }
+    .plan li.done span { text-decoration: line-through; text-decoration-color: rgba(95, 154, 107, 0.8); text-decoration-thickness: 3px; }
+    .headline { position: absolute; left: 600px; top: 70px; width: 470px; }
+    .headline .w { position: relative; font: 138px/0.95 "Caveat Brush"; }
+    .headline .hl { position: absolute; left: -12px; right: 40px; top: 58%; height: 38%; background: rgba(247, 226, 161, 0.9); transform: rotate(-2deg); border-radius: 8px; z-index: -1; }
+    .headline .note { margin-top: 26px; font: 38px/1.2 "Patrick Hand"; }
+    .doodle { position: absolute; }
+
+    .polaroid { left: 1386px; top: 70px; width: 410px; height: 490px; padding: 22px 22px 92px; transform: rotate(6deg); z-index: 5; background: #fff; box-shadow: var(--drop); }
+    .polaroid .ph { position: relative; width: 100%; height: 100%; overflow: hidden; background: radial-gradient(circle at 70% 25%, #fff3d6, transparent 40%), linear-gradient(160deg, #cdbfe6, #f4c2c2 70%, #f7e2a1); }
+    .polaroid .ph .m { position: absolute; left: 20px; right: 20px; bottom: 0; top: 30px; }
+    .polaroid .cap { position: absolute; left: 0; right: 0; bottom: 18px; text-align: center; font: 42px "Caveat Brush"; }
+
+    .timer { left: 1410px; top: 606px; width: 390px; height: 262px; transform: rotate(-5deg); z-index: 5; border-radius: 42px; background: linear-gradient(160deg, #cfeee0, #a9d6bf); box-shadow: var(--drop), inset 0 -8px 0 rgba(0, 0, 0, 0.06), inset 0 4px 0 rgba(255, 255, 255, 0.6); }
+    .timer .lcd { position: absolute; left: 32px; right: 32px; top: 30px; height: 132px; border-radius: 14px; background: linear-gradient(180deg, #c3d4ab, #d3e0bf); box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center; }
+    .timer .lcd small { position: absolute; left: 16px; top: 8px; font: 18px "Special Elite"; color: rgba(47, 58, 42, 0.7); }
+    .timer .btns { position: absolute; left: 32px; right: 32px; bottom: 22px; display: flex; justify-content: space-between; }
+    .timer .btns span { width: 94px; height: 54px; border-radius: 27px; display: grid; place-items: center; font: 24px "Patrick Hand"; box-shadow: 0 5px 0 rgba(0, 0, 0, 0.12), inset 0 2px 0 rgba(255, 255, 255, 0.6); }
+
+    .cup { left: 1596px; top: 842px; width: 290px; height: 290px; z-index: 5; }
+    .leaf { z-index: 7; }
+    .pencil { left: 250px; top: 960px; width: 560px; height: 34px; transform: rotate(-7deg); z-index: 6; }
+
+    /* ---------- LIVE ---------- */
+    .print { left: 60px; top: 56px; width: 1344px; height: 770px; padding: 16px; background: #fff; box-shadow: var(--drop); z-index: 3; }
+    .print canvas { width: 1312px; height: 738px; }
+    .chatpage { left: 1446px; top: 44px; width: 432px; height: 640px; padding: 26px 26px 0 90px; transform: rotate(1.5deg); z-index: 3; border-radius: 6px; }
+    .chatpage h3 { margin: 0; height: 88px; font: 54px/88px "Caveat Brush"; }
+    .chatpage .m { font: 29px/44px "Patrick Hand"; }
+    .chatpage .m b { font-weight: 400; }
+    .label { left: 56px; top: 866px; width: 660px; height: 74px; display: flex; align-items: center; justify-content: center; font: 40px "Special Elite"; letter-spacing: 0.04em; transform: rotate(-1.5deg); z-index: 5;
+      clip-path: polygon(0 10%, 2% 0, 100% 0, 98% 14%, 100% 28%, 98% 42%, 100% 56%, 98% 70%, 100% 84%, 98% 100%, 0 100%, 2% 86%, 0 72%, 2% 58%, 0 44%, 2% 30%); }
+    .livesoc { left: 70px; top: 960px; font: 30px/1.35 "Patrick Hand"; z-index: 5; }
+    .livesoc b { font-weight: 400; color: var(--pink-pen); }
+    .fund { left: 780px; top: 862px; z-index: 5; }
+    .fund h4 { margin: 0; font: 46px "Caveat Brush"; }
+    .fund h4 small { font: 28px "Patrick Hand"; margin-left: 14px; color: rgba(60, 58, 74, 0.75); }
+    .fund .cups { display: flex; gap: 8px; margin-top: 6px; }
+    .fund .cups svg { width: 52px; height: 58px; }
+    .livemodel { left: 1470px; top: 700px; width: 400px; height: 380px; z-index: 4; }
+    .alertnote { left: 1000px; top: 96px; width: 390px; height: 330px; padding: 40px 30px 20px; transform: rotate(-5deg); z-index: 8; background: #f8c9d2; box-shadow: 0 18px 30px rgba(70, 45, 20, 0.3); }
+    .alertnote .k { font: 32px "Patrick Hand"; }
+    .alertnote .n { margin-top: 6px; font: 78px/1 "Caveat Brush"; }
+    .alertnote .t { margin-top: 18px; font: 34px "Patrick Hand"; color: #b64d68; }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <div class="abs mat" style="left:110px; top:64px; width:1700px; height:950px; transform:rotate(-1.2deg)"></div>
+
+    <div class="abs book">
+      <div class="pg l lined"></div>
+      <div class="pg r dotgrid"></div>
+      <div class="spine"></div>
+      <div class="rings"></div>
+      <div class="plan">
+        <h2><span>today's plan ♡</span></h2>
+        <ul>
+          <li class="done"><svg id="cb1"></svg><span>make coffee</span></li>
+          <li class="done"><svg id="cb2"></svg><span>water the plant</span></li>
+          <li class="done"><svg id="cb3"></svg><span>stretch!!</span></li>
+          <li><svg id="cb4"></svg>go live @ 8pm ♡</li>
+          <li><svg id="cb5"></svg>say hi to chat</li>
+        </ul>
+      </div>
+      <div class="headline">
+        <div class="w">starting<br>soon ~<div class="hl"></div></div>
+        <svg class="doodle" style="left:0; top:282px" width="330" height="30" viewBox="0 0 330 30"><path d="M4 16 C30 2 56 28 82 14 S134 2 160 16 S212 28 238 14 S290 2 326 16" fill="none" stroke="#e2798f" stroke-width="6" stroke-linecap="round"/></svg>
+        <div class="note" style="margin-top:44px">grab a drink &amp; get comfy,<br>the stream is brewing ♡</div>
+      </div>
+      <svg class="doodle" id="cat" style="left:880px; top:560px" width="150" height="130" viewBox="0 0 150 130"></svg>
+      <svg class="doodle" id="stars" style="left:560px; top:470px" width="120" height="120" viewBox="0 0 120 120"></svg>
+    </div>
+
+    <div class="abs polaroid">
+      <div class="ph"><div class="m" id="m1"></div></div>
+      <div class="cap">nova ✿ stream day</div>
+      <div class="tape dots" style="left:120px; top:-24px; width:180px; transform:rotate(-4deg)"></div>
+    </div>
+
+    <div class="abs timer">
+      <div class="lcd"><small>MIN : SEC</small><span id="seg"></span></div>
+      <div class="btns"><span style="background:#f6c1c7">start</span><span style="background:#f7e2a1">stop</span><span style="background:#fffdf6">+1</span></div>
+    </div>
+
+    <svg class="abs cup" id="cup" viewBox="0 0 290 290"></svg>
+    <svg class="abs pencil" id="pencil" viewBox="0 0 560 34"></svg>
+
+    <div class="sticky" style="left:820px; top:902px; width:250px; height:190px; background:#f9e79f; transform:rotate(-4deg); z-index:7"><b>twitch</b>novamoonpetal</div>
+    <div class="sticky" style="left:1090px; top:922px; width:270px; height:190px; background:#f8c9d2; transform:rotate(3deg); z-index:7"><b>youtube</b>@NovaMoonpetal</div>
+    <div class="sticky" style="left:1380px; top:906px; width:210px; height:190px; background:#cfe8c9; transform:rotate(-2deg); z-index:7"><b>x</b>@nova_ moonpetal</div>
+
+    <svg class="abs leaf" id="leafA" style="left:-150px; top:640px" width="560" height="560" viewBox="-280 -280 560 560"></svg>
+    <svg class="abs leaf" id="leafB" style="left:-110px; top:-120px" width="360" height="360" viewBox="-280 -280 560 560"></svg>
+    <div class="abs grain"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <div class="abs mat" style="left:30px; top:24px; width:1860px; height:1030px; transform:rotate(-0.4deg)"></div>
+    <div class="abs print">
+      <canvas class="game" id="g1"></canvas>
+      <div class="tape stripe" style="left:-50px; top:-8px; width:170px; transform:rotate(-38deg)"></div>
+      <div class="tape stripe" style="right:-50px; top:-8px; width:170px; transform:rotate(38deg)"></div>
+      <div class="tape grid" style="left:-50px; bottom:-8px; width:170px; transform:rotate(38deg)"></div>
+      <div class="tape grid" style="right:-50px; bottom:-8px; width:170px; transform:rotate(-38deg)"></div>
+    </div>
+
+    <div class="abs paper lined chatpage">
+      <h3>chat ♡</h3>
+      <div class="m"><b style="color:var(--pink-pen)">starrymochi:</b> good morning!!</div>
+      <div class="m"><b style="color:var(--blue-pen)">moonlit_kay:</b> lofi + rain = perfect</div>
+      <div class="m"><b style="color:var(--green-pen)">pixelpudding:</b> studying w/ you</div>
+      <div class="m"><b style="color:var(--pink-pen)">hanabi:</b> 25 min focus go</div>
+      <div class="m"><b style="color:var(--blue-pen)">cometcat:</b> tea break? ☕</div>
+      <div class="m"><b style="color:var(--green-pen)">nightowl:</b> the rain sfx ♡</div>
+      <div class="m"><b style="color:var(--pink-pen)">starrymochi:</b> brb refilling tea</div>
+      <div class="tape dots" style="left:150px; top:-22px; width:150px; transform:rotate(3deg)"></div>
+    </div>
+
+    <div class="abs livemodel" id="m2"></div>
+    <div class="abs label tape stripe" style="position:absolute; height:74px">NOVA MOONPETAL ✿ LIVE</div>
+    <div class="abs livesoc"><b>twitch</b> novamoonpetal · <b>yt</b> @NovaMoonpetal · <b>x</b> @nova_moonpetal</div>
+    <div class="abs fund">
+      <h4>coffee fund <small>742 / 1000 followers</small></h4>
+      <div class="cups" id="cups"></div>
+    </div>
+
+    <div class="abs alertnote">
+      <div class="tape grid" style="left:110px; top:-24px; width:170px; transform:rotate(2deg)"></div>
+      <div class="k">new follower!! ♡</div>
+      <div class="n">StarryMochi</div>
+      <div class="t">thank you ~ welcome to the desk</div>
+    </div>
+    <div class="abs grain"></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    const INK = "#3c3a4a";
+    // Slightly wobbly hand-drawn checkbox
+    const box = (done) => `<svg viewBox="0 0 40 40"><path d="M5 6 L35 4 L36 35 L4 36 Z" fill="none" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/>${done ? `<path d="M9 20 L17 29 L37 3" fill="none" stroke="#5f9a6b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>` : ""}</svg>`;
+    ["cb1", "cb2", "cb3"].forEach((id) => (document.getElementById(id).outerHTML = box(true)));
+    ["cb4", "cb5"].forEach((id) => (document.getElementById(id).outerHTML = box(false)));
+
+    document.getElementById("cat").innerHTML = `<g fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 118 C20 80 28 50 44 40 L40 10 L66 32 C74 30 82 30 90 32 L114 10 L110 42 C126 54 132 84 122 118 Z"/>
+      <circle cx="60" cy="72" r="4" fill="${INK}"/><circle cx="94" cy="72" r="4" fill="${INK}"/>
+      <path d="M72 86 L77 91 L82 86"/><path d="M40 84 L16 80 M40 92 L18 96 M114 84 L138 80 M114 92 L136 96"/></g>
+      <circle cx="50" cy="90" r="7" fill="#f4c2c2"/><circle cx="104" cy="90" r="7" fill="#f4c2c2"/>`;
+    const starPath = (cx, cy, R) => { let d = ""; for (let i = 0; i < 10; i++) { const a = (i * Math.PI) / 5 - Math.PI / 2, r = i % 2 ? R * 0.45 : R; d += `${i ? "L" : "M"}${cx + Math.cos(a) * r} ${cy + Math.sin(a) * r} `; } return d + "Z"; };
+    document.getElementById("stars").innerHTML = `<g fill="none" stroke="#e2798f" stroke-width="3.5" stroke-linejoin="round"><path d="${starPath(34, 40, 26)}"/><path d="${starPath(88, 84, 18)}" stroke="#5a7fb5"/></g>`;
+
+    document.getElementById("seg").innerHTML = M2.sevenSeg("04:59", { h: 92, on: "#2f3a2a", off: "rgba(47,58,42,0.08)" });
+
+    // Top-down coffee cup with latte-art heart and a spoon
+    document.getElementById("cup").innerHTML = `
+      <defs><radialGradient id="cof" cx=".45" cy=".4"><stop offset="0" stop-color="#9a6a45"/><stop offset="1" stop-color="#5e3a22"/></radialGradient>
+      <linearGradient id="sp" x1="0" x2="1"><stop offset="0" stop-color="#e8e8ee"/><stop offset=".5" stop-color="#b9bcc6"/><stop offset="1" stop-color="#eef0f4"/></linearGradient></defs>
+      <circle cx="140" cy="146" r="132" fill="#efe8dc" stroke="rgba(0,0,0,.06)" stroke-width="2"/>
+      <circle cx="140" cy="146" r="112" fill="none" stroke="rgba(0,0,0,.05)" stroke-width="10"/>
+      <rect x="220" y="126" width="64" height="34" rx="17" fill="#fffdf6" stroke="rgba(0,0,0,.08)"/>
+      <circle cx="140" cy="146" r="96" fill="#fffdf6" stroke="rgba(0,0,0,.08)" stroke-width="2"/>
+      <circle cx="140" cy="146" r="80" fill="url(#cof)"/>
+      <path d="M140 196 C96 166 104 118 128 120 C136 121 140 128 140 134 C140 128 144 121 152 120 C176 118 184 166 140 196 Z" fill="#ecd6b4" opacity=".95"/>
+      <path d="M40 250 L112 206" stroke="url(#sp)" stroke-width="10" stroke-linecap="round"/>
+      <ellipse cx="120" cy="200" rx="18" ry="11" transform="rotate(-32 120 200)" fill="url(#sp)"/>`;
+
+    // Pencil
+    document.getElementById("pencil").innerHTML = `
+      <polygon points="0,17 44,2 44,32" fill="#e8c9a0"/><polygon points="0,17 16,11.5 16,22.5" fill="${INK}"/>
+      <rect x="44" y="2" width="420" height="30" fill="#f7d77a"/><rect x="44" y="12" width="420" height="10" fill="#fbe7a8"/>
+      <rect x="464" y="0" width="40" height="34" fill="#c9ccd4"/><rect x="474" y="0" width="4" height="34" fill="#a9acb6"/><rect x="488" y="0" width="4" height="34" fill="#a9acb6"/>
+      <rect x="504" y="1" width="52" height="32" rx="8" fill="#f4a9b6"/>`;
+
+    // Monstera leaf: heart-shaped outline with deep notches, plus veins
+    function monstera(id, seed, fill = "#5e8c61") {
+      const r = M2.rng(seed);
+      const pts = [];
+      const R = 240;
+      const notchAt = [-150, -122, -94, -66, -38, 38, 66, 94, 122, 150];
+      for (let a = -174; a <= 174; a += 2) {
+        const rad = (a * Math.PI) / 180;
+        const k = 0.78 + 0.22 * Math.cos(rad * 0.9);
+        const n = notchAt.find((t) => Math.abs(a - t) < 3);
+        const rr = n !== undefined ? R * (0.42 + r() * 0.12) : R * k;
+        pts.push([Math.sin(rad) * rr, -Math.cos(rad) * rr * 0.92 + 20]);
+      }
+      pts.push([0, 70]);
+      const d = "M" + pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join(" L") + " Z";
+      const veins = [-135, -107, -80, -52, 52, 80, 107, 135].map((a) => {
+        const rad = (a * Math.PI) / 180;
+        return `M0 ${20 + 40} L${(Math.sin(rad) * 200).toFixed(1)} ${(-Math.cos(rad) * 184 + 20).toFixed(1)}`;
+      }).join(" ");
+      document.getElementById(id).innerHTML = `<g transform="rotate(${-30 + r() * 60})">
+        <path d="M0 60 L0 280" stroke="#4d7a50" stroke-width="12" stroke-linecap="round"/>
+        <path d="${d}" fill="${fill}" stroke="#3f6b45" stroke-width="4" stroke-linejoin="round" style="filter: drop-shadow(0 14px 18px rgba(40,50,20,.3))"/>
+        <path d="M0 60 L0 -200 ${veins}" fill="none" stroke="#86b38a" stroke-width="5" stroke-linecap="round"/></g>`;
+    }
+    monstera("leafA", 3);
+    monstera("leafB", 7, "#6b9a6b");
+
+    // coffee-fund cups: 7 full, 1 partly, 2 empty
+    const cupIcon = (fill) => `<svg viewBox="0 0 52 58"><path d="M6 16 H40 V44 A10 10 0 0 1 30 54 H16 A10 10 0 0 1 6 44 Z" fill="${fill}" stroke="${INK}" stroke-width="3" stroke-linejoin="round"/><path d="M40 22 H44 A7 7 0 0 1 44 38 H40" fill="none" stroke="${INK}" stroke-width="3"/><path d="M16 4 C12 8 20 10 16 14 M28 4 C24 8 32 10 28 14" fill="none" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/></svg>`;
+    document.getElementById("cups").innerHTML = Array.from({ length: 10 }, (_, i) => cupIcon(i < 7 ? "#b9855c" : i === 7 ? "url(#half)" : "#fffdf6")).join("")
+      .replace("url(#half)", "#e8cdb0");
+
+    document.getElementById("m1").innerHTML = M2.model({ fill: "#fffdf6", stroke: INK, width: 5 });
+    document.getElementById("m2").innerHTML = M2.model({ fill: "#cdbfe6", stroke: INK, width: 5 });
+    M2.ready(() => M2.game(document.getElementById("g1"), 61));
+  </script>
+</body>
+</html>

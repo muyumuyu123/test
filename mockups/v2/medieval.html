@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Illuminated Manuscript — medieval mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --vellum: #ecdfbf; --ink: #2b1b10; --red: #b3261e; --lapis: #1f3b86; --malachite: #3d7b52;
+      --gold: linear-gradient(135deg, #fff3c0 0%, #e2b54a 28%, #a8761e 52%, #f3d27a 74%, #b8862b 100%); }
+    .screen { color: var(--ink); font-family: "IM Fell English", serif;
+      background: radial-gradient(ellipse at 18% 12%, rgba(255, 250, 232, 0.75), transparent 45%), radial-gradient(ellipse at 88% 84%, rgba(150, 100, 40, 0.2), transparent 50%),
+        radial-gradient(ellipse at 62% 38%, rgba(170, 120, 60, 0.1), transparent 36%), var(--vellum); }
+    .edge { inset: 0; box-shadow: inset 0 0 180px rgba(110, 70, 25, 0.5), inset 0 0 40px rgba(110, 70, 25, 0.3); pointer-events: none; z-index: 20; }
+    .fiber { inset: 0; opacity: 0.55; mix-blend-mode: multiply; pointer-events: none; z-index: 19;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .42  0 0 0 0 .25  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+    .fox { border-radius: 50%; background: radial-gradient(circle, rgba(140, 90, 40, 0.22), transparent 70%); }
+    .deco { inset: 0; z-index: 2; }
+    .sc { font-family: "IM Fell English SC", serif; }
+    .bl { font-family: "UnifrakturMaguntia", serif; }
+    .it { font-style: italic; }
+    .r { color: var(--red); } .b { color: var(--lapis); }
+    .goldtext { background: var(--gold); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    /* ---------- START ---------- */
+    .folio { right: 120px; top: 92px; font: italic 26px "IM Fell English"; color: rgba(43, 27, 16, 0.55); z-index: 3; }
+    .mini { left: 150px; top: 150px; width: 560px; height: 740px; padding: 16px; background: var(--gold); box-shadow: 0 0 0 2px var(--ink), 0 10px 30px rgba(80, 50, 10, 0.35); z-index: 3; }
+    .mini .field { position: relative; height: 100%; overflow: hidden; outline: 4px solid var(--red); outline-offset: -4px; }
+    .mini .field svg.diaper { position: absolute; inset: 0; }
+    .mini .moon { position: absolute; right: 50px; top: 46px; width: 96px; height: 96px; }
+    .mini .fig { position: absolute; left: 50px; right: 50px; bottom: 60px; height: 560px; }
+    .mini .hill { position: absolute; left: -20px; right: -20px; bottom: -40px; height: 150px; border-radius: 50% 50% 0 0; background: var(--malachite); box-shadow: inset 0 10px 0 rgba(255, 255, 255, 0.15); }
+    .mini .boss { position: absolute; width: 58px; height: 58px; z-index: 2; }
+    .caption { left: 150px; top: 918px; width: 560px; text-align: center; font: italic 30px "IM Fell English"; z-index: 3; }
+
+    .rubric { left: 820px; top: 122px; font-size: 34px; letter-spacing: 0.02em; z-index: 3; }
+    .initial { left: 820px; top: 184px; width: 262px; height: 262px; padding: 12px; background: var(--gold); box-shadow: 0 0 0 2px var(--ink), 0 8px 18px rgba(80, 50, 10, 0.35); z-index: 3; }
+    .initial .q { position: relative; width: 100%; height: 100%; background: linear-gradient(135deg, var(--lapis) 50%, var(--red) 50%); outline: 2px solid var(--ink); display: grid; place-items: center; overflow: hidden; }
+    .initial .q::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, rgba(255, 255, 255, 0.75) 1.6px, transparent 2px) 0 0 / 16px 16px; opacity: 0.55; }
+    .initial .q span { position: relative; font: 250px/1 "UnifrakturMaguntia"; margin-top: 18px; -webkit-text-stroke: 3px var(--ink); }
+    .word { left: 1110px; top: 168px; font: 152px/1.08 "UnifrakturMaguntia"; z-index: 3; }
+    .word .l2 { display: block; margin-left: -8px; }
+    .body { left: 820px; top: 480px; width: 940px; margin: 0; font: 34px/1.42 "IM Fell English"; text-align: justify; hyphens: auto; z-index: 3; }
+    .body .filler { display: inline-block; width: 150px; height: 14px; vertical-align: 2px; background: repeating-linear-gradient(90deg, var(--red) 0 16px, transparent 16px 22px, var(--lapis) 22px 38px, transparent 38px 44px); }
+    .toll { left: 820px; top: 690px; display: flex; align-items: baseline; gap: 26px; z-index: 3; }
+    .toll .lead { font: italic 36px "IM Fell English"; }
+    .toll .num { font: 128px/1 "UnifrakturMaguntia"; color: var(--red); }
+    .toll .num i { display: inline-block; width: 22px; height: 22px; margin: 0 18px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 2px var(--ink); vertical-align: 26px; }
+    .toll .gloss { font: italic 25px "IM Fell English"; color: rgba(43, 27, 16, 0.7); }
+    .socials { left: 820px; top: 868px; font: italic 31px/1.45 "IM Fell English"; z-index: 3; }
+    .socials .p { font-style: normal; margin-right: 8px; }
+    .snail { left: 1450px; top: 846px; width: 330px; height: 170px; z-index: 3; }
+
+    /* ---------- LIVE ---------- */
+    .frame { left: 110px; top: 86px; width: 1330px; height: 752px; padding: 14px; background: var(--gold); box-shadow: 0 0 0 2px var(--ink), 0 10px 30px rgba(80, 50, 10, 0.35); z-index: 3; }
+    .frame .in { position: relative; width: 100%; height: 100%; outline: 4px solid var(--red); outline-offset: -4px; overflow: hidden; }
+    .frame .boss { position: absolute; width: 64px; height: 64px; z-index: 4; }
+    .glosses { left: 1488px; top: 92px; width: 370px; z-index: 3; }
+    .glosses h4 { margin: 0 0 12px; font: 30px "IM Fell English SC"; color: var(--red); text-align: center; }
+    .glosses .g { display: flex; gap: 12px; margin-bottom: 12px; }
+    .glosses .g .cap { width: 70px; flex: none; font: 54px/0.95 "UnifrakturMaguntia"; text-align: center; }
+    .glosses .g .t { font: italic 23px/1.25 "IM Fell English"; }
+    .glosses .g .t b { display: block; font: 19px "IM Fell English SC"; font-style: normal; letter-spacing: 0.04em; }
+    .glosses .flr { text-align: center; color: #a8761e; font-size: 22px; margin: -2px 0 8px; }
+    .tithe { left: 1488px; top: 612px; width: 370px; text-align: center; z-index: 3; }
+    .tithe h4 { margin: 0; font: 26px "IM Fell English SC"; color: var(--red); }
+    .tithe .n { font: 52px/1.1 "UnifrakturMaguntia"; }
+    .tithe .n small { display: block; font: italic 20px "IM Fell English"; color: rgba(43, 27, 16, 0.7); }
+    .tithe .bar { height: 26px; margin-top: 8px; border: 2px solid var(--ink); padding: 3px; background: rgba(255, 250, 235, 0.5); }
+    .tithe .bar i { display: block; height: 100%; width: 74%; background: var(--gold); box-shadow: inset 0 0 0 1px rgba(60, 40, 10, 0.4); }
+    .livemodel { left: 1500px; top: 716px; width: 360px; height: 364px; z-index: 3; }
+    .banderole { left: 70px; top: 858px; width: 900px; height: 190px; z-index: 3; }
+    .lsoc { left: 1010px; top: 880px; font: italic 27px/1.5 "IM Fell English"; z-index: 3; }
+    .proclaim { left: 820px; top: 150px; width: 580px; padding: 22px 30px 30px; background: #f4ead0; box-shadow: 0 0 0 3px var(--red), 0 0 0 7px #f4ead0, 0 0 0 9px var(--lapis), 0 26px 50px rgba(40, 20, 5, 0.55); z-index: 6; }
+    .proclaim .row { display: flex; gap: 18px; align-items: flex-start; }
+    .proclaim .ini { width: 112px; height: 112px; flex: none; padding: 7px; background: var(--gold); box-shadow: 0 0 0 2px var(--ink); }
+    .proclaim .ini div { height: 100%; display: grid; place-items: center; background: var(--lapis); font: 96px/1 "UnifrakturMaguntia"; color: #f3d27a; -webkit-text-stroke: 2px var(--ink); padding-top: 12px; }
+    .proclaim .t { font: italic 30px/1.3 "IM Fell English"; padding-top: 6px; }
+    .proclaim .nm { margin-top: 12px; font: 76px/1 "UnifrakturMaguntia"; color: var(--red); }
+    .proclaim .seal { position: absolute; right: -34px; bottom: -44px; width: 140px; height: 170px; }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <div class="abs fox" style="left:1300px; top:40px; width:160px; height:120px"></div>
+    <div class="abs fox" style="left:60px; top:960px; width:220px; height:120px"></div>
+    <svg class="abs deco" id="deco1" width="1920" height="1080"></svg>
+    <div class="abs folio">f. cxlvij r.</div>
+
+    <div class="abs mini">
+      <div class="field">
+        <svg class="diaper" width="100%" height="100%"><defs>
+          <pattern id="dia" width="56" height="56" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="56" height="56" fill="#1f3b86"/><path d="M0 0H56M0 0V56" stroke="#e2b54a" stroke-width="2.5"/>
+            <circle cx="0" cy="0" r="4.5" fill="#b3261e" stroke="#e2b54a" stroke-width="1.5"/>
+            <g fill="#f3d27a"><circle cx="28" cy="22" r="2.6"/><circle cx="28" cy="34" r="2.6"/><circle cx="22" cy="28" r="2.6"/><circle cx="34" cy="28" r="2.6"/></g>
+          </pattern></defs><rect width="100%" height="100%" fill="url(#dia)"/></svg>
+        <svg class="moon" viewBox="0 0 100 100"><path d="M64 8a44 44 0 1 0 28 72A36 36 0 0 1 64 8z" fill="#f3d27a" stroke="#2b1b10" stroke-width="3"/></svg>
+        <div class="hill"></div>
+        <div class="fig" id="m1"></div>
+      </div>
+      <svg class="boss" style="left:-29px; top:-29px" viewBox="0 0 60 60" id="b1"></svg>
+      <svg class="boss" style="right:-29px; top:-29px" viewBox="0 0 60 60"></svg>
+      <svg class="boss" style="left:-29px; bottom:-29px" viewBox="0 0 60 60"></svg>
+      <svg class="boss" style="right:-29px; bottom:-29px" viewBox="0 0 60 60"></svg>
+    </div>
+    <div class="abs caption r">Nova, keeper of ye moon, awaiteth thee</div>
+
+    <div class="abs rubric sc"><span class="b">¶</span> <span class="r">Here beginneth ye stream of Nova Moonpetal</span></div>
+    <div class="abs initial"><div class="q"><span class="goldtext">S</span></div></div>
+    <div class="abs word"><span>tarting</span><span class="l2 r">soon</span></div>
+    <p class="abs body"><span class="r">G</span>ather ye, good folk, and fetch thy bread and ale, for the stream shall commence ere the candle burneth low. <span class="b">L</span>et none depart, lest they miss the jests and merriment thereafter. <span class="filler"></span></p>
+    <div class="abs toll">
+      <span class="lead">The bell tolleth in</span>
+      <span class="num">iiij<i></i>lix</span>
+      <span class="gloss">(four minutes<br>&amp; fifty-nine seconds)</span>
+    </div>
+    <div class="abs socials">
+      <div><span class="p r">¶</span>Twitch — novamoonpetal</div>
+      <div><span class="p b">¶</span>YouTube — @NovaMoonpetal</div>
+      <div><span class="p r">¶</span>X — @nova_moonpetal</div>
+    </div>
+    <svg class="abs snail" id="snail" viewBox="0 0 330 170"></svg>
+
+    <div class="abs fiber"></div>
+    <div class="abs edge"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <svg class="abs deco" id="deco2" width="1920" height="1080"></svg>
+    <div class="abs frame">
+      <div class="in"><canvas class="game" id="g1"></canvas></div>
+      <svg class="boss" style="left:-32px; top:-32px" viewBox="0 0 60 60"></svg>
+      <svg class="boss" style="right:-32px; top:-32px" viewBox="0 0 60 60"></svg>
+      <svg class="boss" style="left:-32px; bottom:-32px" viewBox="0 0 60 60"></svg>
+      <svg class="boss" style="right:-32px; bottom:-32px" viewBox="0 0 60 60"></svg>
+    </div>
+
+    <div class="abs glosses">
+      <h4>Glosses of ye Faithful</h4>
+      <div class="g"><div class="cap r">S</div><div class="t"><b>starrymochi</b>a most noble play, huzzah!</div></div>
+      <div class="flr">❧</div>
+      <div class="g"><div class="cap b">M</div><div class="t"><b>moonlit_kay</b>verily, the dragon fleeth</div></div>
+      <div class="flr">❧</div>
+      <div class="g"><div class="cap r">P</div><div class="t"><b>pixelpudding</b>more ale for the bard</div></div>
+      <div class="flr">❧</div>
+      <div class="g"><div class="cap b">H</div><div class="t"><b>hanabi</b>long live the streamer</div></div>
+    </div>
+    <div class="abs tithe">
+      <h4>~ Ye Tithe of Followers ~</h4>
+      <div class="n r">dccxlij <span style="color:var(--ink)">of</span> M <small>(742 / 1000)</small></div>
+      <div class="bar"><i></i></div>
+    </div>
+    <div class="abs livemodel" id="m2"></div>
+
+    <svg class="abs banderole" id="band" viewBox="0 0 900 190"></svg>
+    <div class="abs lsoc">
+      <div><span class="r">¶</span> Twitch — novamoonpetal</div>
+      <div><span class="b">¶</span> YouTube — @NovaMoonpetal</div>
+      <div><span class="r">¶</span> X — @nova_moonpetal</div>
+    </div>
+
+    <div class="abs proclaim">
+      <div class="row">
+        <div class="ini"><div>L</div></div>
+        <div class="t">o! A new follower hath<br>sworn fealty unto thee:</div>
+      </div>
+      <div class="nm">StarryMochi</div>
+      <svg class="seal" id="seal" viewBox="0 0 140 170"></svg>
+    </div>
+
+    <div class="abs fiber"></div>
+    <div class="abs edge"></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    const NS = "http://www.w3.org/2000/svg";
+    const INK = "#2b1b10";
+    const GOLD_DEF = `<linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3c0"/><stop offset=".3" stop-color="#e2b54a"/><stop offset=".55" stop-color="#a8761e"/><stop offset=".8" stop-color="#f3d27a"/><stop offset="1" stop-color="#b8862b"/></linearGradient>`;
+    const LEAF = "M0 0 C-3 -3 -12 -2 -16 -8 C-12 -10 -10 -14 -12 -20 C-6 -18 -3 -22 0 -30 C3 -22 6 -18 12 -20 C10 -14 12 -10 16 -8 C12 -2 3 -3 0 0 Z";
+    const LEAF_FILLS = ["url(#gl)", "#3d7b52", "url(#gl)", "#1f3b86", "url(#gl)", "#b3261e"];
+
+    // Border bars + ivy vines with leaves and gold bezants along each vine path
+    function decorate(svg, vines, seed) {
+      const r = M2.rng(seed);
+      svg.innerHTML = `<defs>${GOLD_DEF}</defs>`;
+      // framing bars: left + top, alternating red/blue segments edged in gold
+      const bars = document.createElementNS(NS, "g");
+      let segs = "";
+      for (let y = 70, i = 0; y < 1012; y += 48, i++) segs += `<rect x="64" y="${y}" width="16" height="44" fill="${i % 2 ? "#b3261e" : "#1f3b86"}"/>`;
+      for (let x = 92, i = 0; x < 1850; x += 48, i++) segs += `<rect x="${x}" y="64" width="44" height="10" fill="${i % 2 ? "#1f3b86" : "#b3261e"}"/>`;
+      bars.innerHTML = segs + `<rect x="60" y="66" width="24" height="946" fill="none" stroke="url(#gl)" stroke-width="4"/><rect x="88" y="60" width="1762" height="18" fill="none" stroke="url(#gl)" stroke-width="3"/>
+        <circle cx="72" cy="64" r="20" fill="url(#gl)" stroke="${INK}" stroke-width="2"/><circle cx="72" cy="64" r="8" fill="#b3261e" stroke="${INK}" stroke-width="1.5"/>
+        <circle cx="72" cy="1026" r="16" fill="url(#gl)" stroke="${INK}" stroke-width="2"/><circle cx="1860" cy="69" r="14" fill="url(#gl)" stroke="${INK}" stroke-width="2"/>`;
+      svg.append(bars);
+      for (const d of vines) {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", d);
+        p.setAttribute("fill", "none");
+        p.setAttribute("stroke", INK);
+        p.setAttribute("stroke-width", "2.6");
+        svg.append(p);
+        const L = p.getTotalLength();
+        for (let s = 18, k = 0; s < L; s += 34 + r() * 16, k++) {
+          const a = p.getPointAtLength(s), b = p.getPointAtLength(Math.min(L, s + 1));
+          const ang = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
+          const side = k % 2 ? 1 : -1;
+          const g = document.createElementNS(NS, "g");
+          if (k % 3 === 2) {
+            g.innerHTML = `<circle r="5.5" fill="url(#gl)" stroke="${INK}" stroke-width="1.5"/>`;
+            g.setAttribute("transform", `translate(${a.x + side * 12 * Math.sin((ang * Math.PI) / 180)} ${a.y - side * 12 * Math.cos((ang * Math.PI) / 180)})`);
+          } else {
+            g.innerHTML = `<path d="M0 0 C${side * 6} -4 ${side * 10} -8 ${side * 14} -8" fill="none" stroke="${INK}" stroke-width="2"/><path d="${LEAF}" transform="translate(${side * 14} -8) rotate(${side * 70}) scale(${1 + r() * 0.35})" fill="${LEAF_FILLS[Math.floor(r() * LEAF_FILLS.length)]}" stroke="${INK}" stroke-width="1.6"/>`;
+            g.setAttribute("transform", `translate(${a.x} ${a.y}) rotate(${ang + 90})`);
+          }
+          svg.append(g);
+        }
+      }
+    }
+    const BOSS = `<defs>${GOLD_DEF}</defs><g stroke="${INK}" stroke-width="2"><circle cx="30" cy="12" r="12" fill="url(#gl)"/><circle cx="30" cy="48" r="12" fill="url(#gl)"/><circle cx="12" cy="30" r="12" fill="url(#gl)"/><circle cx="48" cy="30" r="12" fill="url(#gl)"/><circle cx="30" cy="30" r="12" fill="#b3261e"/></g><circle cx="30" cy="30" r="4" fill="#f3d27a"/>`;
+    document.querySelectorAll("svg.boss").forEach((b) => (b.innerHTML = BOSS.replace('id="gl"', `id="gl${Math.random().toString(36).slice(2, 7)}"`).replace(/url\(#gl\)/g, (m) => m)));
+    // each boss needs its own gradient id
+    document.querySelectorAll("svg.boss").forEach((b, i) => { b.innerHTML = BOSS.replaceAll("id=\"gl\"", `id="gb${i}"`).replaceAll("url(#gl)", `url(#gb${i})`); });
+
+    M2.ready(() => {
+      decorate(document.getElementById("deco1"), [
+        "M80 1010 C300 1060 500 990 760 1030 C1000 1066 1300 1000 1500 1040",
+        "M1860 80 C1890 300 1850 520 1880 760 C1900 900 1870 980 1880 1030",
+        "M720 120 C760 90 800 110 820 100",
+      ], 5);
+      decorate(document.getElementById("deco2"), [
+        "M1880 90 C1900 300 1860 520 1890 760 C1905 900 1880 980 1890 1030",
+        "M1440 850 C1460 880 1452 920 1470 960",
+      ], 9);
+
+      document.getElementById("m1").innerHTML = M2.model({ fill: "#b3261e", stroke: INK, width: 4 });
+      document.getElementById("m2").innerHTML = M2.model({ fill: "#ecdfbf", stroke: INK, width: 4 });
+
+      // Snail marginalia with a banderole reading "anon!"
+      document.getElementById("snail").innerHTML = `<defs>${GOLD_DEF}</defs>
+        <path d="M60 150 C40 150 30 138 40 128 C80 124 180 126 240 118 C262 114 270 100 266 86 L272 60 M258 88 L250 58" fill="#d9c79a" stroke="${INK}" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="272" cy="58" r="5" fill="${INK}"/><circle cx="250" cy="56" r="5" fill="${INK}"/>
+        <circle cx="140" cy="88" r="48" fill="url(#gl)" stroke="${INK}" stroke-width="3"/>
+        <path d="M140 88 m-8 0 a8 8 0 1 1 16 0 a16 16 0 1 1 -32 0 a24 24 0 1 1 48 0 a32 32 0 1 1 -64 0" fill="none" stroke="#b3261e" stroke-width="4"/>
+        <path d="M168 20 C200 10 250 30 300 16 L300 46 C250 60 200 40 168 50 Z" fill="#f4ead0" stroke="${INK}" stroke-width="2.5"/>
+        <text x="234" y="42" text-anchor="middle" font-family="IM Fell English" font-style="italic" font-size="24" fill="#b3261e">anon!</text>`;
+
+      // Name banderole (ribbon scroll)
+      document.getElementById("band").innerHTML = `<defs>${GOLD_DEF}<path id="bp" d="M70 112 C260 72 560 142 830 98"/></defs>
+        <path d="M40 60 L4 44 L26 98 L6 150 L52 136 Z" fill="#c9b27f" stroke="${INK}" stroke-width="3"/>
+        <path d="M860 42 L896 26 L878 80 L898 130 L852 120 Z" fill="#c9b27f" stroke="${INK}" stroke-width="3"/>
+        <path d="M40 60 C240 18 560 90 860 42 L852 120 C560 168 240 98 52 136 Z" fill="#f4ead0" stroke="${INK}" stroke-width="3"/>
+        <text font-family="UnifrakturMaguntia" font-size="66" fill="#2b1b10"><textPath href="#bp" startOffset="50%" text-anchor="middle">Nova Moonpetal</textPath></text>
+        <text x="450" y="182" text-anchor="middle" font-family="IM Fell English" font-style="italic" font-size="26" fill="#b3261e">~ streamer of ye realm, now live ~</text>`;
+
+      // Wax seal with ribbon tails
+      document.getElementById("seal").innerHTML = `<defs><radialGradient id="wax" cx=".35" cy=".3"><stop offset="0" stop-color="#e0584a"/><stop offset=".7" stop-color="#9c1f18"/><stop offset="1" stop-color="#6e120d"/></radialGradient></defs>
+        <path d="M44 96 L26 166 L50 150 L62 170 L70 104 Z M96 96 L114 166 L90 150 L78 170 L70 104 Z" fill="#1f3b86" stroke="${INK}" stroke-width="2"/>
+        <path d="M70 6 C88 4 96 16 112 18 C128 22 130 40 134 54 C140 72 128 82 128 98 C126 116 108 118 96 128 C84 138 66 136 52 130 C36 124 20 116 14 100 C8 84 12 70 10 54 C10 36 24 26 38 18 C48 12 58 8 70 6 Z" fill="url(#wax)"/>
+        <circle cx="70" cy="70" r="42" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="4"/>
+        <path d="M82 40 a32 32 0 1 0 20 52 a26 26 0 0 1 -20 -52 z" fill="rgba(60,5,2,.45)" transform="translate(-4 2)"/>
+        <path d="M82 40 a32 32 0 1 0 20 52 a26 26 0 0 1 -20 -52 z" fill="none" stroke="rgba(255,200,180,.35)" stroke-width="2"/>`;
+
+      M2.game(document.getElementById("g1"), 21);
+    });
+  </script>
+</body>
+</html>

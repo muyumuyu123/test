@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Manga Page — japanese mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --ink: #111; --paper: #fbfaf6; --pink: #ff2e63; --tone: #d9d6cf; }
+    .screen { background: var(--paper); color: var(--ink); font-family: "M PLUS Rounded 1c", sans-serif; }
+    .dela { font-family: "Dela Gothic One", sans-serif; }
+    .panel { inset: 0; overflow: hidden; }
+    .borders { inset: 0; z-index: 10; pointer-events: none; }
+    .tone { background: radial-gradient(circle, var(--ink) 1.7px, transparent 2.1px) 0 0 / 10px 10px; }
+    .grain { inset: 0; z-index: 11; pointer-events: none; opacity: 0.35; mix-blend-mode: multiply;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 .4  0 0 0 0 .4  0 0 0 0 .4  0 0 0 .18 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+    .cap { position: absolute; background: #fff; border: 4px solid var(--ink); z-index: 6; }
+    .vert { writing-mode: vertical-rl; text-orientation: upright; }
+    .bubble { position: absolute; z-index: 6; }
+    .pageno { right: 40px; bottom: 6px; font: 800 20px "M PLUS Rounded 1c"; color: #777; z-index: 12; }
+
+    /* ---------- START ---------- */
+    .epi { left: 62px; top: 62px; padding: 16px 10px; font: 40px/1.1 "Dela Gothic One"; }
+    .say { left: 548px; top: 78px; width: 200px; height: 320px; }
+    .say svg { position: absolute; inset: 0; }
+    .say .t { position: absolute; left: 0; right: 0; top: 52px; height: 220px; display: flex; justify-content: center; font: 800 36px/1.25 "M PLUS Rounded 1c"; letter-spacing: 0.06em; }
+    .names { left: 866px; top: 62px; padding: 6px 18px; font: 800 26px "M PLUS Rounded 1c"; letter-spacing: 0.1em; }
+    .countnote { left: 800px; top: 598px; padding: 4px 14px; font: 800 22px "M PLUS Rounded 1c"; letter-spacing: 0.08em; }
+    .today { left: 1348px; top: 600px; right: 36px; bottom: 36px; padding: 24px 26px; z-index: 5; }
+    .today h3 { display: inline-block; margin: 0 0 14px 40px; padding: 6px 18px; background: var(--ink); color: #fff; font: 800 34px "M PLUS Rounded 1c"; letter-spacing: 0.08em; }
+    .today h3 small { font-size: 18px; letter-spacing: 0.2em; margin-left: 10px; color: var(--pink); }
+    .today .nb { position: relative; margin: 0 0 12px 40px; padding: 8px 16px; background: #fff; border: 3px solid var(--ink); font: 800 25px "M PLUS Rounded 1c"; box-shadow: 5px 5px 0 var(--ink); }
+    .today .nb.pk { background: var(--pink); color: #fff; }
+    .today .soc { margin: 16px 0 0 40px; font: 500 22px/1.6 "M PLUS Rounded 1c"; }
+    .today .soc b { font-weight: 800; color: var(--pink); display: inline-block; width: 100px; }
+    .sticker { right: 56px; top: 872px; width: 150px; height: 150px; z-index: 7; transform: rotate(12deg); }
+
+    /* ---------- LIVE ---------- */
+    .livecap { left: 56px; top: 56px; padding: 6px 18px; background: var(--ink); color: #fff; font: 800 28px "M PLUS Rounded 1c"; letter-spacing: 0.1em; z-index: 7; border: 0; }
+    .livecap b { color: var(--pink); }
+    .chatp .who { position: absolute; padding: 2px 10px; background: var(--ink); color: #fff; font: 800 17px "M PLUS Rounded 1c"; letter-spacing: 0.06em; z-index: 7; }
+    .chatp .txt { position: absolute; display: flex; align-items: center; justify-content: center; text-align: center; font: 800 26px/1.2 "M PLUS Rounded 1c"; z-index: 7; }
+    .intro { left: 70px; top: 850px; z-index: 6; }
+    .intro .nm { font: 60px/1 "Dela Gothic One"; letter-spacing: 0.01em; white-space: nowrap; }
+    .intro .jp { display: inline-block; margin-top: 12px; padding: 6px 16px; background: var(--pink); color: #fff; font: 800 32px "M PLUS Rounded 1c"; letter-spacing: 0.1em; }
+    .intro .en { margin-left: 14px; font: 800 20px "M PLUS Rounded 1c"; letter-spacing: 0.2em; color: #555; }
+    .gauge { left: 900px; top: 858px; width: 470px; z-index: 6; }
+    .gauge .top { display: flex; justify-content: space-between; align-items: baseline; font: 800 22px "M PLUS Rounded 1c"; letter-spacing: 0.14em; }
+    .gauge .top b { font: 44px "Dela Gothic One"; letter-spacing: 0; }
+    .gauge .bar { position: relative; height: 40px; margin-top: 6px; border: 5px solid var(--ink); background: #fff; transform: skewX(-12deg); overflow: hidden; }
+    .gauge .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 74%; background: radial-gradient(circle, var(--ink) 2px, transparent 2.4px) 0 0 / 8px 8px, var(--pink); border-right: 5px solid var(--ink); }
+    .gauge .sfx { position: absolute; right: -6px; top: 96px; font: 44px "Rampart One"; color: #888; letter-spacing: -0.05em; }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <!-- A: model panel -->
+    <div class="abs panel" style="clip-path: polygon(36px 36px, 812px 36px, 716px 1044px, 36px 1044px)">
+      <svg class="abs" id="focusA" width="1920" height="1080" style="inset:0"></svg>
+      <div class="abs" id="m1" style="left:60px; top:250px; width:640px; height:800px"></div>
+      <div class="cap vert epi">第147話</div>
+      <div class="bubble say"><svg viewBox="0 0 200 320"><path d="M100 8 C160 8 194 70 194 150 C194 230 160 292 100 292 C84 292 70 288 58 282 L20 316 L34 268 C14 244 6 200 6 150 C6 70 40 8 100 8 Z" fill="#fff" stroke="#111" stroke-width="5"/></svg><div class="t vert">みんな、<br>まってて！</div></div>
+    </div>
+
+    <!-- B: title panel -->
+    <div class="abs panel" style="clip-path: polygon(836px 36px, 1884px 36px, 1884px 556px, 786px 556px)">
+      <div class="abs tone" style="inset:0; -webkit-mask: linear-gradient(125deg, #000 0%, transparent 55%); mask: linear-gradient(125deg, #000 0%, transparent 55%); opacity:.45"></div>
+      <svg class="abs" id="speedB" width="1920" height="1080" style="inset:0"></svg>
+      <svg class="abs" width="1920" height="1080" style="inset:0; z-index:5">
+        <g transform="rotate(-4 1320 300)" font-family="Dela Gothic One" text-anchor="middle" stroke="#111" stroke-linejoin="round" paint-order="stroke">
+          <text x="1290" y="262" font-size="128" fill="#ff2e63" stroke-width="16" transform="translate(11 11)">STARTING</text>
+          <text x="1290" y="262" font-size="128" fill="#fff" stroke-width="16">STARTING</text>
+          <text x="1250" y="438" font-size="164" fill="#ff2e63" stroke-width="18" transform="translate(12 12)">SOON!!</text>
+          <text x="1250" y="438" font-size="164" fill="#fff" stroke-width="18">SOON!!</text>
+        </g>
+        <g font-family="Rampart One" fill="#ff2e63" stroke="#111" stroke-width="4" paint-order="stroke">
+          <text x="1690" y="150" font-size="84" transform="rotate(14 1690 150)">ドキ</text>
+          <text x="1700" y="500" font-size="80" transform="rotate(-10 1700 500)">ドキ</text>
+        </g>
+      </svg>
+      <div class="cap names">NOVA MOONPETAL</div>
+    </div>
+
+    <!-- C: countdown panel -->
+    <div class="abs panel" style="clip-path: polygon(784px 580px, 1356px 580px, 1300px 1044px, 740px 1044px)">
+      <div class="abs tone" style="inset:0; opacity:.22"></div>
+      <svg class="abs" id="burstC" width="1920" height="1080" style="inset:0"></svg>
+      <div class="abs" style="left:780px; top:676px; width:560px; text-align:center; z-index:6">
+        <div style="font:800 44px 'M PLUS Rounded 1c'; letter-spacing:.1em">あと</div>
+        <div class="dela" style="font-size:104px; line-height:1.1">04:59<span style="color:var(--pink)">!</span></div>
+      </div>
+      <div class="cap countnote">▶ TIME LEFT</div>
+    </div>
+
+    <!-- D: info panel -->
+    <div class="abs panel" style="clip-path: polygon(1380px 580px, 1884px 580px, 1884px 1044px, 1324px 1044px)">
+      <svg class="abs" id="speedD" width="1920" height="1080" style="inset:0"></svg>
+      <div class="abs today">
+        <h3>本日の配信<small>TODAY</small></h3>
+        <div class="nb">▶ Horror game night</div>
+        <div class="nb pk">▶ lights off, volume up</div>
+        <div class="soc"><div><b>twitch</b>novamoonpetal</div><div><b>yt</b>@NovaMoonpetal</div><div><b>x</b>@nova_moonpetal</div></div>
+      </div>
+      <svg class="abs sticker" viewBox="-80 -80 160 160" id="stk"></svg>
+    </div>
+
+    <svg class="abs borders" width="1920" height="1080" fill="none" stroke="#111" stroke-width="7" stroke-linejoin="miter">
+      <polygon points="36,36 812,36 716,1044 36,1044"/>
+      <polygon points="836,36 1884,36 1884,556 786,556"/>
+      <polygon points="784,580 1356,580 1300,1044 740,1044"/>
+      <polygon points="1380,580 1884,580 1884,1044 1324,1044"/>
+    </svg>
+    <div class="abs pageno">147</div>
+    <div class="abs grain"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <!-- gameplay panel -->
+    <div class="abs panel" style="clip-path: inset(36px 524px 279px 36px)">
+      <canvas class="abs game" id="g1" style="left:36px; top:36px; width:1360px; height:765px"></canvas>
+    </div>
+    <div class="cap livecap">LIVE ▶ <b>配信中</b></div>
+
+    <!-- chat panel -->
+    <div class="abs panel chatp" style="clip-path: inset(36px 36px 440px 1420px)">
+      <div class="abs tone" style="inset:0; -webkit-mask: linear-gradient(0deg, #000, transparent 45%); mask: linear-gradient(0deg, #000, transparent 45%); opacity:.3"></div>
+      <svg class="abs" id="chatsvg" width="1920" height="1080" style="inset:0"></svg>
+      <div class="who" style="left:1446px; top:62px">StarryMochi</div>
+      <div class="txt" style="left:1470px; top:92px; width:340px; height:100px">yahoo~! gm gm</div>
+      <div class="who" style="left:1640px; top:212px">moonlit_kay</div>
+      <div class="txt" style="left:1456px; top:236px; width:390px; height:130px; color:#fff; font-size:44px; font-family:'Dela Gothic One'">HYPE!!!</div>
+      <div class="who" style="left:1446px; top:390px">pixelpudding</div>
+      <div class="txt" style="left:1470px; top:418px; width:360px; height:92px">this art style omg</div>
+      <div class="who" style="left:1446px; top:530px">hanabi</div>
+      <div class="txt" style="left:1520px; top:548px; width:260px; height:70px; font-size:24px">…zzz</div>
+    </div>
+
+    <!-- model panel -->
+    <div class="abs panel" style="clip-path: inset(664px 36px 36px 1420px)">
+      <svg class="abs" id="focusM" width="1920" height="1080" style="inset:0"></svg>
+      <div class="abs" id="m2" style="left:1452px; top:700px; width:400px; height:380px"></div>
+    </div>
+
+    <!-- name + gauge strip -->
+    <div class="abs panel" style="clip-path: inset(825px 524px 36px 36px)">
+      <svg class="abs" id="speedN" width="1920" height="1080" style="inset:0"></svg>
+      <div class="abs intro">
+        <div class="nm">NOVA MOONPETAL</div>
+        <span class="jp">眠れる月の魔女</span><span class="en">THE SLEEPY MOON WITCH</span>
+      </div>
+      <div class="abs gauge">
+        <div class="top"><span>FOLLOWER POWER</span><b>742<small style="font-size:24px">/1000</small></b></div>
+        <div class="bar"><i></i></div>
+      </div>
+      <div class="abs" style="left:1170px; top:958px; font:52px 'Rampart One'; color:#999; z-index:6; transform:rotate(-6deg)">ゴゴゴ</div>
+    </div>
+
+    <!-- alert: a new panel slammed on top of the game -->
+    <div class="abs" style="left:640px; top:110px; width:700px; height:360px; transform:rotate(-3deg); z-index:8">
+      <div class="abs" style="inset:0; background:#fff; border:8px solid #111; box-shadow:14px 14px 0 #ff2e63; overflow:hidden">
+        <svg class="abs" id="focusAl" width="700" height="360" style="left:-8px; top:-8px"></svg>
+        <div class="abs" style="left:40px; top:44px; font:800 26px 'M PLUS Rounded 1c'; letter-spacing:.2em; background:#111; color:#fff; padding:4px 14px; z-index:3">NEW FOLLOWER</div>
+        <div class="abs dela" style="left:36px; top:112px; font-size:84px; line-height:1; z-index:3; color:#111">StarryMochi</div>
+        <div class="abs" style="left:40px; top:226px; font:800 28px 'M PLUS Rounded 1c'; z-index:3">フォローありがとう！<span style="font-size:20px; color:#666; margin-left:10px">(thanks for the follow!)</span></div>
+      </div>
+      <svg class="abs" width="560" height="240" style="left:-140px; top:-160px; overflow:visible">
+        <text x="0" y="170" font-family="Dela Gothic One" font-size="136" fill="#ff2e63" stroke="#111" stroke-width="12" stroke-linejoin="round" paint-order="stroke" transform="rotate(-8 200 120)">バーン!!</text>
+      </svg>
+    </div>
+
+    <svg class="abs borders" width="1920" height="1080" fill="none" stroke="#111" stroke-width="7">
+      <rect x="36" y="36" width="1360" height="765"/>
+      <rect x="1420" y="36" width="464" height="604"/>
+      <rect x="1420" y="664" width="464" height="380"/>
+      <rect x="36" y="825" width="1360" height="219"/>
+    </svg>
+    <div class="abs pageno">148</div>
+    <div class="abs grain"></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    // Radiating "focus lines" (集中線) around a clear center
+    function focus(id, fx, fy, n, rMin, rMax, seed, color = "#111", R = 1700) {
+      const r = M2.rng(seed);
+      let out = "";
+      for (let i = 0; i < n; i++) {
+        const a = r() * Math.PI * 2, w = 0.002 + r() * 0.011, r0 = rMin + r() * (rMax - rMin);
+        out += `<polygon points="${fx + Math.cos(a) * r0},${fy + Math.sin(a) * r0} ${fx + Math.cos(a - w) * R},${fy + Math.sin(a - w) * R} ${fx + Math.cos(a + w) * R},${fy + Math.sin(a + w) * R}" fill="${color}"/>`;
+      }
+      document.getElementById(id).insertAdjacentHTML("beforeend", out);
+    }
+    // Horizontal speed lines entering from the right
+    function speed(id, x0, x1, y0, y1, n, seed, color = "#111") {
+      const r = M2.rng(seed);
+      let out = "";
+      for (let i = 0; i < n; i++) {
+        const y = y0 + r() * (y1 - y0), h = 1 + r() * 4, len = (x1 - x0) * (0.25 + r() * 0.6);
+        out += `<rect x="${x1 - len}" y="${y}" width="${len}" height="${h}" fill="${color}" opacity="${0.35 + r() * 0.6}"/>`;
+      }
+      document.getElementById(id).insertAdjacentHTML("beforeend", out);
+    }
+    // Spiky shout bubble, optional tail spike toward (tx, ty)
+    function burst(cx, cy, rx, ry, spikes, seed, tail) {
+      const r = M2.rng(seed);
+      const pts = [];
+      const ta = tail ? Math.atan2(tail[1] - cy, tail[0] - cx) : null;
+      for (let i = 0; i < spikes * 2; i++) {
+        const a = (i / (spikes * 2)) * Math.PI * 2;
+        let k = i % 2 ? 0.8 + r() * 0.06 : 1 + r() * 0.14;
+        let x = cx + Math.cos(a) * rx * k, y = cy + Math.sin(a) * ry * k;
+        if (tail && i % 2 === 0) {
+          let d = Math.abs(Math.atan2(Math.sin(a - ta), Math.cos(a - ta)));
+          if (d < Math.PI / spikes) { x = tail[0]; y = tail[1]; }
+        }
+        pts.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+      }
+      return pts.join(" ");
+    }
+    const tone = (id, s = 8, d = 1.6) => `<pattern id="${id}" width="${s}" height="${s}" patternUnits="userSpaceOnUse"><rect width="${s}" height="${s}" fill="#fff"/><circle cx="${s / 2}" cy="${s / 2}" r="${d}" fill="#111"/></pattern>`;
+
+    // START
+    focus("focusA", 390, 400, 240, 280, 470, 3);
+    speed("speedB", 780, 1890, 60, 540, 90, 5);
+    speed("speedD", 1320, 1890, 590, 1040, 40, 8, "#bbb");
+    document.getElementById("burstC").innerHTML = `<polygon points="${burst(1046, 808, 250, 190, 16, 2, [770, 930])}" fill="#fff" stroke="#111" stroke-width="7" stroke-linejoin="miter"/>`;
+    document.getElementById("m1").innerHTML = M2.model({ fill: "url(#tA)", stroke: "#111", width: 6, extra: `<defs>${tone("tA", 9, 1.7)}</defs>` });
+    document.getElementById("stk").innerHTML = `<polygon points="${burst(0, 0, 76, 76, 14, 7)}" fill="#ff2e63" stroke="#111" stroke-width="5"/><text y="-4" text-anchor="middle" font-family="Dela Gothic One" font-size="30" fill="#fff">NEW</text><text y="30" text-anchor="middle" font-family="Dela Gothic One" font-size="30" fill="#fff">EP!</text>`;
+
+    // LIVE
+    focus("focusM", 1652, 800, 150, 170, 260, 11);
+    focus("focusAl", 520, 180, 90, 240, 330, 4, "#ff2e63");
+    speed("speedN", 30, 1400, 830, 1040, 50, 13, "#ddd");
+    document.getElementById("m2").innerHTML = M2.model({ fill: "url(#tB)", stroke: "#111", width: 6, extra: `<defs>${tone("tB", 9, 1.7)}</defs>` });
+    const cs = document.getElementById("chatsvg");
+    cs.innerHTML = `
+      <ellipse cx="1640" cy="142" rx="190" ry="58" fill="#fff" stroke="#111" stroke-width="5"/>
+      <polygon points="${burst(1651, 300, 200, 78, 18, 9)}" fill="#ff2e63" stroke="#111" stroke-width="5"/>
+      <path d="M1460 464 C1460 424 1520 414 1650 414 C1780 414 1840 424 1840 464 C1840 504 1780 514 1650 514 C1600 514 1560 512 1530 506 L1480 530 L1500 496 C1470 488 1460 478 1460 464 Z" fill="#fff" stroke="#111" stroke-width="5"/>
+      ${[[1560, 584, 40], [1610, 566, 44], [1668, 570, 44], [1720, 588, 38], [1650, 604, 46], [1590, 604, 40]].map(([x, y, rr]) => `<circle cx="${x}" cy="${y}" r="${rr}" fill="#fff" stroke="#111" stroke-width="5"/>`).join("")}
+      ${[[1560, 584, 40], [1610, 566, 44], [1668, 570, 44], [1720, 588, 38], [1650, 604, 46], [1590, 604, 40]].map(([x, y, rr]) => `<circle cx="${x}" cy="${y}" r="${rr - 5}" fill="#fff"/>`).join("")}
+      <circle cx="1500" cy="630" r="10" fill="#fff" stroke="#111" stroke-width="4"/>`;
+
+    M2.ready(() => M2.game(document.getElementById("g1"), 41));
+  </script>
+</body>
+</html>

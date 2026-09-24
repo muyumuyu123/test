@@ -5,7 +5,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
-const dir = path.join(here, "../mockups");
+const dir = path.join(here, "../mockups/v1");
 const names = process.argv.slice(2).length ? process.argv.slice(2)
   : (await fs.readdir(dir)).filter((f) => f.endsWith(".html") && f !== "index.html").map((f) => f.replace(".html", ""));
 await fs.mkdir(path.join(dir, "previews"), { recursive: true });

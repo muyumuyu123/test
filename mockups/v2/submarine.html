@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Submarine Bridge — underwater mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --hull: #1c292b; --seam: #0c1415; --face: #f1e7cf; --needle: #c0392b; --phos: #4dff9e; --engrave: #3b2a10;
+      --brass: linear-gradient(160deg, #f6dc8e 0%, #c9983f 30%, #8a6424 55%, #e2b964 78%, #a57a2e 100%); }
+    .screen { color: var(--face); font-family: "Oswald", sans-serif;
+      background:
+        radial-gradient(circle, #6d7c7c 0 2.6px, #0b1213 3.2px, transparent 4.2px) 15px 14px / 30px 360px,
+        radial-gradient(circle, #6d7c7c 0 2.6px, #0b1213 3.2px, transparent 4.2px) 14px 15px / 480px 30px,
+        linear-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px) 0 30px / 100% 360px,
+        linear-gradient(var(--seam) 4px, transparent 4px) 0 26px / 100% 360px,
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 2px, transparent 2px) 30px 0 / 480px 100%,
+        linear-gradient(90deg, var(--seam) 4px, transparent 4px) 26px 0 / 480px 100%,
+        radial-gradient(ellipse at 40% 30%, #2b3d3f, #16211f 75%); }
+    .vig { inset: 0; pointer-events: none; z-index: 30; box-shadow: inset 0 0 220px rgba(0, 0, 0, 0.75); }
+    .brass { background: var(--brass); box-shadow: inset 0 2px 0 rgba(255, 245, 210, 0.6), inset 0 -3px 0 rgba(60, 40, 10, 0.5), 0 10px 24px rgba(0, 0, 0, 0.55); }
+    .engraved { color: var(--engrave); text-shadow: 0 1px 0 rgba(255, 245, 210, 0.55), 0 -1px 0 rgba(0, 0, 0, 0.35); }
+    .sc { font-family: "Playfair Display SC", serif; }
+    .mono { font-family: "Space Mono", monospace; }
+    .screw { position: absolute; width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff1c2, #b58a3a 55%, #5e4418); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+    .screw::after { content: ""; position: absolute; left: 3px; right: 3px; top: 10px; height: 2px; background: rgba(40, 25, 5, 0.8); transform: rotate(35deg); }
+    .pipe { background: linear-gradient(180deg, #7a5a24, #e7c37a 35%, #fff0c0 45%, #c9983f 60%, #5e4418); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5); }
+    .pipe.v { background: linear-gradient(90deg, #7a5a24, #e7c37a 35%, #fff0c0 45%, #c9983f 60%, #5e4418); }
+    .flange { position: absolute; background: linear-gradient(180deg, #5e4418, #d9b060 40%, #8a6424); border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); }
+
+    /* ---------- START ---------- */
+    .nameplate { left: 150px; top: 116px; width: 790px; height: 116px; border-radius: 10px; display: grid; place-items: center; z-index: 5; }
+    .nameplate b { font: 900 56px "Playfair Display SC"; letter-spacing: 0.06em; }
+    .telegraph { left: 150px; top: 262px; width: 580px; height: 580px; z-index: 5; filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6)); }
+    .plaque { left: 170px; top: 872px; width: 540px; height: 132px; border-radius: 10px; text-align: center; padding-top: 14px; z-index: 5; }
+    .plaque small { display: block; font: 700 22px "Oswald"; letter-spacing: 0.4em; }
+    .plaque b { display: block; font: 900 60px/1.05 "Playfair Display SC"; letter-spacing: 0.02em; }
+    .depth { left: 770px; top: 280px; width: 300px; height: 300px; z-index: 5; filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.6)); }
+    .counter { left: 802px; top: 604px; width: 236px; z-index: 6; text-align: center; }
+    .counter small { display: block; margin-bottom: 8px; font: 700 20px "Oswald"; letter-spacing: 0.34em; color: #d9b060; }
+    .counter .wheels { display: flex; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; }
+    .counter .wheels span { width: 42px; height: 64px; display: grid; place-items: center; border-radius: 4px; background: linear-gradient(180deg, #050505, #2a2a2a 45%, #3a3a3a 50%, #2a2a2a 55%, #050505); color: #f1e7cf; font: 700 44px "Oswald"; box-shadow: inset 0 0 0 2px #000; }
+    .counter .wheels span.col { width: 16px; background: none; box-shadow: none; color: #3b2a10; }
+    .hype { left: 800px; top: 760px; width: 240px; height: 240px; z-index: 5; filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.6)); }
+    .porthole { left: 1110px; top: 130px; width: 760px; height: 760px; z-index: 4; }
+    .freq { left: 1130px; top: 924px; width: 730px; height: 102px; border-radius: 10px; display: flex; align-items: center; justify-content: space-around; padding: 0 24px; z-index: 5; }
+    .freq div { text-align: center; }
+    .freq small { display: block; font: 700 17px "Oswald"; letter-spacing: 0.3em; }
+    .freq b { font: 600 25px "Oswald"; letter-spacing: 0.04em; }
+
+    /* ---------- LIVE ---------- */
+    .viewport { left: 40px; top: 40px; width: 1384px; height: 803px; padding: 28px; border-radius: 42px; z-index: 5; }
+    .viewport .glass { position: relative; width: 100%; height: 100%; border-radius: 18px; overflow: hidden; box-shadow: 0 0 0 4px #3b2a10, inset 0 0 40px rgba(0, 0, 0, 0.6); }
+    .viewport .glass::after { content: ""; position: absolute; inset: 0; background: linear-gradient(125deg, rgba(255, 255, 255, 0.16) 0%, transparent 22%, transparent 70%, rgba(255, 255, 255, 0.06) 85%, transparent); pointer-events: none; }
+    .pressure { left: 1470px; top: 36px; width: 420px; height: 420px; z-index: 5; filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.6)); }
+    .slips { left: 1478px; top: 478px; width: 404px; z-index: 5; }
+    .slips .clip { height: 30px; margin: 0 40px -12px; border-radius: 8px; position: relative; z-index: 2; }
+    .slip { position: relative; margin-bottom: 10px; padding: 14px 18px 18px; background: #efe4c6; color: #2d2416; font: 17px/1.4 "Space Mono"; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), 97% 100%, 94% calc(100% - 6px), 91% 100%, 88% calc(100% - 6px), 85% 100%, 82% calc(100% - 6px), 79% 100%, 76% calc(100% - 6px), 73% 100%, 70% calc(100% - 6px), 67% 100%, 64% calc(100% - 6px), 61% 100%, 58% calc(100% - 6px), 55% 100%, 52% calc(100% - 6px), 49% 100%, 46% calc(100% - 6px), 43% 100%, 40% calc(100% - 6px), 37% 100%, 34% calc(100% - 6px), 31% 100%, 28% calc(100% - 6px), 25% 100%, 22% calc(100% - 6px), 19% 100%, 16% calc(100% - 6px), 13% 100%, 10% calc(100% - 6px), 7% 100%, 4% calc(100% - 6px), 0 100%); }
+    .slip b { display: block; font-size: 14px; letter-spacing: 0.14em; color: #8a3a2a; }
+    .captain { left: 40px; top: 876px; width: 800px; height: 150px; border-radius: 12px; padding: 22px 34px; z-index: 5; }
+    .captain small { display: block; font: 700 20px "Oswald"; letter-spacing: 0.34em; }
+    .captain b { display: block; font: 900 44px/1.25 "Playfair Display SC"; letter-spacing: 0.01em; white-space: nowrap; }
+    .lamp { position: absolute; right: 34px; top: 40px; text-align: center; font: 700 16px "Oswald"; letter-spacing: 0.2em; }
+    .lamp i { display: block; width: 48px; height: 48px; margin: 0 auto 6px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #e8ffe0, #4dff9e 40%, #0f7a3c); box-shadow: 0 0 0 5px #3b2a10, 0 0 22px 6px rgba(77, 255, 158, 0.7); }
+    .radio { left: 870px; top: 876px; width: 554px; height: 150px; border-radius: 12px; padding: 18px 30px; z-index: 5; font: 700 23px/1.55 "Oswald"; letter-spacing: 0.06em; }
+    .radio span { display: inline-block; width: 120px; font-weight: 400; letter-spacing: 0.24em; font-size: 17px; }
+    .livemodel { left: 1500px; top: 772px; width: 360px; height: 308px; z-index: 6; }
+    .contact { left: 780px; top: 96px; width: 610px; height: 250px; z-index: 8; display: flex; gap: 0; filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7)); }
+    .contact .scope { width: 250px; height: 250px; flex: none; position: relative; z-index: 2; }
+    .contact .card { flex: 1; margin: 26px 0 26px -40px; padding: 18px 26px 0 64px; border-radius: 0 14px 14px 0; }
+    .contact .card small { display: flex; align-items: center; gap: 10px; font: 700 18px "Oswald"; letter-spacing: 0.2em; color: #7a1f14; white-space: nowrap; }
+    .contact .card small i { width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffd2c8, #ff3b2b 50%, #7a1208); box-shadow: 0 0 12px 3px rgba(255, 59, 43, 0.7); }
+    .contact .card b { display: block; margin-top: 6px; font: 900 44px/1.05 "Playfair Display SC"; }
+    .contact .card .tape { margin-top: 12px; padding: 6px 12px; background: #efe4c6; color: #2d2416; font: 700 16px "Space Mono"; letter-spacing: 0.08em; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1); }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <div class="abs pipe" style="left:0; right:0; top:40px; height:44px; z-index:2"></div>
+    <div class="flange" style="left:430px; top:30px; width:34px; height:64px; z-index:3"></div>
+    <div class="flange" style="left:1030px; top:30px; width:34px; height:64px; z-index:3"></div>
+    <div class="flange" style="left:1630px; top:30px; width:34px; height:64px; z-index:3"></div>
+    <div class="abs pipe v" style="left:40px; top:40px; bottom:0; width:44px; z-index:2"></div>
+    <svg class="abs" id="valve" style="left:6px; top:6px; width:112px; height:112px; z-index:4" viewBox="-60 -60 120 120"></svg>
+
+    <div class="abs nameplate brass"><b class="engraved">S.S. Nova Moonpetal</b>
+      <i class="screw" style="left:14px; top:14px"></i><i class="screw" style="right:14px; top:14px"></i><i class="screw" style="left:14px; bottom:14px"></i><i class="screw" style="right:14px; bottom:14px"></i></div>
+    <svg class="abs telegraph" id="tele" viewBox="-300 -300 600 600"></svg>
+    <div class="abs plaque brass"><small class="engraved">— STAND BY —</small><b class="engraved">Starting Soon</b></div>
+
+    <svg class="abs depth" id="depth" viewBox="-160 -160 320 320"></svg>
+    <div class="abs counter"><small>DIVE IN</small><div class="wheels brass"><span>0</span><span>4</span><span class="col">:</span><span>5</span><span>9</span></div></div>
+    <svg class="abs hype" id="hype" viewBox="-130 -130 260 260"></svg>
+
+    <svg class="abs porthole" id="port" viewBox="-380 -380 760 760"></svg>
+    <div class="abs freq brass">
+      <div><small class="engraved">TWITCH</small><b class="engraved">novamoonpetal</b></div>
+      <div><small class="engraved">YOUTUBE</small><b class="engraved">@NovaMoonpetal</b></div>
+      <div><small class="engraved">X</small><b class="engraved">@nova_moonpetal</b></div>
+    </div>
+    <div class="abs vig"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <div class="abs viewport brass" id="vp"><div class="glass"><canvas class="game" id="g1"></canvas></div></div>
+    <svg class="abs pressure" id="press" viewBox="-220 -220 440 440"></svg>
+    <div class="abs slips">
+      <div class="clip brass"></div>
+      <div class="slip"><b>TELEGRAM ✉ FROM STARRYMOCHI</b>GG WELL PLAYED CAPTAIN STOP</div>
+      <div class="slip"><b>TELEGRAM ✉ FROM MOONLIT_KAY</b>WHALE SPOTTED PORTSIDE STOP</div>
+      <div class="slip"><b>TELEGRAM ✉ FROM HANABI</b>DIVE DEEPER STOP</div>
+    </div>
+    <div class="abs livemodel" id="m2"></div>
+
+    <div class="abs captain brass">
+      <small class="engraved">COMMANDING OFFICER</small>
+      <b class="engraved">Capt. Nova Moonpetal</b>
+      <div class="lamp engraved"><i></i>FULL AHEAD</div>
+    </div>
+    <div class="abs radio brass engraved">
+      <div><span>TWITCH</span>novamoonpetal</div>
+      <div><span>YOUTUBE</span>@NovaMoonpetal</div>
+      <div><span>X</span>@nova_moonpetal</div>
+    </div>
+
+    <div class="abs contact">
+      <svg class="scope" id="scope" viewBox="-125 -125 250 250"></svg>
+      <div class="card brass">
+        <small class="engraved"><i></i>CONTACT · NEW FOLLOWER</small>
+        <b class="engraved">StarryMochi</b>
+        <div class="tape">WELCOME ABOARD STOP</div>
+      </div>
+    </div>
+    <div class="abs vig"></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    const BRASS = `<linearGradient id="br" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6dc8e"/><stop offset=".3" stop-color="#c9983f"/><stop offset=".55" stop-color="#8a6424"/><stop offset=".78" stop-color="#e2b964"/><stop offset="1" stop-color="#a57a2e"/></linearGradient>
+      <radialGradient id="bolt" cx=".35" cy=".3"><stop offset="0" stop-color="#fff1c2"/><stop offset=".55" stop-color="#b58a3a"/><stop offset="1" stop-color="#5e4418"/></radialGradient>
+      <radialGradient id="face" cx=".4" cy=".35"><stop offset="0" stop-color="#fbf5e6"/><stop offset=".8" stop-color="#efe3c6"/><stop offset="1" stop-color="#d9c9a2"/></radialGradient>`;
+    const pol = (r, deg) => [Math.cos(((deg - 90) * Math.PI) / 180) * r, Math.sin(((deg - 90) * Math.PI) / 180) * r];
+    const bolts = (r, n, size = 11) => Array.from({ length: n }, (_, i) => { const [x, y] = pol(r, (360 / n) * i + 15); return `<circle cx="${x}" cy="${y}" r="${size}" fill="url(#bolt)" stroke="#3b2a10" stroke-width="1.5"/>`; }).join("");
+    const rim = (R, r) => `<circle r="${R}" fill="url(#br)"/><circle r="${R - 4}" fill="none" stroke="rgba(255,245,210,.5)" stroke-width="2"/><circle r="${r + 6}" fill="#3b2a10" opacity=".55"/>`;
+
+    // Arc gauge: ticks from a0..a1 degrees (0 = up), labels, red zone, needle at value (0..1)
+    function gauge({ R, a0, a1, major, minor, labels, red, value, title, sub }) {
+      let t = "";
+      for (let i = 0; i <= major * minor; i++) {
+        const a = a0 + ((a1 - a0) * i) / (major * minor);
+        const big = i % minor === 0;
+        const [x1, y1] = pol(R - 8, a), [x2, y2] = pol(R - (big ? 34 : 20), a);
+        t += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a2a2a" stroke-width="${big ? 4 : 2}"/>`;
+        if (big && labels) { const [lx, ly] = pol(R - 58, a); t += `<text x="${lx}" y="${ly + 8}" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="${R * 0.13}" fill="#2a2a2a">${labels[i / minor]}</text>`; }
+      }
+      let redArc = "";
+      if (red) { const [x1, y1] = pol(R - 14, a0 + (a1 - a0) * red), [x2, y2] = pol(R - 14, a1); redArc = `<path d="M${x1} ${y1} A${R - 14} ${R - 14} 0 0 1 ${x2} ${y2}" fill="none" stroke="#c0392b" stroke-width="12"/>`; }
+      const na = a0 + (a1 - a0) * value;
+      const [nx, ny] = pol(R - 30, na), [bx, by] = pol(26, na + 180);
+      return `<circle r="${R}" fill="url(#face)"/>${redArc}${t}
+        <text y="${R * 0.6}" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="${R * 0.12}" letter-spacing="3" fill="#2a2a2a">${title}</text>
+        ${sub ? `<text y="${R * 0.76}" text-anchor="middle" font-family="Oswald" font-size="${R * 0.085}" letter-spacing="2" fill="#6b5a3a">${sub}</text>` : ""}
+        <line x1="${bx}" y1="${by}" x2="${nx}" y2="${ny}" stroke="#c0392b" stroke-width="6" stroke-linecap="round" style="filter: drop-shadow(2px 4px 2px rgba(0,0,0,.35))"/>
+        <circle r="16" fill="url(#bolt)" stroke="#3b2a10" stroke-width="2"/>
+        <path d="M${-R * 0.7} ${-R * 0.55} A${R * 0.95} ${R * 0.95} 0 0 1 ${R * 0.3} ${-R * 0.9}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="10" stroke-linecap="round"/>`;
+    }
+
+    // Valve wheel
+    document.getElementById("valve").innerHTML = `<defs>${BRASS}</defs><circle r="50" fill="none" stroke="url(#br)" stroke-width="12"/>
+      ${[0, 60, 120].map((a) => `<rect x="-5" y="-48" width="10" height="96" rx="4" fill="url(#br)" transform="rotate(${a})"/>`).join("")}<circle r="14" fill="url(#bolt)" stroke="#3b2a10" stroke-width="2"/>`;
+
+    // Engine order telegraph, handle at STAND BY
+    const sectors = ["FULL", "HALF", "SLOW", "STAND BY", "SLOW", "HALF", "FULL"];
+    const span = [22, 22, 22, 48, 22, 22, 22];
+    let sec = "";
+    let acc = -90;
+    sectors.forEach((label, i) => {
+      const a0 = acc, a1 = acc + span[i], mid = (a0 + a1) / 2;
+      acc = a1;
+      const [x0, y0] = pol(236, a0), [x1, y1] = pol(236, a1), [ix1, iy1] = pol(120, a1), [ix0, iy0] = pol(120, a0);
+      const hot = label === "STAND BY";
+      sec += `<path d="M${ix0} ${iy0} L${x0} ${y0} A236 236 0 0 1 ${x1} ${y1} L${ix1} ${iy1} A120 120 0 0 0 ${ix0} ${iy0} Z" fill="${hot ? "#c0392b" : i % 2 ? "#e8dcbc" : "#f3ead2"}" stroke="#2a2a2a" stroke-width="2"/>`;
+      const [tx, ty] = pol(180, mid);
+      if (hot) {
+        sec += `<text x="-19" y="-204" text-anchor="end" dominant-baseline="middle" font-family="Oswald" font-weight="700" font-size="21" letter-spacing="1" fill="#fff">STAND</text><text x="19" y="-204" text-anchor="start" dominant-baseline="middle" font-family="Oswald" font-weight="700" font-size="21" letter-spacing="1" fill="#fff">BY</text>`;
+      } else {
+        sec += `<text x="${tx}" y="${ty}" transform="rotate(${mid} ${tx} ${ty})" text-anchor="middle" dominant-baseline="middle" font-family="Oswald" font-weight="700" font-size="24" letter-spacing="2" fill="#2a2a2a">${label}</text>`;
+      }
+    });
+    document.getElementById("tele").innerHTML = `<defs>${BRASS}</defs>${rim(290, 250)}
+      <circle r="250" fill="url(#face)"/>${sec}
+      <text x="-150" y="36" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="20" letter-spacing="6" fill="#6b5a3a">◀ AHEAD</text>
+      <text x="150" y="36" text-anchor="middle" font-family="Oswald" font-weight="700" font-size="20" letter-spacing="6" fill="#6b5a3a">ASTERN ▶</text>
+      <text y="112" text-anchor="middle" font-family="Playfair Display SC" font-weight="900" font-size="34" fill="#3b2a10">Engine Order</text>
+      <text y="150" text-anchor="middle" font-family="Oswald" font-size="20" letter-spacing="6" fill="#6b5a3a">STREAM · BRIDGE</text>
+      <rect x="-14" y="-232" width="28" height="240" rx="12" fill="url(#br)" stroke="#3b2a10" stroke-width="2" style="filter: drop-shadow(4px 6px 4px rgba(0,0,0,.4))"/>
+      <path d="M0 -250 L-18 -222 L18 -222 Z" fill="#3b2a10"/>
+      <circle r="46" fill="url(#br)" stroke="#3b2a10" stroke-width="3"/><circle r="18" fill="url(#bolt)" stroke="#3b2a10" stroke-width="2"/>
+      ${bolts(270, 12, 9)}`;
+
+    document.getElementById("depth").innerHTML = `<defs>${BRASS}</defs>${rim(158, 128)}${gauge({ R: 128, a0: -120, a1: 120, major: 10, minor: 5, labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], value: 0.18, title: "DEPTH", sub: "× 100 FT" })}${bolts(143, 8, 7)}`;
+    document.getElementById("hype").innerHTML = `<defs>${BRASS}</defs>${rim(128, 100)}${gauge({ R: 100, a0: -120, a1: 120, major: 4, minor: 4, labels: ["", "", "", "", ""], red: 0.72, value: 0.9, title: "HYPE", sub: "PSI" })}`;
+
+    // Porthole: brass rim, 12 bolts, underwater scene through the glass
+    const rr = M2.rng(5);
+    const bubbles = Array.from({ length: 26 }, () => `<circle cx="${-260 + rr() * 520}" cy="${-280 + rr() * 560}" r="${3 + rr() * 12}" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>`).join("");
+    const fish = (x, y, s, flip) => `<path d="M-40 0 C-20 -22 24 -20 36 0 C24 20 -20 22 -40 0 Z M36 0 L60 -18 L56 0 L60 18 Z" fill="#042430" transform="translate(${x} ${y}) scale(${flip ? -s : s} ${s})"/>`;
+    const kelp = (x, h, c) => `<path d="M${x} 320 C${x - 30} ${320 - h * 0.3} ${x + 30} ${320 - h * 0.5} ${x} ${320 - h * 0.7} C${x - 26} ${320 - h * 0.85} ${x + 10} ${320 - h} ${x + 6} ${320 - h}" fill="none" stroke="${c}" stroke-width="16" stroke-linecap="round"/>`;
+    document.getElementById("port").innerHTML = `<defs>${BRASS}
+        <radialGradient id="sea" cx=".45" cy=".2" r=".9"><stop offset="0" stop-color="#2aa6b8"/><stop offset=".5" stop-color="#0b5e74"/><stop offset="1" stop-color="#03263a"/></radialGradient>
+        <clipPath id="glass"><circle r="296"/></clipPath></defs>
+      <circle r="372" fill="url(#br)" style="filter: drop-shadow(0 24px 40px rgba(0,0,0,.6))"/>
+      <circle r="366" fill="none" stroke="rgba(255,245,210,.5)" stroke-width="3"/>
+      <circle r="318" fill="#3b2a10"/><circle r="310" fill="url(#br)"/>
+      <g clip-path="url(#glass)">
+        <circle r="300" fill="url(#sea)"/>
+        ${Array.from({ length: 7 }, (_, i) => `<polygon points="${-240 + i * 80},-320 ${-200 + i * 80},-320 ${-120 + i * 110},320 ${-190 + i * 110},320" fill="rgba(255,255,255,.07)"/>`).join("")}
+        ${kelp(-190, 260, "#0d6b52")}${kelp(-140, 180, "#12806a")}${kelp(170, 230, "#0d6b52")}${kelp(220, 150, "#12806a")}
+        <path d="M-300 300 C-200 250 -100 280 0 262 C120 244 220 280 300 260 L300 320 L-300 320 Z" fill="#0a3b3a"/>
+        ${fish(-80, -60, 1.1, false)}${fish(40, -120, 0.7, true)}${fish(120, 40, 0.9, true)}${fish(-20, 110, 0.55, false)}
+        ${bubbles}
+        <path d="M-230 -120 A260 260 0 0 1 60 -270" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="22" stroke-linecap="round"/>
+        <circle r="296" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="30"/>
+      </g>
+      ${bolts(342, 12, 13)}`;
+
+    // LIVE: pressure gauge goal (742 / 1000)
+    document.getElementById("press").innerHTML = `<defs>${BRASS}</defs>${rim(212, 176)}${gauge({ R: 176, a0: -120, a1: 120, major: 10, minor: 4, labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], red: 0.9, value: 0.742, title: "FOLLOWERS × 100", sub: "742 / 1000 · GOAL" })}${bolts(195, 8, 8)}`;
+
+    // Viewport bolts
+    const vp = document.getElementById("vp");
+    for (let i = 0; i < 18; i++) {
+      for (const [x, y] of [[10 + i * 76.5, 6], [10 + i * 76.5, 781]]) vp.insertAdjacentHTML("beforeend", `<i class="screw" style="left:${x}px; top:${y}px; width:16px; height:16px"></i>`);
+    }
+    for (let i = 1; i < 10; i++) for (const x of [6, 1362]) vp.insertAdjacentHTML("beforeend", `<i class="screw" style="left:${x}px; top:${i * 79}px; width:16px; height:16px"></i>`);
+
+    // Sonar scope with contact blip
+    document.getElementById("scope").innerHTML = `<defs>${BRASS}<radialGradient id="ph" cx=".5" cy=".5"><stop offset="0" stop-color="#0f3d2a"/><stop offset="1" stop-color="#03150d"/></radialGradient>
+        <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="rgba(77,255,158,0)"/><stop offset="1" stop-color="rgba(77,255,158,.55)"/></linearGradient></defs>
+      <circle r="124" fill="url(#br)"/><circle r="104" fill="url(#ph)" stroke="#3b2a10" stroke-width="4"/>
+      ${[30, 60, 90].map((r) => `<circle r="${r}" fill="none" stroke="rgba(77,255,158,.35)" stroke-width="1.5"/>`).join("")}
+      <line x1="-100" y1="0" x2="100" y2="0" stroke="rgba(77,255,158,.3)"/><line x1="0" y1="-100" x2="0" y2="100" stroke="rgba(77,255,158,.3)"/>
+      <path d="M0 0 L100 0 A100 100 0 0 0 70.7 -70.7 Z" fill="url(#sweep)"/>
+      <circle cx="46" cy="-40" r="8" fill="#4dff9e" style="filter: drop-shadow(0 0 8px #4dff9e)"/>
+      <circle cx="46" cy="-40" r="22" fill="none" stroke="#4dff9e" stroke-width="2" opacity=".6"/>
+      <circle cx="46" cy="-40" r="38" fill="none" stroke="#4dff9e" stroke-width="1.5" opacity=".3"/>
+      ${bolts(114, 6, 6)}`;
+
+    document.getElementById("m2").innerHTML = M2.model({ fill: "#0f2426", stroke: "#d9b060", width: 5 });
+    M2.ready(() => M2.game(document.getElementById("g1"), 71));
+  </script>
+</body>
+</html>

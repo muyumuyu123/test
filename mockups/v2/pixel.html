@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pocket Quest — retro handheld mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --c0: #0f380f; --c1: #306230; --c2: #8bac0f; --c3: #9bbc0f; }
+    .screen { background: var(--c3); color: var(--c0); font-family: "Silkscreen", monospace; }
+    .dot { font-family: "DotGothic16", monospace; }
+    canvas.px { position: absolute; image-rendering: pixelated; }
+    .lcd { inset: 0; pointer-events: none; z-index: 30;
+      background: linear-gradient(90deg, rgba(15, 56, 15, 0.07) 1px, transparent 1px) 0 0 / 6px 6px, linear-gradient(rgba(15, 56, 15, 0.07) 1px, transparent 1px) 0 0 / 6px 6px; }
+    .shade { inset: 0; pointer-events: none; z-index: 29; box-shadow: inset 0 0 120px rgba(15, 56, 15, 0.35); }
+
+    /* Classic handheld text box: dark rim, light gap, mid inner line, pixel-cut corners */
+    .box { position: absolute; background: var(--c3); z-index: 10;
+      box-shadow: inset 0 0 0 6px var(--c0), inset 0 0 0 12px var(--c3), inset 0 0 0 18px var(--c1);
+      clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px); }
+    .blink { animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ---------- START ---------- */
+    .title { left: 444px; top: 24px; width: 1032px; height: 222px; text-align: center; padding-top: 34px; }
+    .title small { display: block; font-size: 30px; letter-spacing: 0.12em; color: var(--c1); }
+    .title b { display: block; margin-top: 8px; font: 700 76px/1.05 "Silkscreen"; letter-spacing: 0.02em; white-space: nowrap; }
+    .title .stars { position: absolute; top: 30px; font-size: 36px; color: var(--c1); }
+    .timer { left: 24px; top: 24px; width: 396px; height: 132px; padding: 22px 34px 0; }
+    .timer small { display: block; font-size: 28px; color: var(--c1); }
+    .timer b { font: 700 58px/1 "Silkscreen"; }
+    .menu { left: 1464px; top: 372px; width: 432px; height: 420px; padding: 42px 40px; font-size: 44px; line-height: 1.75; }
+    .menu .cur { display: inline-block; width: 44px; }
+    .dialog { left: 24px; top: 816px; width: 1872px; height: 240px; padding: 38px 54px; font: 44px/1.55 "DotGothic16"; }
+    .dialog .who { font-family: "Silkscreen"; font-weight: 700; }
+    .dialog .more { position: absolute; right: 50px; bottom: 34px; font-size: 38px; }
+
+    /* ---------- LIVE ---------- */
+    .gwin { left: 30px; top: 30px; width: 1332px; height: 765px; padding: 18px; z-index: 5; }
+    .gwin canvas.game { width: 1296px; height: 729px; }
+    .goal { left: 1392px; top: 30px; width: 498px; height: 196px; padding: 30px 34px; }
+    .goal .n { display: flex; justify-content: space-between; font: 700 38px "Silkscreen"; }
+    .goal .n span { font-weight: 400; font-size: 32px; }
+    .hp { display: flex; align-items: center; gap: 12px; margin-top: 10px; font: 700 28px "Silkscreen"; }
+    .hp .bar { flex: 1; height: 24px; padding: 4px; background: var(--c3); box-shadow: 0 0 0 6px var(--c0); }
+    .hp .bar i { display: block; height: 100%; background: var(--c1); }
+    .goal .of { margin-top: 10px; text-align: right; font-size: 30px; }
+    .log { left: 1392px; top: 244px; width: 498px; height: 330px; padding: 30px 34px; font: 25px/1.25 "DotGothic16"; }
+    .log h4 { margin: 0 0 10px; font: 700 28px "Silkscreen"; color: var(--c1); }
+    .log div { margin-bottom: 14px; }
+    .log b { font-family: "Silkscreen"; font-size: 20px; }
+    .platform { left: 1432px; top: 900px; width: 440px; height: 90px; border-radius: 50%; background: var(--c2); box-shadow: 0 0 0 6px var(--c1); z-index: 1; }
+    .me { left: 1497px; top: 540px; width: 288px; height: 342px; z-index: 2; }
+    .status { left: 1392px; top: 822px; width: 498px; height: 228px; padding: 32px 36px; z-index: 12; }
+    .status .n { display: flex; justify-content: space-between; font: 700 40px "Silkscreen"; }
+    .status .n span { font-weight: 400; font-size: 32px; }
+    .status .num { margin-top: 10px; text-align: right; font-size: 32px; }
+    .battle { left: 30px; top: 822px; width: 1332px; height: 228px; padding: 38px 50px; font: 44px/1.5 "DotGothic16"; }
+    .battle b { font-family: "Silkscreen"; font-weight: 700; }
+    .battle .more { position: absolute; right: 48px; bottom: 30px; font-size: 36px; }
+    .wild { left: 1110px; top: 840px; width: 192px; height: 192px; z-index: 11; }
+  </style>
+</head>
+<body>
+  <!-- ======================= START ======================= -->
+  <section class="screen start">
+    <canvas class="px" id="map" width="320" height="180" style="left:0; top:0; width:1920px; height:1080px"></canvas>
+    <div class="box title"><span class="stars" style="left:40px">✦</span><span class="stars" style="right:40px">✦</span><small>NOVA MOONPETAL PRESENTS</small><b>STARTING SOON</b></div>
+    <div class="box timer"><small>TIME LEFT</small><b>04:59</b></div>
+    <div class="box menu">
+      <div><span class="cur blink">▶</span>WAIT</div>
+      <div><span class="cur"></span>SNACKS</div>
+      <div><span class="cur"></span>FOLLOW</div>
+      <div><span class="cur"></span>SAVE</div>
+    </div>
+    <div class="box dialog">
+      <span class="who">NOVA:</span> The stream is about to begin!<br>Grab a POTION and wait by the house, ok?
+      <span class="more blink">▼</span>
+    </div>
+    <div class="abs lcd"></div>
+    <div class="abs shade"></div>
+  </section>
+
+  <!-- ======================= LIVE ======================= -->
+  <section class="screen live">
+    <canvas class="px" id="bg2" width="320" height="180" style="left:0; top:0; width:1920px; height:1080px"></canvas>
+    <div class="box gwin"><canvas class="game" id="g1"></canvas></div>
+
+    <div class="box goal">
+      <div class="n">FOLLOW GOAL</div>
+      <div class="hp">EXP<div class="bar"><i style="width:74%"></i></div></div>
+      <div class="of">742/1000</div>
+    </div>
+    <div class="box log">
+      <h4>CHAT LOG</h4>
+      <div><b>STARRYMOCHI:</b> gg!!</div>
+      <div><b>MOONLIT_KAY:</b> crit hit!</div>
+      <div><b>PIXELPUDDING:</b> use POTION</div>
+      <div><b>HANABI:</b> run away!!</div>
+    </div>
+    <div class="abs platform"></div>
+    <canvas class="px me" id="me" width="16" height="19"></canvas>
+    <div class="box status">
+      <div class="n">NOVA<span>:L42</span></div>
+      <div class="hp">HP<div class="bar"><i style="width:100%"></i></div></div>
+      <div class="num">99/ 99</div>
+    </div>
+    <div class="box battle">
+      A wild <b>STARRYMOCHI</b> appeared!<br>STARRYMOCHI used FOLLOW!
+      <span class="more blink">▼</span>
+    </div>
+    <canvas class="px wild" id="wild" width="16" height="16"></canvas>
+    <div class="abs lcd" style="z-index:3"></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script>
+    const PAL = ["#0f380f", "#306230", "#8bac0f", "#9bbc0f"];
+
+    function sprite(ctx, rows, x, y) {
+      rows.forEach((row, j) => [...row].forEach((ch, i) => {
+        if (ch === ".") return;
+        ctx.fillStyle = PAL[+ch];
+        ctx.fillRect(x + i, y + j, 1, 1);
+      }));
+    }
+    const rect = (c, col, x, y, w, h) => { c.fillStyle = PAL[col]; c.fillRect(x, y, w, h); };
+
+    const TILE = {
+      g: ["33333333", "33333333", "33323333", "33333333", "33333333", "33333323", "33333333", "33333333"],
+      t: ["33333333", "31333133", "21323123", "22222222", "33313331", "31232123", "22222222", "33333333"],
+      p: ["22222222", "22222322", "22222222", "23222222", "22222222", "22222232", "22322222", "22222222"],
+      w: ["11111111", "11111111", "12221111", "11111111", "11111111", "11111222", "11111111", "11111111"],
+      f: ["33333333", "33303333", "33020333", "33303333", "33313333", "33333333", "33333333", "33333333"],
+    };
+    const TREE = [
+      ".....000000.....",
+      "...0011111100...",
+      "..011211112110..",
+      ".01122111112210.",
+      ".01211111111210.",
+      "0112111121111110",
+      "0111112211111210",
+      "0121111111111110",
+      "0111121111211110",
+      ".01111111111110.",
+      ".00111111111100.",
+      "...0001111000...",
+      "......0110......",
+      "......0110......",
+      ".....001100.....",
+      "....00000000....",
+    ];
+    // Chibi VTuber: cat ears, twin tails, big eyes
+    const HERO = [
+      "...0........0...",
+      "..010......010..",
+      "..0110....0110..",
+      "..011100001110..",
+      ".01111111111110.",
+      "0111111111111110",
+      "0111333333331110",
+      "0113303333033110",
+      "0113303333033110",
+      "0113333003333110",
+      ".01133333333110.",
+      "0110.003300.0110",
+      "0110022222200110",
+      "0110222222220110",
+      "0110223223220110",
+      ".00.02222220.00.",
+      "....02222220....",
+      "....03300330....",
+      ".....00..00.....",
+    ];
+    const SLIME = [
+      "......0000......",
+      "....00333300....",
+      "...0333333330...",
+      "..033333333330..",
+      "..033033303330..",
+      ".03330333033330.",
+      ".03333333333330.",
+      ".03333000333330.",
+      ".02333333333320.",
+      "..022333333220..",
+      "...0022222200...",
+      ".....000000.....",
+    ];
+
+    // ---- START: overworld ----
+    const c = document.getElementById("map").getContext("2d");
+    const r = M2.rng(12);
+    const W = 40, H = 23;
+    const grid = Array.from({ length: H }, () => Array(W).fill("g"));
+    const set = (x0, y0, x1, y1, t) => { for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) if (grid[y] && grid[y][x]) grid[y][x] = t; };
+    set(6, 11, 7, 16, "p");     // path from the door
+    set(6, 15, 30, 16, "p");    // path east
+    set(20, 7, 26, 11, "w");    // pond
+    set(11, 11, 16, 13, "t");   // tall grass
+    for (let i = 0; i < 26; i++) { const x = Math.floor(r() * W), y = Math.floor(r() * H); if (grid[y][x] === "g") grid[y][x] = "f"; }
+    grid.forEach((row, y) => row.forEach((t, x) => sprite(c, TILE[t], x * 8, y * 8)));
+    // pond shore
+    c.strokeStyle = PAL[0]; c.lineWidth = 1; c.strokeRect(160.5, 56.5, 55, 39);
+    // trees: top row, side columns, a few loose ones
+    const trees = [];
+    for (let x = 0; x < W; x += 2) trees.push([x, 0]);
+    for (let y = 2; y < 16; y += 2) { trees.push([0, y]); trees.push([38, y]); }
+    trees.push([15, 5], [17, 4], [28, 5], [31, 3], [13, 8]);
+    for (const [tx, ty] of trees) sprite(c, TREE, tx * 8, ty * 8);
+    // house (roof stripes, walls, windows, door, chimney)
+    const hx = 30, hy = 46;
+    rect(c, 0, hx + 30, hy - 8, 7, 10); rect(c, 1, hx + 31, hy - 7, 5, 9);
+    rect(c, 0, hx - 3, hy, 48, 16);
+    for (let y = 1; y < 15; y++) rect(c, y % 3 === 0 ? 0 : 1, hx - 2, hy + y, 46, 1);
+    rect(c, 0, hx, hy + 16, 42, 20); rect(c, 3, hx + 1, hy + 16, 40, 19);
+    for (const wx of [hx + 4, hx + 29]) { rect(c, 0, wx, hy + 20, 9, 8); rect(c, 2, wx + 1, hy + 21, 7, 6); rect(c, 0, wx + 4, hy + 21, 1, 6); rect(c, 0, wx + 1, hy + 24, 7, 1); }
+    rect(c, 0, hx + 16, hy + 23, 10, 13); rect(c, 1, hx + 17, hy + 24, 8, 12); rect(c, 3, hx + 23, hy + 30, 1, 1);
+    // signpost
+    rect(c, 0, 83, 76, 14, 9); rect(c, 2, 84, 77, 12, 7); rect(c, 0, 86, 79, 8, 1); rect(c, 0, 86, 81, 6, 1); rect(c, 0, 89, 85, 2, 6); rect(c, 1, 89, 85, 1, 6);
+    // the streamer
+    sprite(c, HERO, 44, 83);
+
+    // ---- LIVE ----
+    const b = document.getElementById("bg2").getContext("2d");
+    rect(b, 3, 0, 0, 320, 180);
+    // dithered floor under the battle area
+    for (let y = 120; y < 180; y++) for (let x = 0; x < 320; x++) if ((x + y) % 2 === 0 && (y > 150 || (x * 7 + y * 3) % 5 === 0)) rect(b, 2, x, y, 1, 1);
+    sprite(document.getElementById("wild").getContext("2d"), SLIME, 0, 2);
+
+    // the streamer's sprite, scaled up where the model sits
+    sprite(document.getElementById("me").getContext("2d"), HERO, 0, 0);
+
+    M2.ready(() => M2.game(document.getElementById("g1"), 51));
+  </script>
+</body>
+</html>
