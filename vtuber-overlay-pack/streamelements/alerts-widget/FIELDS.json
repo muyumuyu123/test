@@ -1,0 +1,67 @@
+{
+  "theme": {
+    "type": "dropdown",
+    "label": "Color theme",
+    "value": "midnight",
+    "options": {
+      "midnight": "Midnight",
+      "sakura": "Sakura",
+      "aurora": "Aurora"
+    }
+  },
+  "duration": {
+    "type": "number",
+    "label": "Seconds on screen",
+    "value": 6,
+    "min": 3,
+    "max": 20
+  },
+  "currency": {
+    "type": "text",
+    "label": "Currency symbol",
+    "value": "$"
+  },
+  "sound": {
+    "type": "sound-input",
+    "label": "Alert sound (optional)",
+    "value": ""
+  },
+  "volume": {
+    "type": "slider",
+    "label": "Sound volume",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "step": 1
+  },
+  "label_follow": {
+    "type": "text",
+    "label": "Follow label",
+    "value": "New Follower"
+  },
+  "label_sub": {
+    "type": "text",
+    "label": "Subscriber label",
+    "value": "New Subscriber"
+  },
+  "label_tip": {
+    "type": "text",
+    "label": "Tip label",
+    "value": "New Tip"
+  },
+  "label_cheer": {
+    "type": "text",
+    "label": "Cheer label",
+    "value": "Cheer"
+  },
+  "label_raid": {
+    "type": "text",
+    "label": "Raid label",
+    "value": "Incoming Raid"
+  },
+  "label_member": {
+    "type": "text",
+    "label": "YouTube member label",
+    "value": "New Member"
+  }
+}

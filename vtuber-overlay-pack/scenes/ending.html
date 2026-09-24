@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ending — Starlight Dreams</title>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="scene.css">
+  <style>
+    .headline {
+      font-size: 150px;
+    }
+    .big-note {
+      margin: 44px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 36px;
+      font-weight: 800;
+    }
+    /* Little stars floating up from the clouds */
+    .rise {
+      position: absolute;
+      bottom: 80px;
+      width: 22px;
+      height: 22px;
+      background: var(--accent);
+      clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+      filter: drop-shadow(0 0 6px var(--accent));
+      opacity: 0;
+      animation: rise 9s linear infinite;
+    }
+    @keyframes rise {
+      0% { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.6); }
+      15% { opacity: 0.9; }
+      100% { opacity: 0; transform: translateY(-760px) rotate(180deg) scale(1.1); }
+    }
+    .moon {
+      top: 110px;
+      left: 170px;
+    }
+    .moon::before {
+      transform: scaleX(-1);
+    }
+  </style>
+</head>
+<body class="scene">
+  <canvas class="fill" id="stars"></canvas>
+  <div class="moon"></div>
+  <div id="risers"></div>
+  <div class="clouds" id="clouds"></div>
+
+  <main class="stage">
+    <div class="eyebrow" data-cfg-group><i class="sparkle"></i><span data-cfg="name"></span><i class="sparkle"></i></div>
+    <h1 class="display shimmer-text headline" data-cfg="ending.heading"></h1>
+    <p class="sub" data-cfg="ending.subheading"></p>
+    <p class="big-note" data-cfg-group><span class="label">next</span><span data-cfg="ending.note"></span></p>
+    <div class="socials" id="socials"></div>
+  </main>
+
+  <script src="../config.js"></script>
+  <script src="../assets/core.js"></script>
+  <script>
+    const { bindText, renderSocials, starfield, clouds, rng, onReady } = SD;
+
+    onReady(() => {
+      bindText();
+      renderSocials(document.getElementById("socials"));
+      starfield(document.getElementById("stars"), { seed: 33 });
+      clouds(document.getElementById("clouds"));
+
+      const rand = rng(5);
+      const host = document.getElementById("risers");
+      for (let i = 0; i < 18; i++) {
+        const s = document.createElement("i");
+        s.className = "rise";
+        const size = 12 + rand() * 18;
+        Object.assign(s.style, {
+          left: `${3 + rand() * 94}%`,
+          width: `${size}px`,
+          height: `${size}px`,
+          animationDelay: `${-rand() * 9}s`,
+          animationDuration: `${7 + rand() * 5}s`,
+        });
+        host.append(s);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Be Right Back — Starlight Dreams</title>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="scene.css">
+  <style>
+    .sleepy {
+      position: relative;
+      width: 260px;
+      height: 230px;
+      margin-bottom: 10px;
+    }
+    .sleepy .moon {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 200px;
+      height: 200px;
+      transform: rotate(-20deg);
+      animation: none;
+    }
+    .sleepy .rock {
+      position: absolute;
+      inset: 0;
+      animation: rock 5s ease-in-out infinite;
+      transform-origin: 50% 90%;
+    }
+    .z {
+      position: absolute;
+      font-family: "Fredoka", sans-serif;
+      font-weight: 600;
+      color: var(--primary);
+      text-shadow: 0 0 14px var(--glow);
+      opacity: 0;
+      animation: snooze 4.5s ease-out infinite;
+    }
+    .z:nth-of-type(1) { left: 190px; top: 70px; font-size: 38px; }
+    .z:nth-of-type(2) { left: 215px; top: 45px; font-size: 52px; animation-delay: 1.5s; }
+    .z:nth-of-type(3) { left: 240px; top: 20px; font-size: 66px; animation-delay: 3s; }
+    @keyframes snooze {
+      0% { opacity: 0; transform: translate(0, 20px) rotate(-10deg); }
+      20% { opacity: 1; }
+      100% { opacity: 0; transform: translate(40px, -70px) rotate(12deg); }
+    }
+    @keyframes rock {
+      0%, 100% { transform: rotate(-4deg); }
+      50% { transform: rotate(4deg); }
+    }
+    .away {
+      margin-top: 46px;
+      font-size: 30px;
+      padding: 14px 30px;
+    }
+    .away .time {
+      font-family: "Fredoka", sans-serif;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body class="scene">
+  <canvas class="fill" id="stars"></canvas>
+  <div class="clouds" id="clouds"></div>
+
+  <main class="stage">
+    <div class="sleepy">
+      <div class="rock"><div class="moon"></div></div>
+      <span class="z">z</span><span class="z">z</span><span class="z">z</span>
+    </div>
+    <h1 class="display shimmer-text headline" data-cfg="brb.heading"></h1>
+    <p class="sub" data-cfg="brb.subheading"></p>
+    <div class="pill away" id="away"><span class="label">away for</span><span class="time" id="time">00:00</span></div>
+  </main>
+
+  <script src="../config.js"></script>
+  <script src="../assets/core.js"></script>
+  <script>
+    const { cfg, still, bindText, formatTime, starfield, clouds, onReady } = SD;
+
+    onReady(() => {
+      bindText();
+      starfield(document.getElementById("stars"), { seed: 21 });
+      clouds(document.getElementById("clouds"));
+
+      if (!cfg.brb.showAwayTimer) {
+        document.getElementById("away").remove();
+        return;
+      }
+      const started = Date.now() - (still ? 134000 : 0);
+      const el = document.getElementById("time");
+      setInterval(() => (el.textContent = formatTime((Date.now() - started) / 1000)), 250);
+    });
+  </script>
+</body>
+</html>

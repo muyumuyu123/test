@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Starlight Dreams — Preview</title>
+  <link rel="stylesheet" href="assets/theme.css">
+  <style>
+    html, body {
+      overflow: auto;
+    }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--sky-top), var(--sky-mid) 60%, var(--sky-bottom));
+      background-attachment: fixed;
+      padding: 40px 32px 80px;
+    }
+    header {
+      max-width: 1400px;
+      margin: 0 auto 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5vw, 64px);
+      line-height: 1;
+    }
+    header p {
+      margin: 10px 0 0;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .themes {
+      display: flex;
+      gap: 10px;
+    }
+    .themes button {
+      font: 600 17px "Fredoka", sans-serif;
+      letter-spacing: 0.06em;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 2px solid var(--panel-border);
+      background: var(--panel);
+      color: var(--text);
+      cursor: pointer;
+    }
+    .themes button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--panel-solid);
+      border-color: var(--accent);
+    }
+    .grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      gap: 28px;
+    }
+    .card {
+      padding: 14px;
+      border-radius: 22px;
+      background: var(--panel);
+      border: 2px solid var(--panel-border);
+    }
+    .card.wide {
+      grid-column: 1 / -1;
+    }
+    .view {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      aspect-ratio: var(--ar);
+    }
+    /* Stand-in "gameplay" behind transparent overlays */
+    .view.see-through {
+      background:
+        radial-gradient(circle at 25% 30%, rgba(255, 255, 255, 0.35) 0 6%, transparent 7%),
+        linear-gradient(180deg, #7ec8f0 0%, #bfe6f7 45%, #79b865 46%, #4d8f45 70%, #3b6d36 100%);
+    }
+    .view iframe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border: 0;
+      transform-origin: 0 0;
+      background: transparent;
+    }
+    .meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 6px 4px;
+    }
+    .meta b {
+      font: 600 22px "Fredoka", sans-serif;
+    }
+    .meta span {
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .meta a {
+      color: var(--accent);
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1 class="display shimmer-text">Starlight Dreams</h1>
+      <p>Overlay pack preview: every scene, overlay and widget, live</p>
+    </div>
+    <div class="themes" id="themes">
+      <button data-theme="midnight">Midnight</button>
+      <button data-theme="sakura">Sakura</button>
+      <button data-theme="aurora">Aurora</button>
+    </div>
+  </header>
+
+  <main class="grid" id="grid"></main>
+
+  <script src="config.js"></script>
+  <script>
+    const ITEMS = [
+      { name: "Starting Soon", file: "scenes/starting-soon.html", size: [1920, 1080], note: "1920 × 1080 scene", wide: true },
+      { name: "Be Right Back", file: "scenes/brb.html", size: [1920, 1080], note: "1920 × 1080 scene" },
+      { name: "Ending", file: "scenes/ending.html", size: [1920, 1080], note: "1920 × 1080 scene" },
+      { name: "Alerts", file: "widgets/alerts.html", query: "demo", size: [900, 560], note: "900 × 560, cycles demo alerts", clear: true },
+      { name: "Game Frame", file: "overlays/game-frame.html", size: [1920, 1080], note: "1920 × 1080 transparent overlay", clear: true, wide: true },
+      { name: "Chat", file: "widgets/chat.html", query: "demo", size: [360, 520], note: "360 × 520", clear: true },
+      { name: "Goal Bar", file: "widgets/goal.html", query: "demo", size: [800, 170], note: "800 × 170", clear: true },
+    ];
+
+    const grid = document.getElementById("grid");
+    let theme = new URLSearchParams(location.search).get("theme") || (window.OVERLAY_CONFIG || {}).theme || "midnight";
+
+    function src(item) {
+      const q = new URLSearchParams(item.query || "");
+      q.set("theme", theme);
+      return `${item.file}?${q}`;
+    }
+
+    for (const item of ITEMS) {
+      const card = document.createElement("section");
+      card.className = "card" + (item.wide ? " wide" : "");
+      card.innerHTML = `
+        <div class="view${item.clear ? " see-through" : ""}" style="--ar:${item.size[0]} / ${item.size[1]}">
+          <iframe width="${item.size[0]}" height="${item.size[1]}" loading="lazy" title="${item.name}"></iframe>
+        </div>
+        <div class="meta"><div><b>${item.name}</b><br><span>${item.note}</span></div><a target="_blank">open ↗</a></div>`;
+      item.frame = card.querySelector("iframe");
+      item.link = card.querySelector("a");
+      item.view = card.querySelector(".view");
+      grid.append(card);
+    }
+
+    function fit() {
+      for (const item of ITEMS) item.frame.style.transform = `scale(${item.view.clientWidth / item.size[0]})`;
+    }
+
+    function applyTheme(name) {
+      theme = name;
+      document.documentElement.dataset.theme = name;
+      document.querySelectorAll("#themes button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.theme === name)));
+      for (const item of ITEMS) {
+        item.frame.src = src(item);
+        item.link.href = src(item);
+      }
+    }
+
+    document.getElementById("themes").addEventListener("click", (e) => {
+      const b = e.target.closest("button");
+      if (b) applyTheme(b.dataset.theme);
+    });
+    new ResizeObserver(fit).observe(grid);
+    applyTheme(theme);
+    fit();
+  </script>
+</body>
+</html>

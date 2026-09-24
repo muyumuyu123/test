@@ -1,0 +1,410 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400..700&family=Nunito:wght@400..900&display=block');
+
+/* Starlight Dreams — shared theme
+ * Every color in the pack comes from the tokens below. Pick a preset in
+ * config.js (theme: "midnight" | "sakura" | "aurora") or add your own
+ * [data-theme="..."] block. */
+
+:root,
+[data-theme="midnight"] {
+  --sky-top: #070a24;
+  --sky-mid: #151241;
+  --sky-bottom: #2b1d5c;
+  --primary: #b9a4ff;
+  --primary-strong: #8f74ff;
+  --accent: #ffd98a;
+  --accent-soft: #fff1c9;
+  --text: #f6f2ff;
+  --text-muted: #b3acdf;
+  --panel: rgba(22, 18, 64, 0.72);
+  --panel-solid: #1a1550;
+  --panel-border: rgba(185, 164, 255, 0.5);
+  --glow: rgba(143, 116, 255, 0.55);
+  --cloud: rgba(120, 100, 210, 0.18);
+  --star: #fff8e1;
+  --moon: #fff3cf;
+}
+
+[data-theme="sakura"] {
+  --sky-top: #1d0c26;
+  --sky-mid: #45183f;
+  --sky-bottom: #7a3155;
+  --primary: #ffb3d1;
+  --primary-strong: #ff7fb0;
+  --accent: #ffe0a3;
+  --accent-soft: #fff4dc;
+  --text: #fff4f8;
+  --text-muted: #e8b3c9;
+  --panel: rgba(62, 20, 52, 0.72);
+  --panel-solid: #3e1434;
+  --panel-border: rgba(255, 179, 209, 0.55);
+  --glow: rgba(255, 127, 176, 0.5);
+  --cloud: rgba(255, 150, 190, 0.16);
+  --star: #fff0f5;
+  --moon: #ffeef2;
+}
+
+[data-theme="aurora"] {
+  --sky-top: #03121a;
+  --sky-mid: #07303a;
+  --sky-bottom: #0e4a4f;
+  --primary: #7ff0d0;
+  --primary-strong: #34d6b0;
+  --accent: #c9f3ff;
+  --accent-soft: #eafcff;
+  --text: #effffb;
+  --text-muted: #9fd6cc;
+  --panel: rgba(6, 42, 52, 0.72);
+  --panel-solid: #072a34;
+  --panel-border: rgba(127, 240, 208, 0.5);
+  --glow: rgba(52, 214, 176, 0.45);
+  --cloud: rgba(90, 220, 200, 0.14);
+  --star: #eafffb;
+  --moon: #e9fff9;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-family: "Nunito", "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Full-screen scenes (starting / brb / ending) */
+body.scene {
+  width: 1920px;
+  height: 1080px;
+  background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-bottom) 100%);
+}
+
+/* Overlays and widgets sit on top of other sources, so stay transparent */
+body.transparent {
+  background: transparent;
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+.display {
+  font-family: "Fredoka", "Nunito", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Glassy rounded panel with a soft glow and two little corner stars */
+.panel {
+  position: relative;
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, 0.03),
+    0 0 40px var(--glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+.panel.starred::before,
+.panel.starred::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: var(--accent);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 0 6px var(--accent));
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+.panel.starred::before {
+  top: -13px;
+  left: 28px;
+}
+.panel.starred::after {
+  bottom: -13px;
+  right: 28px;
+  animation-delay: -1.6s;
+}
+
+/* A four-point sparkle you can drop anywhere: <i class="sparkle"></i> */
+.sparkle {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  background: var(--accent);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  filter: drop-shadow(0 0 4px var(--accent));
+  vertical-align: 0.02em;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 2px solid var(--panel-border);
+  font-weight: 700;
+  color: var(--text);
+}
+.pill .label {
+  color: var(--primary);
+  text-transform: lowercase;
+}
+
+/* Crescent moon: a lit disc with a circular bite masked out, so it works on any sky */
+.moon {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  filter: drop-shadow(0 0 28px var(--glow)) drop-shadow(0 0 60px rgba(255, 230, 170, 0.35));
+  animation: bob 7s ease-in-out infinite;
+}
+.moon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 60%, #fff 0%, var(--moon) 40%, var(--accent) 100%);
+  -webkit-mask: radial-gradient(circle at 72% 30%, transparent 0 43%, #000 44%);
+  mask: radial-gradient(circle at 72% 30%, transparent 0 43%, #000 44%);
+}
+
+/* Soft cloud band along the bottom of a scene */
+.clouds {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  bottom: -40px;
+  height: 320px;
+  pointer-events: none;
+}
+.clouds svg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+.clouds .back {
+  fill: var(--cloud);
+  animation: drift 60s linear infinite alternate;
+}
+.clouds .front {
+  fill: var(--cloud);
+  animation: drift 45s linear infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.6) rotate(45deg); opacity: 0.6; }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes drift {
+  from { transform: translateX(-4%); }
+  to { transform: translateX(4%); }
+}
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to { background-position: 200% 0; }
+}
+
+/* Shimmering gradient text for big headings */
+.shimmer-text {
+  background: linear-gradient(100deg, var(--text) 20%, var(--accent-soft) 40%, var(--accent) 50%, var(--accent-soft) 60%, var(--text) 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+  filter: drop-shadow(0 4px 24px var(--glow));
+}
+
+.is-empty {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+/* Starlight Dreams — alert box */
+
+body.alerts {
+  width: 100vw;
+  height: 100vh;
+}
+
+#stage {
+  position: absolute;
+  inset: 0;
+}
+
+.alert {
+  --dur: 6s;
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  animation: alert-leave 0.6s ease-in calc(var(--dur) - 0.6s) forwards;
+}
+
+.alert .badge {
+  position: relative;
+  z-index: 2;
+  width: 132px;
+  height: 132px;
+  margin-bottom: -58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--accent-soft) 0%, var(--accent) 45%, var(--primary-strong) 100%);
+  border: 5px solid var(--panel-solid);
+  box-shadow: 0 0 0 3px var(--panel-border), 0 0 40px var(--glow), 0 0 80px rgba(255, 220, 150, 0.35);
+  animation: badge-pop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.alert .badge svg {
+  width: 64px;
+  height: 64px;
+  fill: var(--panel-solid);
+  animation: badge-wiggle 2.4s ease-in-out 0.9s infinite;
+}
+
+.alert .card {
+  min-width: 520px;
+  max-width: 720px;
+  padding: 72px 56px 34px;
+  text-align: center;
+  animation: card-rise 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.12s both;
+}
+
+.alert .kind {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 26px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.alert .kind .sparkle {
+  font-size: 18px;
+}
+
+.alert .who {
+  margin-top: 6px;
+  font-size: 68px;
+  line-height: 1.1;
+  word-break: break-word;
+  animation: card-rise 0.6s ease-out 0.3s both, shimmer 3s linear infinite;
+}
+
+.alert .amount {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 6px 22px;
+  border-radius: 999px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 32px;
+  color: var(--panel-solid);
+  background: var(--accent);
+  animation: card-rise 0.6s ease-out 0.45s both;
+}
+
+.alert .msg {
+  margin: 16px auto 0;
+  max-width: 600px;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  animation: card-rise 0.6s ease-out 0.55s both;
+}
+
+/* Sparkles that fly out of the badge */
+.alert .burst {
+  position: absolute;
+  z-index: 3;
+  top: 66px;
+  left: 50%;
+}
+.alert .burst i {
+  position: absolute;
+  width: var(--s);
+  height: var(--s);
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  background: var(--c, var(--accent));
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+  opacity: 0;
+  animation: burst 1.3s cubic-bezier(0.1, 0.7, 0.3, 1) var(--d) both;
+}
+
+/* "bare" mode: label only, for exporting animations to other alert services */
+.bare .who,
+.bare .amount,
+.bare .msg {
+  display: none;
+}
+.bare .card {
+  min-width: 460px;
+  padding: 74px 48px 30px;
+}
+
+@keyframes badge-pop {
+  0% { transform: scale(0) rotate(-120deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+@keyframes badge-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-8deg) scale(1.06); }
+  75% { transform: rotate(8deg) scale(1.06); }
+}
+@keyframes card-rise {
+  0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes burst {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.2) rotate(0deg); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1) rotate(160deg); }
+}
+@keyframes alert-leave {
+  to { opacity: 0; transform: translateX(-50%) translateY(-40px) scale(0.92); }
+}
+.bare .alert {
+  top: 110px;
+}
+
+
+html, body { background: transparent; }

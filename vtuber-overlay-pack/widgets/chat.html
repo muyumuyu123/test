@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Chat — Starlight Dreams</title>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
+    #log {
+      position: absolute;
+      inset: 14px 14px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 12px;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 70px);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 70px);
+    }
+    .msg {
+      flex: none;
+      padding: 12px 18px 14px;
+      border-radius: 20px 20px 20px 6px;
+      background: var(--panel);
+      border: 2px solid var(--panel-border);
+      box-shadow: 0 0 16px var(--glow);
+      animation: msg-in 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+    }
+    .msg.leaving {
+      animation: msg-out 0.5s ease-in forwards;
+    }
+    .msg .head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-family: "Fredoka", sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--primary);
+    }
+    .msg .role {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 999px;
+      color: var(--panel-solid);
+      background: var(--accent);
+    }
+    .msg .role.mod { background: var(--primary); }
+    .msg .body {
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .msg.action .body {
+      font-style: italic;
+      color: var(--primary);
+    }
+    .msg .emote {
+      height: 1.6em;
+      vertical-align: middle;
+      margin: -0.25em 0;
+    }
+    @keyframes msg-in {
+      from { opacity: 0; transform: translateX(-30px) scale(0.95); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes msg-out {
+      to { opacity: 0; transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body class="transparent">
+  <div id="log"></div>
+
+  <script src="../config.js"></script>
+  <script src="../assets/core.js"></script>
+  <script>
+    // Reads Twitch chat anonymously (no login, no keys) and shows it as bubbles.
+    const { cfg, params, still } = SD;
+    const opts = cfg.chat;
+    const log = document.getElementById("log");
+    const hidden = new Set((opts.hideUsers || []).map((u) => u.toLowerCase()));
+
+    // Mix a Twitch name color with white so it stays readable on dark panels
+    function soften(hex) {
+      const m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
+      if (!m) return "";
+      const n = parseInt(m[1], 16);
+      const mix = (c) => Math.round(c + (255 - c) * 0.45);
+      return `rgb(${mix(n >> 16)}, ${mix((n >> 8) & 255)}, ${mix(n & 255)})`;
+    }
+
+    // Twitch reports emote positions in code points: "25:0-4,12-16/1902:6-10"
+    function renderBody(container, text, emoteTag) {
+      const chars = Array.from(text);
+      const spots = [];
+      for (const part of (emoteTag || "").split("/").filter(Boolean)) {
+        const [id, ranges] = part.split(":");
+        for (const r of ranges.split(",")) {
+          const [a, b] = r.split("-").map(Number);
+          spots.push({ id, a, b });
+        }
+      }
+      spots.sort((x, y) => x.a - y.a);
+      let pos = 0;
+      for (const s of spots) {
+        if (s.a > pos) container.append(chars.slice(pos, s.a).join(""));
+        const img = document.createElement("img");
+        img.className = "emote";
+        img.alt = chars.slice(s.a, s.b + 1).join("");
+        img.src = `https://static-cdn.jtvnw.net/emoticons/v2/${s.id}/default/dark/2.0`;
+        container.append(img);
+        pos = s.b + 1;
+      }
+      if (pos < chars.length) container.append(chars.slice(pos).join(""));
+    }
+
+    function addMessage({ id, user, name, color, text, emotes, roles = [], action = false }) {
+      if (hidden.has((user || "").toLowerCase())) return;
+      if (opts.hideCommands && text.trim().startsWith("!")) return;
+
+      const msg = document.createElement("div");
+      msg.className = "msg" + (action ? " action" : "");
+      if (id) msg.dataset.id = id;
+      if (user) msg.dataset.user = user.toLowerCase();
+
+      const head = document.createElement("div");
+      head.className = "head";
+      const who = document.createElement("span");
+      who.textContent = name || user;
+      const soft = soften(color);
+      if (soft) who.style.color = soft;
+      head.append(who);
+      for (const r of roles) {
+        const tag = document.createElement("span");
+        tag.className = "role " + r;
+        tag.textContent = r;
+        head.append(tag);
+      }
+
+      const body = document.createElement("div");
+      body.className = "body";
+      renderBody(body, text, emotes);
+      msg.append(head, body);
+      log.append(msg);
+
+      while (log.children.length > opts.maxMessages) log.firstElementChild.remove();
+      if (opts.fadeAfter > 0) {
+        setTimeout(() => {
+          msg.classList.add("leaving");
+          setTimeout(() => msg.remove(), 500);
+        }, opts.fadeAfter * 1000);
+      }
+    }
+
+    function parseTags(raw) {
+      const tags = {};
+      for (const pair of raw.split(";")) {
+        const i = pair.indexOf("=");
+        tags[pair.slice(0, i)] = pair.slice(i + 1).replace(/\\s/g, " ").replace(/\\:/g, ";").replace(/\\\\/g, "\\");
+      }
+      return tags;
+    }
+
+    function connect(channel) {
+      const ws = new WebSocket("wss://irc-ws.chat.twitch.tv:443");
+      ws.onopen = () => {
+        ws.send("CAP REQ :twitch.tv/tags twitch.tv/commands");
+        ws.send("PASS SCHMOOPIIE");
+        ws.send(`NICK justinfan${Math.floor(10000 + Math.random() * 80000)}`);
+        ws.send(`JOIN #${channel.toLowerCase().replace(/^#/, "")}`);
+      };
+      ws.onmessage = (e) => {
+        for (const line of e.data.split("\r\n")) {
+          if (!line) continue;
+          if (line.startsWith("PING")) {
+            ws.send("PONG :tmi.twitch.tv");
+            continue;
+          }
+          const m = /^(?:@(\S+) )?:(\S+?)(?:!\S+)? (\S+) #\S+(?: :(.*))?$/.exec(line);
+          if (!m) continue;
+          const [, rawTags, prefix, command, trailing = ""] = m;
+          const tags = rawTags ? parseTags(rawTags) : {};
+
+          if (command === "PRIVMSG") {
+            let text = trailing;
+            const action = /^\u0001ACTION (.*)\u0001$/.exec(text);
+            if (action) text = action[1];
+            const badges = tags.badges || "";
+            const roles = [];
+            if (badges.includes("broadcaster/")) roles.push("host");
+            else if (badges.includes("moderator/")) roles.push("mod");
+            else if (badges.includes("vip/")) roles.push("vip");
+            addMessage({
+              id: tags.id,
+              user: prefix,
+              name: tags["display-name"],
+              color: tags.color,
+              text,
+              emotes: tags.emotes,
+              roles,
+              action: !!action,
+            });
+          } else if (command === "CLEARMSG" && tags["target-msg-id"]) {
+            log.querySelector(`[data-id="${CSS.escape(tags["target-msg-id"])}"]`)?.remove();
+          } else if (command === "CLEARCHAT") {
+            if (trailing) log.querySelectorAll(`[data-user="${CSS.escape(trailing.toLowerCase())}"]`).forEach((n) => n.remove());
+            else log.textContent = "";
+          }
+        }
+      };
+      ws.onclose = () => setTimeout(() => connect(channel), 3000);
+    }
+
+    const DEMO = [
+      { user: "starrymochi", name: "StarryMochi", color: "#FF69B4", text: "good evening!! ✨" },
+      { user: "moonlit_kay", name: "moonlit_kay", color: "#8A2BE2", text: "the new overlay is so pretty omg", roles: ["vip"] },
+      { user: "pixelpudding", name: "pixelpudding", color: "#1E90FF", text: "is that the lavender theme?" },
+      { user: "nightowl", name: "NightOwl", color: "#00C8A0", text: "waves at chat", action: true },
+      { user: "hanabi", name: "Hanabi", color: "#FF7F50", text: "did you finish the castle build yet", roles: ["mod"] },
+      { user: "cometcat", name: "CometCat", color: "#DAA520", text: "cozy vibes only tonight ☾" },
+    ];
+
+    SD.onReady(() => {
+      const channel = opts.twitchChannel;
+      if (channel && !params.has("demo")) {
+        connect(channel);
+        return;
+      }
+      let i = 0;
+      const push = () => addMessage(DEMO[i++ % DEMO.length]);
+      if (still) {
+        DEMO.forEach(push);
+        return;
+      }
+      push();
+      setInterval(push, 2600);
+    });
+  </script>
+</body>
+</html>

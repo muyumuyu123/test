@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Goal Bar — Starlight Dreams</title>
+  <link rel="stylesheet" href="../assets/theme.css">
+  <style>
+    /* Designed for an 800 × 170 browser source */
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+    }
+    .goal {
+      width: calc(100vw - 40px);
+      padding: 20px 30px 26px;
+    }
+    .top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 14px;
+    }
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 30px;
+      white-space: nowrap;
+    }
+    .title .sparkle {
+      font-size: 20px;
+    }
+    .count {
+      font-family: "Fredoka", sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .count .of {
+      color: var(--text-muted);
+    }
+    .track {
+      position: relative;
+      height: 30px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid var(--panel-border);
+    }
+    .bar-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-radius: inherit;
+      background:
+        linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%) 0 0 / 200% 100%,
+        linear-gradient(90deg, var(--primary-strong), var(--primary) 55%, var(--accent));
+      box-shadow: 0 0 18px var(--glow);
+      transition: width 1.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+      animation: shimmer 3.5s linear infinite;
+    }
+    .tip {
+      position: absolute;
+      right: -22px;
+      top: 50%;
+      width: 44px;
+      height: 44px;
+      margin-top: -22px;
+      background: var(--accent);
+      clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+      filter: drop-shadow(0 0 10px var(--accent));
+      animation: twinkle 2.4s ease-in-out infinite;
+    }
+    .goal.done .count::after {
+      content: " ✦ reached!";
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body class="transparent">
+  <div class="panel starred goal" id="goal">
+    <div class="top">
+      <span class="title display"><i class="sparkle"></i><span data-cfg="goal.title"></span></span>
+      <span class="count"><span id="cur">0</span> <span class="of">/ <span id="max">0</span></span> <span id="unit" data-cfg="goal.unit"></span></span>
+    </div>
+    <div class="track"><div class="bar-fill" id="fill"><i class="tip"></i></div></div>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="../assets/core.js"></script>
+  <script>
+    const { cfg, params, bindText, onReady } = SD;
+    const g = cfg.goal;
+    // URL overrides so you can update the goal without editing config: goal.html?current=812&target=1000
+    if (params.get("current")) g.current = Number(params.get("current"));
+    if (params.get("target")) g.target = Number(params.get("target"));
+
+    const fmt = (n) => Number(n).toLocaleString();
+
+    function setGoal(current, target = g.target) {
+      g.current = current;
+      g.target = target;
+      const pct = target > 0 ? Math.min(100, (current / target) * 100) : 0;
+      document.getElementById("cur").textContent = fmt(current);
+      document.getElementById("max").textContent = fmt(target);
+      document.getElementById("fill").style.width = `${Math.max(pct, 3)}%`;
+      document.getElementById("goal").classList.toggle("done", current >= target);
+    }
+    window.setGoal = setGoal;
+
+    onReady(() => {
+      bindText();
+      requestAnimationFrame(() => setGoal(g.current, g.target));
+      if (params.has("demo")) {
+        setInterval(() => setGoal(g.current >= g.target ? Math.round(g.target * 0.6) : g.current + Math.ceil(g.target / 25)), 2500);
+      }
+    });
+  </script>
+</body>
+</html>
