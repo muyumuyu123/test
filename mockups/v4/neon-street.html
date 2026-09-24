@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Neon Street — realistic art overlay mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --cyan: #6ef3ff; --pink: #ff4fa3; --violet: #a86bff; --amber: #ffc861; --ink: #05060b; }
+    .screen { color: #fff; font-family: "Rajdhani", sans-serif; background: #000; }
+    .art { position: absolute; inset: 0; background: url("art/street-real.jpg") center / cover no-repeat; }
+    .grade { inset: 0; background: linear-gradient(180deg, rgba(20, 10, 40, 0.15), rgba(0, 0, 0, 0) 40%), radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0, 0, 0, 0.55)); mix-blend-mode: multiply; }
+    .rain { inset: 0; pointer-events: none; opacity: 0.35;
+      background: repeating-linear-gradient(100deg, transparent 0 14px, rgba(200, 230, 255, 0.22) 14px 15px, transparent 15px 37px) 0 0 / 240px 240px;
+      animation: rain 0.5s linear infinite; }
+    @keyframes rain { to { background-position: -40px 240px; } }
+    .flicker { animation: flicker 5s infinite; }
+    @keyframes flicker { 0%, 43%, 47%, 100% { opacity: 1; } 45% { opacity: 0.55; } }
+
+    /* ---- in-world replacement signs (warped onto the original boards) ---- */
+    .sign { box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: #0d0b1c; }
+    .sign.pink { width: 550px; height: 200px; border: 5px solid #1a1030; box-shadow: inset 0 0 0 5px rgba(170, 110, 255, 0.95), inset 0 0 0 9px #0d0b1c, inset 0 0 0 12px rgba(255, 90, 170, 0.9), inset 0 0 40px rgba(170, 110, 255, 0.35), 0 0 30px rgba(170, 110, 255, 0.6); }
+    .sign.pink b { font: 700 96px/0.95 "Barlow Condensed"; letter-spacing: 0.02em; color: #ffd6ea; text-shadow: 0 0 4px #fff, 0 0 14px var(--pink), 0 0 30px var(--pink), 0 0 60px var(--pink); }
+    .sign.pink span { font: 700 58px/1 "Barlow Condensed"; letter-spacing: 0.08em; color: #ffd6ea; text-shadow: 0 0 10px var(--pink), 0 0 26px var(--pink); }
+    .sign.cyan { width: 440px; height: 240px; background: #07131c; border: 4px solid #0a1a24; box-shadow: inset 0 18px 0 -12px rgba(110, 243, 255, 0.9), inset 0 -18px 0 -12px rgba(110, 243, 255, 0.9), inset 0 0 40px rgba(110, 243, 255, 0.25), 0 0 28px rgba(110, 243, 255, 0.5); }
+    .sign.cyan b { font: 700 78px/0.95 "Barlow Condensed"; color: #d8fbff; text-shadow: 0 0 4px #fff, 0 0 12px var(--cyan), 0 0 28px var(--cyan); }
+    .sign.cyan span { margin-top: 8px; font: 700 40px/1 "Barlow Condensed"; letter-spacing: 0.1em; color: #d8fbff; text-shadow: 0 0 10px var(--cyan), 0 0 22px var(--cyan); }
+
+    /* ---- START: cinematic HUD ---- */
+    .shade-bottom { left: 0; right: 0; bottom: 0; height: 520px; background: linear-gradient(180deg, transparent, rgba(3, 3, 10, 0.72) 45%, rgba(3, 3, 10, 0.94)); }
+    .shade-left { left: 0; top: 0; bottom: 0; width: 1100px; background: linear-gradient(90deg, rgba(3, 3, 10, 0.55), transparent); }
+    .standby { left: 80px; top: 64px; display: flex; align-items: center; gap: 14px; font: 600 22px "Rajdhani"; letter-spacing: 0.4em; color: rgba(255, 255, 255, 0.85); }
+    .standby i { width: 12px; height: 12px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 12px #ff3b5c; animation: blink 1.2s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0.2; } }
+    .meta { left: 84px; top: 690px; font: 600 24px "Rajdhani"; letter-spacing: 0.32em; color: var(--cyan); text-shadow: 0 0 14px rgba(110, 243, 255, 0.6); }
+    .title { left: 76px; top: 718px; margin: 0; font: 700 176px/1 "Barlow Condensed"; letter-spacing: 0.01em; text-transform: uppercase; color: #fff; text-shadow: 0 6px 40px rgba(0, 0, 0, 0.6); }
+    .row { left: 84px; top: 918px; display: flex; align-items: center; gap: 34px; }
+    .count { font: 500 84px/1 "Barlow Condensed"; font-variant-numeric: tabular-nums; color: var(--amber); text-shadow: 0 0 22px rgba(255, 200, 97, 0.45); }
+    .vr { width: 2px; height: 70px; background: rgba(255, 255, 255, 0.3); }
+    .tonight small { display: block; font: 600 18px "Rajdhani"; letter-spacing: 0.4em; color: rgba(255, 255, 255, 0.55); }
+    .tonight b { font: 600 34px "Rajdhani"; letter-spacing: 0.02em; }
+    .socials { right: 80px; bottom: 60px; text-align: right; font: 600 24px/1.7 "Rajdhani"; letter-spacing: 0.04em; }
+    .socials span { color: var(--cyan); letter-spacing: 0.3em; font-size: 16px; margin-right: 12px; }
+
+    /* ---- LIVE ---- */
+    .art.dim { filter: brightness(0.42) saturate(1.2) blur(2px); transform: scale(1.03); }
+    .game { left: 40px; top: 40px; width: 1392px; height: 783px; outline: 1px solid rgba(110, 243, 255, 0.55); outline-offset: 6px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6); }
+    .game canvas { width: 100%; height: 100%; display: block; }
+    .brk { position: absolute; width: 34px; height: 34px; border: 3px solid var(--cyan); filter: drop-shadow(0 0 6px var(--cyan)); }
+    .tag { position: absolute; left: 22px; top: 20px; display: flex; align-items: center; gap: 10px; padding: 6px 16px; background: rgba(5, 6, 11, 0.75); font: 700 20px "Rajdhani"; letter-spacing: 0.3em; }
+    .tag i { width: 10px; height: 10px; border-radius: 50%; background: #ff3b5c; box-shadow: 0 0 10px #ff3b5c; }
+    .tag b { font-weight: 500; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.7); }
+    .chat { left: 1470px; top: 40px; width: 410px; height: 540px; padding: 18px 20px; background: linear-gradient(180deg, rgba(5, 6, 11, 0.78), rgba(5, 6, 11, 0.55)); border-left: 2px solid var(--cyan); backdrop-filter: blur(10px); }
+    .chat h4 { margin: 0 0 12px; font: 700 18px "Rajdhani"; letter-spacing: 0.4em; color: var(--cyan); }
+    .chat .m { margin-bottom: 14px; font: 500 23px/1.3 "Rajdhani"; color: rgba(255, 255, 255, 0.92); }
+    .chat .m b { font-weight: 700; margin-right: 8px; }
+    .goal { left: 1470px; top: 604px; width: 410px; }
+    .goal .t { display: flex; justify-content: space-between; font: 700 17px "Rajdhani"; letter-spacing: 0.3em; color: rgba(255, 255, 255, 0.7); }
+    .goal .t b { color: var(--amber); letter-spacing: 0.05em; font-size: 20px; }
+    .goal .bar { height: 4px; margin-top: 10px; background: rgba(255, 255, 255, 0.15); }
+    .goal .bar i { display: block; height: 100%; width: 74%; background: var(--amber); box-shadow: 0 0 12px var(--amber); }
+    .lvmodel { left: 1490px; top: 660px; width: 380px; height: 420px; }
+    .name { left: 40px; top: 866px; }
+    .name small { display: block; font: 600 20px "Rajdhani"; letter-spacing: 0.4em; color: var(--cyan); }
+    .name b { display: block; font: 700 96px/1 "Barlow Condensed"; letter-spacing: 0.01em; text-transform: uppercase; }
+    .name span { font: 600 22px "Rajdhani"; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.6); }
+    .alert { left: 400px; top: 170px; width: 680px; height: 250px; transform: perspective(1400px) rotateY(-10deg) rotateZ(-2deg); }
+    .alert .sign.pink { width: 680px; height: 250px; }
+    .alert .sign.pink small { font: 700 26px "Rajdhani"; letter-spacing: 0.5em; color: #ffd6ea; text-shadow: 0 0 10px var(--pink); margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <!-- ================= START ================= -->
+  <section class="screen">
+    <div class="art"></div>
+    <!-- in-world signs replacing the originals -->
+    <div class="sign pink flicker" data-quad="1692,465 1898,324 1914,456 1702,555"><b>NOVA'S</b><span>TERRITORY</span></div>
+    <div class="sign cyan" data-quad="384,546 543,591 539,673 381,635"><b>LIVE 20:00</b><span>NOVA MOONPETAL</span></div>
+    <div class="abs grade"></div>
+    <div class="abs shade-left"></div>
+    <div class="abs shade-bottom"></div>
+    <div class="abs rain"></div>
+
+    <div class="abs standby"><i></i>STANDBY</div>
+    <div class="abs meta">NOVA MOONPETAL · STREAM 147</div>
+    <h1 class="abs title">Starting soon</h1>
+    <div class="abs row">
+      <span class="count">04:59</span>
+      <span class="vr"></span>
+      <span class="tonight"><small>TONIGHT</small><b>Ranked grind: road to champion</b></span>
+    </div>
+    <div class="abs socials">
+      <div><span>TWITCH</span>novamoonpetal</div>
+      <div><span>YOUTUBE</span>@NovaMoonpetal</div>
+      <div><span>X</span>@nova_moonpetal</div>
+    </div>
+  </section>
+
+  <!-- ================= LIVE ================= -->
+  <section class="screen">
+    <div class="art dim"></div>
+    <div class="abs rain" style="opacity:.2"></div>
+    <div class="abs game">
+      <canvas id="g1"></canvas>
+      <i class="brk" style="left:-10px; top:-10px; border-right:0; border-bottom:0"></i>
+      <i class="brk" style="right:-10px; top:-10px; border-left:0; border-bottom:0"></i>
+      <i class="brk" style="left:-10px; bottom:-10px; border-right:0; border-top:0"></i>
+      <i class="brk" style="right:-10px; bottom:-10px; border-left:0; border-top:0"></i>
+      <span class="tag"><i></i>LIVE <b>01:42:07</b></span>
+    </div>
+    <div class="abs chat">
+      <h4>CHAT</h4>
+      <div class="m"><b style="color:#6ef3ff">starrymochi</b>gg that was clean</div>
+      <div class="m"><b style="color:#ff4fa3">moonlit_kay</b>this city bg is insane</div>
+      <div class="m"><b style="color:#ffc861">pixelpudding</b>!lurk</div>
+      <div class="m"><b style="color:#a86bff">hanabi</b>o7 night city vibes</div>
+      <div class="m"><b style="color:#6ef3ff">cometcat</b>first time here, hi!</div>
+      <div class="m"><b style="color:#ff4fa3">nightowl</b>the rain sfx tho</div>
+    </div>
+    <div class="abs goal"><div class="t"><span>FOLLOWER GOAL</span><b>742 / 1000</b></div><div class="bar"><i></i></div></div>
+    <div class="abs lvmodel" id="lvm"></div>
+    <div class="abs name"><small>NOW LIVE</small><b>Nova Moonpetal</b><span>twitch.tv/novamoonpetal · @nova_moonpetal</span></div>
+    <div class="abs alert"><div class="sign pink"><small>NEW FOLLOWER</small><b>StarryMochi</b></div></div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="scene.js"></script>
+  <script>
+    SCENE.ready(() => {
+      SCENE.placeQuads();
+      M2.game(document.getElementById("g1"), 91);
+      document.getElementById("lvm").innerHTML = M2.model({ fill: "#0a0c18", stroke: "#6ef3ff", width: 3 });
+    });
+  </script>
+</body>
+</html>

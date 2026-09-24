@@ -24,6 +24,7 @@ SPECS = [
     ("family=Silkscreen:wght@400;700", False),
     ("family=Caveat+Brush&family=Patrick+Hand&family=Special+Elite", False),
     ("family=Playfair+Display+SC:wght@700;900&family=Oswald:wght@400..700&family=Space+Mono:wght@400;700", False),
+    ("family=Rajdhani:wght@500;600;700&family=Bangers&family=Barlow+Condensed:ital,wght@0,500;0,700;1,700", False),
     # Japanese: subset to the glyphs used by the pages (plus ASCII)
     ("family=Dela+Gothic+One&family=Rampart+One&family=M+PLUS+Rounded+1c:wght@500;800&family=DotGothic16", True),
 ]

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Ink Alley — illustrated art overlay mockup</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root { --ink: #16120f; --paper: #f3e6c4; --teal: #7ff2dc; --amber: #ffb34d; --red: #e04a3a; }
+    .screen { color: var(--ink); font-family: "Rajdhani", sans-serif; background: #000; }
+    .art { position: absolute; inset: 0; background: url("art/alley-drawn.jpg") center / cover no-repeat; }
+    .rain { inset: 0; pointer-events: none; opacity: 0.3;
+      background: repeating-linear-gradient(98deg, transparent 0 18px, rgba(220, 240, 255, 0.28) 18px 19px, transparent 19px 45px) 0 0 / 260px 260px;
+      animation: rain 0.55s linear infinite; }
+    @keyframes rain { to { background-position: -36px 260px; } }
+
+    /* ---- in-world signs, drawn in the same inked style as the art ---- */
+    .board { box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .board.teal { width: 420px; height: 210px; background: radial-gradient(ellipse at 40% 40%, #5a3a2a, #3a241a 75%); border: 7px solid var(--ink); box-shadow: inset 0 0 0 4px #7a5540, inset 0 0 26px rgba(0, 0, 0, 0.6); }
+    .board.teal .jp { font: 60px/1 "Dela Gothic One"; color: #ffd08a; text-shadow: 0 0 6px #ff9a3c, 0 0 18px #ff9a3c, 0 0 36px rgba(255, 140, 60, 0.6); letter-spacing: 0.06em; }
+    .board.teal b { margin-top: 12px; font: 700 44px/1 "Rajdhani"; letter-spacing: 0.04em; color: #c9fff4; text-shadow: 0 0 6px var(--teal), 0 0 18px var(--teal); }
+    .board.paper { width: 440px; height: 160px; background: radial-gradient(ellipse at 45% 35%, #fff4cc, #f0d890 60%, #d9b56a); border: 7px solid var(--ink); box-shadow: inset 0 0 22px rgba(120, 80, 20, 0.45); }
+    .board.paper .row { display: flex; align-items: baseline; gap: 18px; }
+    .board.paper .jp { font: 46px/1 "Dela Gothic One"; color: #b0302a; }
+    .board.paper b { font: 400 92px/1 "Bangers"; letter-spacing: 0.04em; color: #b0302a; -webkit-text-stroke: 1px #6a1a14; }
+
+    /* ---- comic caption boxes ---- */
+    .cap { position: absolute; background: var(--paper); border: 5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+    .cap.small { left: 48px; top: 44px; padding: 10px 22px; font: 700 24px "Rajdhani"; letter-spacing: 0.24em; transform: rotate(-1.2deg); }
+    .cap.title { left: 48px; top: 800px; padding: 12px 34px 16px 30px; transform: rotate(-1.5deg); }
+    .cap.title b { display: block; font: 400 132px/0.92 "Bangers"; letter-spacing: 0.03em; color: var(--ink); }
+    .cap.title span { display: block; margin-top: 6px; font: 700 26px "Rajdhani"; letter-spacing: 0.08em; }
+    .cap.title span em { font-style: normal; color: var(--red); }
+    .cap.soc { right: 44px; bottom: 44px; padding: 10px 22px; font: 700 23px/1.5 "Rajdhani"; transform: rotate(1deg); }
+    .cap.soc b { color: var(--red); letter-spacing: 0.18em; font-size: 17px; margin-right: 10px; }
+
+    /* ---- LIVE: comic page layout over the art ---- */
+    .art.dim { filter: brightness(0.5) saturate(1.1); }
+    .panel { position: absolute; border: 8px solid var(--ink); box-shadow: 10px 10px 0 rgba(22, 18, 15, 0.85); background: var(--paper); }
+    .gp { left: 40px; top: 40px; width: 1400px; height: 788px; transform: rotate(-0.4deg); }
+    .gp canvas { display: block; width: 100%; height: 100%; }
+    .gp .lbl { position: absolute; left: -8px; top: -8px; padding: 6px 18px; background: var(--red); color: #fff; font: 400 34px "Bangers"; letter-spacing: 0.08em; border: 6px solid var(--ink); }
+    .bubbles { left: 1478px; top: 44px; width: 406px; }
+    .bub { position: relative; margin-bottom: 26px; padding: 12px 18px 14px; background: #fff; border: 5px solid var(--ink); border-radius: 26px; font: 600 23px/1.25 "Rajdhani"; }
+    .bub b { display: block; font: 400 22px "Bangers"; letter-spacing: 0.06em; color: var(--red); }
+    .bub::before, .bub::after { content: ""; position: absolute; clip-path: polygon(0 0, 100% 0, 12% 100%); }
+    .bub::before { left: 30px; bottom: -30px; width: 38px; height: 30px; background: var(--ink); }
+    .bub::after { left: 37px; bottom: -19px; width: 24px; height: 19px; background: #fff; }
+    .bub:nth-child(even)::before, .bub:nth-child(even)::after { left: auto; clip-path: polygon(0 0, 100% 0, 88% 100%); }
+    .bub:nth-child(even)::before { right: 30px; }
+    .bub:nth-child(even)::after { right: 37px; }
+    .goal { left: 1478px; top: 616px; width: 406px; padding: 10px 16px 14px; transform: rotate(0.8deg); }
+    .goal .t { display: flex; justify-content: space-between; font: 400 26px "Bangers"; letter-spacing: 0.06em; }
+    .goal .t b { color: var(--red); font-weight: 400; }
+    .goal .bar { height: 20px; margin-top: 6px; border: 4px solid var(--ink); background: #fff; }
+    .goal .bar i { display: block; height: 100%; width: 74%; background: repeating-linear-gradient(-45deg, var(--amber) 0 10px, #ff9a2a 10px 20px); border-right: 4px solid var(--ink); }
+    .lvmodel { left: 1480px; top: 700px; width: 400px; height: 380px; }
+    .namecap { left: 40px; top: 872px; padding: 10px 30px 14px; transform: rotate(-1deg); }
+    .namecap b { display: block; font: 400 88px/0.95 "Bangers"; letter-spacing: 0.03em; }
+    .namecap span { font: 700 22px "Rajdhani"; letter-spacing: 0.08em; }
+    .alert { left: 420px; top: 150px; width: 700px; height: 300px; }
+    .burst { position: absolute; inset: 0; }
+    .alert .txt { position: absolute; left: 0; right: 0; top: 70px; text-align: center; }
+    .alert .txt small { display: inline-block; padding: 4px 16px; background: var(--ink); color: var(--amber); font: 400 30px "Bangers"; letter-spacing: 0.12em; transform: rotate(-2deg); }
+    .alert .txt b { display: block; margin-top: 6px; font: 400 100px/1 "Bangers"; letter-spacing: 0.03em; color: #fff; -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; text-shadow: 6px 6px 0 var(--ink); transform: rotate(-3deg); }
+  </style>
+</head>
+<body>
+  <!-- ================= START ================= -->
+  <section class="screen">
+    <div class="art"></div>
+    <div class="board teal" data-quad="491,381 701,376 705,479 493,484"><span class="jp">配信開始</span><b>STARTING SOON</b></div>
+    <div class="board paper" data-quad="1542,525 1758,485 1779,558 1566,601"><div class="row"><span class="jp">あと</span><b>04:59</b></div></div>
+    <div class="abs rain"></div>
+
+    <div class="cap small">NOVA MOONPETAL · EPISODE 147</div>
+    <div class="cap title"><b>Starting soon...</b><span>TONIGHT: <em>ranked grind</em> — grab a noodle bowl, the stream's cooking</span></div>
+    <div class="cap soc">
+      <div><b>TWITCH</b>novamoonpetal</div>
+      <div><b>YOUTUBE</b>@NovaMoonpetal</div>
+      <div><b>X</b>@nova_moonpetal</div>
+    </div>
+  </section>
+
+  <!-- ================= LIVE ================= -->
+  <section class="screen">
+    <div class="art dim"></div>
+    <div class="abs rain" style="opacity:.18"></div>
+    <div class="panel gp"><canvas id="g1"></canvas><span class="lbl">LIVE!</span></div>
+    <div class="abs bubbles">
+      <div class="bub"><b>STARRYMOCHI</b>gg that was clean!!</div>
+      <div class="bub"><b>MOONLIT_KAY</b>this comic style omg</div>
+      <div class="bub"><b>PIXELPUDDING</b>one syntho-noodle pls</div>
+      <div class="bub"><b>HANABI</b>o7 alley gang</div>
+    </div>
+    <div class="panel goal"><div class="t"><span>FOLLOWER GOAL</span><b>742 / 1000</b></div><div class="bar"><i></i></div></div>
+    <div class="abs lvmodel" id="lvm"></div>
+    <div class="panel namecap"><b>Nova Moonpetal</b><span>twitch.tv/novamoonpetal · @nova_moonpetal</span></div>
+    <div class="abs alert">
+      <svg class="burst" id="burst" viewBox="0 0 700 300"></svg>
+      <div class="txt"><small>NEW FOLLOWER!</small><b>StarryMochi</b></div>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="scene.js"></script>
+  <script>
+    // Jagged comic burst
+    (function () {
+      const r = M2.rng(5), pts = [];
+      for (let i = 0; i < 44; i++) {
+        const a = (i / 44) * Math.PI * 2, k = i % 2 ? 0.8 + r() * 0.05 : 1 + r() * 0.12;
+        pts.push(`${(350 + Math.cos(a) * 330 * k).toFixed(1)},${(150 + Math.sin(a) * 138 * k).toFixed(1)}`);
+      }
+      const p = pts.join(" ");
+      document.getElementById("burst").innerHTML =
+        `<polygon points="${p}" transform="translate(10 10)" fill="#16120f"/><polygon points="${p}" fill="#e04a3a" stroke="#16120f" stroke-width="7" stroke-linejoin="round"/>`;
+    })();
+    SCENE.ready(() => {
+      SCENE.placeQuads();
+      M2.game(document.getElementById("g1"), 93);
+      document.getElementById("lvm").innerHTML = M2.model({ fill: "#f3e6c4", stroke: "#16120f", width: 6 });
+    });
+  </script>
+</body>
+</html>
