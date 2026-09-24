@@ -27,21 +27,21 @@
     /* ---- comic caption boxes ---- */
     .cap { position: absolute; background: var(--paper); border: 5px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
     .cap.small { left: 48px; top: 44px; padding: 10px 22px; font: 700 24px "Rajdhani"; letter-spacing: 0.24em; transform: rotate(-1.2deg); }
-    .cap.title { left: 48px; top: 800px; padding: 12px 34px 16px 30px; transform: rotate(-1.5deg); }
-    .cap.title b { display: block; font: 400 132px/0.92 "Bangers"; letter-spacing: 0.03em; color: var(--ink); }
-    .cap.title span { display: block; margin-top: 6px; font: 700 26px "Rajdhani"; letter-spacing: 0.08em; }
+    .cap.title { left: 48px; top: 838px; padding: 12px 34px 16px 30px; transform: rotate(-1.5deg); }
+    .cap.title b { display: block; font: 400 100px/0.92 "Bangers"; letter-spacing: 0.03em; color: var(--ink); }
+    .cap.title span { display: block; margin-top: 6px; font: 700 22px "Rajdhani"; letter-spacing: 0.08em; }
     .cap.title span em { font-style: normal; color: var(--red); }
     .cap.soc { right: 44px; bottom: 44px; padding: 10px 22px; font: 700 23px/1.5 "Rajdhani"; transform: rotate(1deg); }
     .cap.soc b { color: var(--red); letter-spacing: 0.18em; font-size: 17px; margin-right: 10px; }
 
     /* ---- LIVE: comic page layout over the art ---- */
-    .art.dim { filter: brightness(0.5) saturate(1.1); }
+    .art.dim { filter: brightness(0.92); }
     .panel { position: absolute; border: 8px solid var(--ink); box-shadow: 10px 10px 0 rgba(22, 18, 15, 0.85); background: var(--paper); }
-    .gp { left: 40px; top: 40px; width: 1400px; height: 788px; transform: rotate(-0.4deg); }
+    .gp { left: 40px; top: 40px; width: 1280px; height: 720px; transform: rotate(-0.4deg); }
     .gp canvas { display: block; width: 100%; height: 100%; }
     .gp .lbl { position: absolute; left: -8px; top: -8px; padding: 6px 18px; background: var(--red); color: #fff; font: 400 34px "Bangers"; letter-spacing: 0.08em; border: 6px solid var(--ink); }
-    .bubbles { left: 1478px; top: 44px; width: 406px; }
-    .bub { position: relative; margin-bottom: 26px; padding: 12px 18px 14px; background: #fff; border: 5px solid var(--ink); border-radius: 26px; font: 600 23px/1.25 "Rajdhani"; }
+    .bubbles { left: 700px; top: 800px; width: 620px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
+    .bub { position: relative; margin-bottom: 32px; padding: 8px 16px 10px; background: #fff; border: 5px solid var(--ink); border-radius: 26px; font: 600 23px/1.25 "Rajdhani"; }
     .bub b { display: block; font: 400 22px "Bangers"; letter-spacing: 0.06em; color: var(--red); }
     .bub::before, .bub::after { content: ""; position: absolute; clip-path: polygon(0 0, 100% 0, 12% 100%); }
     .bub::before { left: 30px; bottom: -30px; width: 38px; height: 30px; background: var(--ink); }
@@ -49,16 +49,16 @@
     .bub:nth-child(even)::before, .bub:nth-child(even)::after { left: auto; clip-path: polygon(0 0, 100% 0, 88% 100%); }
     .bub:nth-child(even)::before { right: 30px; }
     .bub:nth-child(even)::after { right: 37px; }
-    .goal { left: 1478px; top: 616px; width: 406px; padding: 10px 16px 14px; transform: rotate(0.8deg); }
+    .goal { display: none; }
     .goal .t { display: flex; justify-content: space-between; font: 400 26px "Bangers"; letter-spacing: 0.06em; }
     .goal .t b { color: var(--red); font-weight: 400; }
     .goal .bar { height: 20px; margin-top: 6px; border: 4px solid var(--ink); background: #fff; }
     .goal .bar i { display: block; height: 100%; width: 74%; background: repeating-linear-gradient(-45deg, var(--amber) 0 10px, #ff9a2a 10px 20px); border-right: 4px solid var(--ink); }
-    .lvmodel { left: 1480px; top: 700px; width: 400px; height: 380px; }
-    .namecap { left: 40px; top: 872px; padding: 10px 30px 14px; transform: rotate(-1deg); }
-    .namecap b { display: block; font: 400 88px/0.95 "Bangers"; letter-spacing: 0.03em; }
+    .lvmodel { left: 1420px; top: 640px; width: 440px; height: 440px; }
+    .namecap { left: 40px; top: 800px; padding: 10px 30px 14px; transform: rotate(-1deg); }
+    .namecap b { display: block; font: 400 76px/0.95 "Bangers"; letter-spacing: 0.03em; }
     .namecap span { font: 700 22px "Rajdhani"; letter-spacing: 0.08em; }
-    .alert { left: 420px; top: 150px; width: 700px; height: 300px; }
+    .alert { left: 330px; top: 140px; width: 700px; height: 300px; }
     .burst { position: absolute; inset: 0; }
     .alert .txt { position: absolute; left: 0; right: 0; top: 70px; text-align: center; }
     .alert .txt small { display: inline-block; padding: 4px 16px; background: var(--ink); color: var(--amber); font: 400 30px "Bangers"; letter-spacing: 0.12em; transform: rotate(-2deg); }
@@ -93,7 +93,8 @@
       <div class="bub"><b>PIXELPUDDING</b>one syntho-noodle pls</div>
       <div class="bub"><b>HANABI</b>o7 alley gang</div>
     </div>
-    <div class="panel goal"><div class="t"><span>FOLLOWER GOAL</span><b>742 / 1000</b></div><div class="bar"><i></i></div></div>
+    <div class="board paper" data-quad="1542,525 1758,485 1779,558 1566,601"><div class="row"><span class="jp">目標</span><b style="font-size:66px">742/1000</b></div></div>
+    <div class="abs cap" style="left:1370px; top:420px; padding:6px 16px; font:400 26px 'Bangers'; letter-spacing:.06em; transform:rotate(2deg)">FOLLOWER GOAL ↘</div>
     <div class="abs lvmodel" id="lvm"></div>
     <div class="panel namecap"><b>Nova Moonpetal</b><span>twitch.tv/novamoonpetal · @nova_moonpetal</span></div>
     <div class="abs alert">

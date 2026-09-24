@@ -432,38 +432,38 @@
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url(64eaa3d8d0.woff2) format('woff2');
-  unicode-range: U+20-7e, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+8133, U+914d, U+958b, U+96fb, U+9eba;
+  src: url(00f5462cb0.woff2) format('woff2');
+  unicode-range: U+20-7e, U+2014, U+2198, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+6a19, U+76ee, U+8133, U+914d, U+958b, U+96fb, U+9eba;
 }
 @font-face {
   font-family: 'DotGothic16';
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url(0b0d97289a.woff2) format('woff2');
-  unicode-range: U+20-7e, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+8133, U+914d, U+958b, U+96fb, U+9eba;
+  src: url(15ef605a20.woff2) format('woff2');
+  unicode-range: U+20-7e, U+2014, U+2198, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+6a19, U+76ee, U+8133, U+914d, U+958b, U+96fb, U+9eba;
 }
 @font-face {
   font-family: 'M PLUS Rounded 1c';
   font-style: normal;
   font-weight: 500;
   font-display: block;
-  src: url(a87679ce0f.woff2) format('woff2');
-  unicode-range: U+20-7e, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+8133, U+914d, U+958b, U+96fb, U+9eba;
+  src: url(35b6b61c14.woff2) format('woff2');
+  unicode-range: U+20-7e, U+2014, U+2198, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+6a19, U+76ee, U+8133, U+914d, U+958b, U+96fb, U+9eba;
 }
 @font-face {
   font-family: 'M PLUS Rounded 1c';
   font-style: normal;
   font-weight: 800;
   font-display: block;
-  src: url(9b13ed3b14.woff2) format('woff2');
-  unicode-range: U+20-7e, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+8133, U+914d, U+958b, U+96fb, U+9eba;
+  src: url(e2b1cd7d14.woff2) format('woff2');
+  unicode-range: U+20-7e, U+2014, U+2198, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+6a19, U+76ee, U+8133, U+914d, U+958b, U+96fb, U+9eba;
 }
 @font-face {
   font-family: 'Rampart One';
   font-style: normal;
   font-weight: 400;
   font-display: block;
-  src: url(9b20077a70.woff2) format('woff2');
-  unicode-range: U+20-7e, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+8133, U+914d, U+958b, U+96fb, U+9eba;
+  src: url(010dc90742.woff2) format('woff2');
+  unicode-range: U+20-7e, U+2014, U+2198, U+3042, U+3044, U+3046, U+304b-304c, U+304f-3050, U+3057-3058, U+3068-306a, U+307e, U+3082, U+308a, U+3094, U+3099, U+30a9, U+30d5-30d6, U+30ed, U+30ef, U+30f7, U+30fc, U+4e2d, U+4fe1, U+591c, U+59cb, U+5c4b, U+5e02, U+65b0, U+6708, U+6a19, U+76ee, U+8133, U+914d, U+958b, U+96fb, U+9eba;
 }
