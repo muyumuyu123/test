@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Neon City — cyberpunk mockups</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    .screen canvas.scene { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+    .screen { font-family: "Chakra Petch", sans-serif; color: #fff; }
+    /* ---- live overlay: glassy panels lit by the city behind ---- */
+    .lv-frame { left: 36px; top: 36px; width: 1424px; height: 801px; padding: 3px; background: linear-gradient(135deg, #27e1ff, #ff2d6f 60%, #ffd23f); box-shadow: 0 0 30px rgba(255, 45, 111, 0.45), 0 0 80px rgba(39, 225, 255, 0.2); z-index: 3; }
+    .lv-frame canvas { width: 1418px; height: 795px; }
+    .lv-tag { position: absolute; left: 22px; top: 18px; padding: 6px 14px; background: rgba(8, 6, 14, 0.8); border: 1px solid #ff2d6f; font: 700 20px "Share Tech Mono"; letter-spacing: 0.12em; color: #ff2d6f; text-shadow: 0 0 10px #ff2d6f; }
+    .lv-tag b { color: #fff; font-weight: 400; margin-left: 8px; text-shadow: none; }
+    .glass { background: rgba(10, 8, 20, 0.55); backdrop-filter: blur(14px) saturate(1.4); border: 1px solid rgba(255, 255, 255, 0.14); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 40px rgba(0, 0, 0, 0.45); }
+    .lv-chat { left: 1492px; top: 36px; width: 392px; height: 520px; padding: 0 0 12px; z-index: 3; }
+    .lv-h { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid rgba(39, 225, 255, 0.5); font: 700 24px "Chakra Petch"; letter-spacing: 0.2em; color: #27e1ff; text-shadow: 0 0 12px #27e1ff; }
+    .lv-h .jp { font: 20px "Dela Gothic One"; letter-spacing: 0.05em; color: #ff5ac8; text-shadow: 0 0 12px #ff5ac8; }
+    .lv-chat .m { padding: 10px 18px 0; font: 21px/1.35 "Chakra Petch"; color: #eee; }
+    .lv-chat .m b { display: block; font: 700 17px "Share Tech Mono"; letter-spacing: 0.06em; text-shadow: 0 0 8px currentColor; }
+    .lv-goal { left: 1492px; top: 578px; width: 392px; padding: 14px 18px 18px; z-index: 3; }
+    .lv-goal .t { display: flex; justify-content: space-between; font: 700 18px "Share Tech Mono"; letter-spacing: 0.14em; color: #ffd23f; text-shadow: 0 0 10px #ffd23f; }
+    .lv-goal .t b { color: #fff; text-shadow: none; }
+    .lv-goal .bar { position: relative; height: 12px; margin-top: 10px; background: rgba(255, 255, 255, 0.1); }
+    .lv-goal .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 74%; background: linear-gradient(90deg, #ff2d6f, #ffd23f); box-shadow: 0 0 14px #ff2d6f; }
+    .lv-model { left: 1500px; top: 690px; width: 390px; height: 390px; z-index: 2; }
+    .lv-name { left: 36px; top: 866px; width: 1424px; height: 178px; display: flex; flex-direction: column; justify-content: center; padding-left: 36px; z-index: 3; }
+    .lv-name .sign { font: 700 76px/1 "Chakra Petch"; letter-spacing: 0.04em; color: #fff; text-shadow: 0 0 6px #ff2d6f, 0 0 22px #ff2d6f, 0 0 48px #ff2d6f; }
+    .lv-name .sub { margin-top: 12px; font: 20px "Share Tech Mono"; letter-spacing: 0.08em; color: #27e1ff; text-shadow: 0 0 10px #27e1ff; }
+    .lv-alert { left: 420px; top: 170px; width: 640px; height: 300px; z-index: 5; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.7)); }
+  </style>
+</head>
+<body>
+  <section class="screen start"><canvas class="scene" id="s1" width="1920" height="1080"></canvas></section>
+  <section class="screen brb"><canvas class="scene" id="s2" width="1920" height="1080"></canvas></section>
+  <section class="screen end"><canvas class="scene" id="s3" width="1920" height="1080"></canvas></section>
+  <section class="screen live">
+    <canvas class="scene" id="s4" width="1920" height="1080"></canvas>
+    <div class="abs lv-frame"><canvas class="game" id="g1"></canvas>
+      <span class="lv-tag">● LIVE <b>01:42:07</b></span>
+    </div>
+    <div class="abs lv-chat">
+      <div class="lv-h"><span>CHAT</span><span class="jp">チャット</span></div>
+      <div class="m"><b style="color:#27e1ff">starrymochi</b>gg that was clean</div>
+      <div class="m"><b style="color:#ff5ac8">moonlit_kay</b>the rain in this overlay omg</div>
+      <div class="m"><b style="color:#ffd23f">pixelpudding</b>!lurk</div>
+      <div class="m"><b style="color:#7cff6b">hanabi</b>o7 good night city</div>
+      <div class="m"><b style="color:#27e1ff">cometcat</b>first time here, hi!</div>
+    </div>
+    <div class="abs lv-goal">
+      <div class="t"><span>FOLLOWER GOAL</span><b>742 / 1000</b></div>
+      <div class="bar"><i></i></div>
+    </div>
+    <div class="abs lv-model" id="lvm"></div>
+    <div class="abs lv-name">
+      <div class="sign">NOVA MOONPETAL</div>
+      <div class="sub">TW/novamoonpetal · YT/@NovaMoonpetal · X/@nova_moonpetal</div>
+    </div>
+    <div class="abs lv-alert">
+      <canvas id="alertc" width="640" height="300"></canvas>
+    </div>
+  </section>
+
+  <script src="shared.js"></script>
+  <script src="city.js"></script>
+  <script>
+    const { neonText, billboard, glowRect, bloom } = CITY;
+    const NAME = "NOVA MOONPETAL";
+
+    // STARTING SOON on the hero tower's giant screen
+    function heroBoard(c) {
+      billboard(c, 96, 150, 540, 380, {
+        from: "#1a0f2e", to: "#5c1250", glow: "#ff3fb4",
+        content: (b, x, y, w, h) => {
+          const g = b.createRadialGradient(x + w * 0.7, y + h * 0.3, 10, x + w * 0.7, y + h * 0.3, w * 0.8);
+          g.addColorStop(0, "rgba(255,80,190,.45)"); g.addColorStop(1, "rgba(255,80,190,0)");
+          b.fillStyle = g; b.fillRect(x, y, w, h);
+          b.fillStyle = "rgba(0,229,255,.9)"; b.fillRect(x + 28, y + 30, 8, 26);
+          neonText(b, `${NAME} // CH.07`, x + 50, y + 44, { font: '26px "Share Tech Mono"', color: "#00e5ff", align: "left", blur: 12 });
+          neonText(b, "STARTING", x + w / 2, y + 150, { font: '700 116px "Chakra Petch"', color: "#ff3fb4", blur: 26 });
+          neonText(b, "SOON", x + w / 2, y + 262, { font: '700 132px "Chakra Petch"', color: "#00e5ff", blur: 30 });
+          b.fillStyle = "rgba(255,255,255,.85)"; b.fillRect(x + 28, y + h - 58, w - 56, 2);
+          neonText(b, "LIVE 20:00 WIB  ▸  RANKED GRIND", x + 28, y + h - 30, { font: '24px "Share Tech Mono"', color: "#ffd23f", align: "left", blur: 10 });
+        },
+      });
+      bloom(c, 366, 340, 420, "#ff3fb4", 0.22);
+    }
+
+    // Countdown on an LED board hung on the right tower + socials strip on the hero tower
+    function signs(c) {
+      billboard(c, 1470, 220, 262, 170, {
+        from: "#1b1206", to: "#2d1a05", glow: "#ffb020",
+        content: (b, x, y, w, h) => {
+          neonText(b, "T-MINUS", x + w / 2, y + 36, { font: '24px "Share Tech Mono"', color: "#ffb020", blur: 10 });
+          neonText(b, "04:59", x + w / 2, y + 108, { font: '700 84px "Chakra Petch"', color: "#ffb020", blur: 22 });
+        },
+      });
+      bloom(c, 1600, 320, 260, "#ffb020", 0.2);
+      c.fillStyle = "#0b0d12"; c.fillRect(90, 600, 552, 70);
+      glowRect(c, 90, 600, 552, 2, "#00e5ff", 12, 0.9);
+      glowRect(c, 90, 668, 552, 2, "#00e5ff", 12, 0.9);
+      neonText(c, "TW/novamoonpetal  YT/@NovaMoonpetal  X/@nova_moonpetal", 366, 635, { font: '17px "Share Tech Mono"', color: "#00e5ff", blur: 10 });
+    }
+
+    window.__done = false;
+    (async () => {
+      await Promise.all(['700 100px "Chakra Petch"', '400 40px "Share Tech Mono"', '400 80px "Dela Gothic One"'].map((f) => document.fonts.load(f)));
+      const { c } = CITY.skyline(document.getElementById("s1"), { seed: 7, hero: heroBoard, sign: signs, spill: [[366, "#ff3fb4", 420], [1600, "#ffb020", 260]] });
+      CITY.postBloom(c, 0.35, 16);
+      CITY.grain(c, 0.08);
+      CITY.vignette(c, 0.55);
+
+      // ---- BRB: neon street at night, banner hung across the street ----
+      const st = CITY.street(document.getElementById("s2"), {
+        seed: 4, vpY: 540, fog: "#43205e", cars: [[2.6, 14, "tail"], [2.5, 30, "tail"], [-2.6, 44, "head"], [2.8, 60, "tail"], [-2.4, 85, "head"]],
+        overhead: (c2, P, glows) => {
+          // banner frame hung on cables between the facades
+          const Z = 24, [lx, ly] = P(-9, 11.5, Z), [rx] = P(9, 11.5, Z), sc = 900 / Z;
+          c2.strokeStyle = "#0b0810"; c2.lineWidth = 3;
+          for (const [ax, ay] of [[lx, ly], [rx, ly]]) { c2.beginPath(); c2.moveTo(ax, ay - sc * 2.2); c2.lineTo(960 + (ax < 960 ? -1 : 1) * sc * 4.8, ly - sc * 0.8); c2.stroke(); }
+          const bw = sc * 11, bh = sc * 3.6, bx = 960 - bw / 2, by = ly - sc * 0.8;
+          c2.fillStyle = "#0a0710"; c2.fillRect(bx, by, bw, bh);
+          glowRect(c2, bx, by, bw, 3, "#ff2d6f", 16); glowRect(c2, bx, by + bh - 3, bw, 3, "#ff2d6f", 16);
+          neonText(c2, "BE RIGHT BACK", 960, by + bh * 0.42, { font: `700 ${sc * 1.45}px "Chakra Petch"`, color: "#ff2d6f", blur: 30 });
+          neonText(c2, "すぐ戻ります  ·  AWAY 02:14", 960, by + bh * 0.8, { font: `${sc * 0.46}px "Dela Gothic One"`, color: "#27e1ff", blur: 14 });
+          CITY.bloom(c2, 960, by + bh / 2, bw * 0.7, "#ff2d6f", 0.25);
+          glows.push([960, by + bh, "#ff2d6f", bw * 0.9]);
+        },
+      });
+      CITY.postBloom(st.c, 0.5, 14);
+      CITY.grain(st.c, 0.09, 3);
+      CITY.vignette(st.c, 0.6);
+
+      // ---- ENDING: narrow rainy alley, giant vertical neon sign, sky-bridge ----
+      const en = CITY.street(document.getElementById("s3"), {
+        seed: 12, vpX: 900, vpY: 640, width: 5.2, camH: 1.7, tall: 1.8, fog: "#1f5f78", sky: ["#04070c", "#0c2533", "#1f5f78"],
+        people: 18, rainN: 1600, cars: [],
+        far: (c2, P, glows) => {
+          // pink glow at the far end of the alley
+          CITY.bloom(c2, 900, 560, 260, "#ff2d6f", 0.55);
+          CITY.glowRect(c2, 860, 420, 26, 160, "#ff5ac8", 20, 0.9);
+          CITY.glowRect(c2, 930, 470, 60, 14, "#ffd23f", 16, 0.8);
+        },
+        overhead: (c2, P, glows) => {
+          // sky-bridge walkway with people
+          const Z = 34, [lx, ly] = P(-5.2, 14, Z), [rx] = P(5.2, 14, Z), sc = 900 / Z;
+          c2.fillStyle = "#06080c"; c2.fillRect(lx, ly, rx - lx, sc * 1.6);
+          c2.fillRect(lx, ly - sc * 1.4, rx - lx, sc * 0.18);
+          for (let x = lx; x < rx; x += sc * 0.6) c2.fillRect(x, ly - sc * 1.4, sc * 0.06, sc * 1.4);
+          for (const px of [0.3, 0.36, 0.62]) { const x = lx + (rx - lx) * px; c2.beginPath(); c2.ellipse(x, ly - sc * 1.55, sc * 0.16, sc * 0.2, 0, 0, 7); c2.fill(); c2.fillRect(x - sc * 0.2, ly - sc * 1.35, sc * 0.4, sc * 1.35); }
+          CITY.glowRect(c2, lx, ly + sc * 1.6, rx - lx, 3, "#27e1ff", 14, 0.9);
+          glows.push([900, ly + sc * 1.6, "#27e1ff", 300]);
+
+          // giant vertical sign (like a motel sign) on the right wall
+          const [sx, sy] = P(4.6, 22, 13), sc2 = 900 / 13, cw = sc2 * 1.5, lh = sc2 * 1.5;
+          const word = "THANKS";
+          c2.fillStyle = "#0a0a10"; c2.fillRect(sx - cw, sy, cw, lh * word.length + sc2 * 0.4);
+          c2.save(); c2.shadowColor = "#27e1ff"; c2.shadowBlur = 24; c2.strokeStyle = "#27e1ff"; c2.lineWidth = 4;
+          c2.strokeRect(sx - cw + 6, sy + 6, cw - 12, lh * word.length + sc2 * 0.4 - 12); c2.restore();
+          [...word].forEach((ch, i) => CITY.neonText(c2, ch, sx - cw / 2, sy + lh * (i + 0.62), { font: `700 ${lh * 0.9}px "Chakra Petch"`, color: "#27e1ff", blur: 26 }));
+          glows.push([sx - cw / 2, sy + lh * 5, "#27e1ff", cw * 2.2]);
+          // smaller red sign under it
+          const ny = sy + lh * word.length + sc2 * 0.7;
+          c2.fillStyle = "#0a0a10"; c2.fillRect(sx - cw * 2.4, ny, cw * 2.2, sc2 * 0.9);
+          CITY.neonText(c2, "FOR WATCHING", sx - cw * 1.3, ny + sc2 * 0.46, { font: `700 ${sc2 * 0.5}px "Chakra Petch"`, color: "#ff2d6f", blur: 18 });
+          glows.push([sx - cw * 1.3, ny + sc2 * 0.46, "#ff2d6f", cw * 2]);
+
+          // left: "see you next stream" + socials as neon plates
+          const [tx, ty] = P(-4.9, 9.5, 11), sc3 = 900 / 11;
+          c2.fillStyle = "#0a0a10"; c2.fillRect(tx, ty, sc3 * 4.6, sc3 * 2.3);
+          c2.save(); c2.shadowColor = "#ff5ac8"; c2.shadowBlur = 20; c2.strokeStyle = "#ff5ac8"; c2.lineWidth = 3; c2.strokeRect(tx + 5, ty + 5, sc3 * 4.6 - 10, sc3 * 2.3 - 10); c2.restore();
+          CITY.neonText(c2, "SEE YOU", tx + sc3 * 2.3, ty + sc3 * 0.72, { font: `700 ${sc3 * 0.8}px "Chakra Petch"`, color: "#ff5ac8", blur: 20 });
+          CITY.neonText(c2, "NEXT STREAM · FRI 21:00", tx + sc3 * 2.3, ty + sc3 * 1.42, { font: `${sc3 * 0.3}px "Share Tech Mono"`, color: "#ffd23f", blur: 12 });
+          CITY.neonText(c2, "TW/novamoonpetal · X/@nova_moonpetal", tx + sc3 * 2.3, ty + sc3 * 1.9, { font: `${sc3 * 0.22}px "Share Tech Mono"`, color: "#27e1ff", blur: 10 });
+          glows.push([tx + sc3 * 2.3, ty + sc3 * 2.3, "#ff5ac8", sc3 * 4]);
+          // market awning (right foreground)
+          const [ax, ay] = P(4.9, 3.4, 9.5), [bx, by] = P(2.6, 2.6, 9.5), [cx2, cy2] = P(4.9, 3.4, 15), [dx, dy] = P(2.6, 2.6, 15);
+          c2.fillStyle = "#3a0f1c"; c2.beginPath(); c2.moveTo(ax, ay); c2.lineTo(bx, by); c2.lineTo(dx, dy); c2.lineTo(cx2, cy2); c2.closePath(); c2.fill();
+          CITY.glowRect(c2, Math.min(bx, dx), Math.min(by, dy) + 2, Math.abs(bx - dx), 3, "#ff8a3d", 14, 0.9);
+          for (let k = 0; k < 4; k++) { const [lx2, ly2] = P(3.2 + k * 0.4, 2.5, 10 + k); CITY.glowRect(c2, lx2 - 2, ly2, 4, 900 / (10 + k) * 1.4, "#ffb347", 16, 0.9); }
+        },
+      });
+      CITY.postBloom(en.c, 0.5, 14);
+      CITY.grain(en.c, 0.1, 5);
+      CITY.vignette(en.c, 0.65);
+
+      // ---- LIVE: dim city behind glass UI ----
+      const lv = CITY.street(document.getElementById("s4"), { seed: 21, vpY: 520, fog: "#3a1f5c", rainN: 500 });
+      CITY.postBloom(lv.c, 0.4, 14);
+      lv.c.fillStyle = "rgba(6,4,12,.45)"; lv.c.fillRect(0, 0, 1920, 1080);
+      CITY.vignette(lv.c, 0.5);
+      M2.game(document.getElementById("g1"), 81);
+      document.getElementById("lvm").innerHTML = M2.model({ fill: "#140b22", stroke: "#ff2d6f", width: 4 });
+
+      // alert: a billboard powering on
+      const ac = document.getElementById("alertc").getContext("2d");
+      CITY.billboard(ac, 10, 10, 620, 280, {
+        from: "#16061f", to: "#4d0c35", glow: "#ff2d6f",
+        content: (b, x, y, w, h) => {
+          b.fillStyle = "#ff2d6f"; b.fillRect(x, y, w, 46);
+          CITY.neonText(b, "▲ NEW FOLLOWER  新しいフォロワー", x + 22, y + 24, { font: '700 22px "Chakra Petch"', color: "#ffffff", glow: "#ff2d6f", align: "left", blur: 6, core: "#16061f" });
+          CITY.neonText(b, "StarryMochi", x + w / 2, y + 140, { font: '700 92px "Chakra Petch"', color: "#27e1ff", blur: 26 });
+          CITY.neonText(b, "welcome to the city, choom", x + w / 2, y + 222, { font: '24px "Share Tech Mono"', color: "#ffd23f", blur: 12 });
+        },
+      });
+      window.__done = true;
+    })();
+  </script>
+</body>
+</html>

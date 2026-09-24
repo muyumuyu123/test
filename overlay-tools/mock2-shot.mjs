@@ -9,7 +9,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const dir = path.join(here, "../mockups/v2");
+const dir = path.join(here, process.env.MOCK_DIR || "../mockups/v2");
 const out = path.join(dir, "previews");
 const FFMPEG = process.env.FFMPEG;
 const all = (await fs.readdir(dir)).filter((f) => f.endsWith(".html") && f !== "index.html").map((f) => f.slice(0, -5)).sort();
@@ -21,13 +21,15 @@ for (const name of names) {
   const page = await browser.newPage({ viewport: { width: 1920, height: 2160 } });
   page.on("pageerror", (e) => console.log(name, "pageerror:", e.message));
   page.on("console", (m) => m.type() === "error" && console.log(name, "console:", m.text()));
-  await page.goto(pathToFileURL(path.join(dir, name + ".html")).href + "?shot");
+  await page.goto(pathToFileURL(path.join(dir, name + ".html")).href + "?shot", { waitUntil: "domcontentloaded", timeout: 180000 });
   await page.evaluate(() => document.fonts.ready);
+  // pages that paint heavy canvas scenes set window.__done when finished
+  await page.waitForFunction(() => window.__done !== false, null, { timeout: 180000 });
   await page.waitForTimeout(1500);
   // freeze every animation at its first frame so screenshots are repeatable
   await page.evaluate(() => document.getAnimations().forEach((a) => { a.currentTime = 0; a.pause(); }));
   const screens = await page.$$(".screen");
-  const tags = ["start", "live"];
+  const tags = (process.env.TAGS || "start,live").split(",");
   for (let i = 0; i < screens.length; i++) {
     await screens[i].screenshot({ path: path.join(out, `${name}-${tags[i] || i}.jpg`), type: "jpeg", quality: 88 });
   }

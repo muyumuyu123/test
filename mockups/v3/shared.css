@@ -1,0 +1,9 @@
+/* Round-2 mockups: every theme page holds two 1920×1080 screens (start + live) */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { width: 1920px; background: #000; -webkit-font-smoothing: antialiased; }
+.screen { position: relative; width: 1920px; height: 1080px; overflow: hidden; isolation: isolate; }
+.abs { position: absolute; }
+svg { display: block; overflow: visible; }
+canvas.game { display: block; width: 100%; height: 100%; }
+.model-svg { width: 100%; height: 100%; }
