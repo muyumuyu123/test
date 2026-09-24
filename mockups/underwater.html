@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Mermaid Lagoon (Underwater)</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --deep: #021c33; --sea: #06426b; --teal: #0fb5c9; --aqua: #8ff7ff; --coral: #ff7e79; --pearl: #fff7f0; --lilac: #c7a8ff; }
+    body { font-family: "Baloo 2", sans-serif; color: var(--pearl); }
+    .hero { background: linear-gradient(180deg, #1fa3c4 0%, #0a6a98 22%, var(--sea) 50%, var(--deep) 100%); }
+    .rays { inset: 0; background: repeating-conic-gradient(from 170deg at 50% -20%, rgba(255, 255, 255, 0.10) 0deg 3deg, transparent 3deg 9deg); -webkit-mask: linear-gradient(#000, transparent 75%); animation: sway 9s ease-in-out infinite alternate; }
+    @keyframes sway { to { transform: translateX(60px); } }
+    .caustics { inset: 0; opacity: 0.25; background: radial-gradient(ellipse 60px 20px at 20% 10%, #fff, transparent), radial-gradient(ellipse 80px 24px at 60% 6%, #fff, transparent), radial-gradient(ellipse 50px 16px at 85% 12%, #fff, transparent); }
+    .floor { left: 0; bottom: 0; width: 1920px; height: 330px; }
+    .weed { bottom: 60px; width: 60px; transform-origin: 50% 100%; animation: weed 5s ease-in-out infinite alternate; }
+    @keyframes weed { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+    .bubble { position: absolute; bottom: -60px; border-radius: 50%; border: 2px solid rgba(255, 255, 255, 0.6); background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.7) 0 12%, rgba(255, 255, 255, 0.05) 40%); animation: rise linear infinite; }
+    @keyframes rise { to { transform: translate(40px, -1240px); } }
+    .fish { z-index: 3; opacity: 0.55; }
+
+    .shell-title { position: relative; }
+    .eyebrow { font: 700 32px "Baloo 2"; letter-spacing: 0.3em; color: var(--aqua); }
+    .stage h1 { margin: 0; font: 800 170px/0.95 "Baloo 2"; color: var(--pearl); text-shadow: 0 6px 0 var(--teal), 0 12px 40px rgba(0, 0, 0, 0.4); }
+    .stage .sub { margin: 18px 0 0; font: 600 38px "Baloo 2"; color: #cdeff6; }
+    .bubble-timer { margin-top: 36px; width: 280px; height: 280px; border-radius: 50%; display: grid; place-items: center; border: 4px solid rgba(255, 255, 255, 0.75);
+      background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.6) 0 8%, rgba(143, 247, 255, 0.18) 30%, rgba(15, 181, 201, 0.25) 70%, rgba(199, 168, 255, 0.35)); box-shadow: 0 0 60px rgba(143, 247, 255, 0.45), inset 0 -20px 40px rgba(199, 168, 255, 0.35); animation: bob 4s ease-in-out infinite; }
+    .bubble-timer span { font: 800 88px/1 "Baloo 2"; }
+    .bubble-timer small { display: block; font: 700 20px "Baloo 2"; letter-spacing: 0.3em; color: var(--aqua); }
+    @keyframes bob { 50% { transform: translateY(-14px); } }
+    .socials { margin-top: 28px; display: flex; gap: 18px; font: 700 26px "Baloo 2"; }
+    .socials span { padding: 6px 24px; border-radius: 30px; background: rgba(2, 28, 51, 0.6); border: 2px solid var(--aqua); }
+    .socials i { font-style: normal; color: var(--coral); margin-right: 8px; }
+
+    /* ---- component strip ---- */
+    .strip { background: linear-gradient(180deg, #06426b, #021c33); }
+    .strip .tag { color: var(--aqua); }
+    .m-alert { flex-direction: row; align-items: center; }
+    .m-badge { width: 140px; height: 140px; margin-right: -30px; z-index: 2; padding: 26px; color: var(--pearl); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffb7a8, var(--coral) 60%, #d9534f); box-shadow: 0 0 30px rgba(255, 126, 121, 0.6); }
+    .m-card { min-width: 580px; padding: 34px 50px 36px 70px; border-radius: 200px; background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35), rgba(143, 247, 255, 0.15) 40%, rgba(199, 168, 255, 0.28)); border: 3px solid rgba(255, 255, 255, 0.75); box-shadow: 0 0 40px rgba(143, 247, 255, 0.35); }
+    .m-kind { font: 700 24px "Baloo 2"; letter-spacing: 0.25em; color: var(--aqua); }
+    .m-who { font: 800 72px/1 "Baloo 2"; }
+    .m-plate { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 16px 20px 26px; background: linear-gradient(180deg, var(--teal), #0b7f9c);
+      -webkit-mask: radial-gradient(22px at 50% 100%, transparent 96%, #000) 0 0 / 60px 100% repeat-x; border-radius: 20px 20px 0 0; }
+    .m-live { font: 700 22px "Baloo 2"; letter-spacing: 0.3em; color: var(--deep); }
+    .m-name { font: 800 58px/1.1 "Baloo 2"; }
+    .m-goal-top { font: 700 28px "Baloo 2"; margin-bottom: 8px; }
+    .m-goal-num { color: var(--coral); }
+    .m-track { height: 30px; border-radius: 15px; background: rgba(2, 28, 51, 0.8); border: 3px solid var(--aqua); }
+    .m-fill { border-radius: 15px; background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.7) 0 3px, transparent 4px) 0 0 / 24px 100%, linear-gradient(90deg, var(--teal), var(--lilac)); }
+    .m-msg { padding: 12px 22px; border-radius: 26px; background: rgba(143, 247, 255, 0.12); border: 2px solid rgba(143, 247, 255, 0.5); font: 600 25px "Baloo 2"; }
+    .m-msg b { display: block; font-size: 19px; color: var(--coral); }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <div class="abs rays"></div>
+      <div class="abs caustics"></div>
+      <svg class="abs fish" style="left:220px; top:260px" width="120" height="60" viewBox="0 0 120 60"><path fill="#021c33" d="M10 30 C40 0 90 5 100 30 C90 55 40 60 10 30Z M100 30 L120 10 L120 50Z"/></svg>
+      <svg class="abs fish" style="left:360px; top:320px" width="70" height="36" viewBox="0 0 120 60"><path fill="#021c33" d="M10 30 C40 0 90 5 100 30 C90 55 40 60 10 30Z M100 30 L120 10 L120 50Z"/></svg>
+      <svg class="abs fish" style="right:300px; top:420px; transform: scaleX(-1)" width="140" height="70" viewBox="0 0 120 60"><path fill="#021c33" d="M10 30 C40 0 90 5 100 30 C90 55 40 60 10 30Z M100 30 L120 10 L120 50Z"/></svg>
+      <svg class="abs weed" style="left:120px; height:420px" viewBox="0 0 60 420" preserveAspectRatio="none"><path fill="#0d7a64" d="M30 420 C0 340 60 300 30 220 C0 150 55 110 30 0 C70 110 20 150 45 220 C70 300 20 340 42 420Z"/></svg>
+      <svg class="abs weed" style="left:190px; height:300px; animation-delay:-2s" viewBox="0 0 60 420" preserveAspectRatio="none"><path fill="#13a07f" d="M30 420 C0 340 60 300 30 220 C0 150 55 110 30 0 C70 110 20 150 45 220 C70 300 20 340 42 420Z"/></svg>
+      <svg class="abs weed" style="right:170px; height:380px; animation-delay:-1s" viewBox="0 0 60 420" preserveAspectRatio="none"><path fill="#0d7a64" d="M30 420 C0 340 60 300 30 220 C0 150 55 110 30 0 C70 110 20 150 45 220 C70 300 20 340 42 420Z"/></svg>
+      <svg class="abs weed" style="right:250px; height:260px; animation-delay:-3s" viewBox="0 0 60 420" preserveAspectRatio="none"><path fill="#13a07f" d="M30 420 C0 340 60 300 30 220 C0 150 55 110 30 0 C70 110 20 150 45 220 C70 300 20 340 42 420Z"/></svg>
+      <svg class="abs floor" viewBox="0 0 1920 330" preserveAspectRatio="none">
+        <path fill="#ff7e79" opacity=".8" d="M300 330 V250 C300 220 280 200 290 180 C300 200 320 190 318 170 C335 190 330 220 345 230 C360 210 380 215 378 190 C395 215 380 250 390 330Z"/>
+        <path fill="#c7a8ff" opacity=".8" d="M1560 330 V240 C1540 220 1545 190 1560 175 C1575 195 1590 185 1592 160 C1610 185 1605 215 1620 225 C1640 205 1655 210 1650 185 C1675 215 1650 260 1665 330Z"/>
+        <path fill="#0a3456" d="M0 250 C300 200 600 260 960 240 C1320 220 1620 270 1920 230 V330 H0Z"/>
+        <path fill="#e8c9a0" opacity=".25" d="M0 290 C400 260 800 300 1200 280 C1500 266 1720 290 1920 280 V330 H0Z"/>
+      </svg>
+      <div id="bubbles"></div>
+    </div>
+    <main class="stage">
+      <div class="eyebrow">✦ NOVA MOONPETAL ✦</div>
+      <h1>Starting Soon</h1>
+      <p class="sub">diving in soon, grab your snorkel!</p>
+      <div class="bubble-timer"><div><small>SURFACING</small><span>04:59</span></div></div>
+      <div class="socials"><span><i>twitch</i>novamoonpetal</span><span><i>youtube</i>@NovaMoonpetal</span><span><i>x</i>@nova_moonpetal</span></div>
+    </main>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    (function () {
+      let a = 13;
+      const r = () => ((a = (a * 16807) % 2147483647) / 2147483647);
+      const host = document.getElementById("bubbles");
+      for (let i = 0; i < 30; i++) {
+        const b = document.createElement("i");
+        b.className = "bubble";
+        const s = 8 + r() * 34, d = 7 + r() * 9;
+        Object.assign(b.style, { left: `${r() * 100}%`, width: `${s}px`, height: `${s}px`, animationDuration: `${d}s`, animationDelay: `${-r() * d}s` });
+        host.append(b);
+      }
+    })();
+    window.MOCK = {
+      theme: "Mermaid Lagoon (Underwater)",
+      kind: "NEW FOLLOWER",
+      who: "StarryMochi",
+      badge: '<svg viewBox="0 0 64 64"><path fill="currentColor" d="M32 8 C14 8 4 26 6 44 L32 56 L58 44 C60 26 50 8 32 8Z"/><path fill="none" stroke="#d9534f" stroke-width="3" d="M32 12 V54 M20 14 L26 54 M44 14 L38 54 M10 26 L20 50 M54 26 L44 50"/></svg>',
+      live: "LIVE FROM THE DEEP",
+      goalTitle: "Pearl Goal",
+      chat: [["StarryMochi", "blub blub 🫧"], ["moonlit_kay", "the bubble timer!!"], ["pixelpudding", "swimming in to say hi 🐟"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>

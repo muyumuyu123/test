@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Desert Nights (Arabian)</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --indigo: #0d1440; --teal: #0e5566; --gold: #e8bb5f; --gold-deep: #b07d2a; --sand: #f3dcaa; --terra: #c8553d; --ink: #fff4dc; }
+    body { font-family: "El Messiri", serif; color: var(--ink); }
+    .hero { background: linear-gradient(180deg, #070b2a 0%, #16195a 40%, #5b2a6b 66%, #c8683f 84%, #f0a954 100%); }
+    .stars { inset: 0; background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 22% 8%, #fff, transparent), radial-gradient(2px 2px at 35% 22%, #ffe8b0, transparent),
+      radial-gradient(1px 1px at 48% 12%, #fff, transparent), radial-gradient(1.5px 1.5px at 63% 6%, #fff, transparent), radial-gradient(1px 1px at 72% 26%, #fff, transparent),
+      radial-gradient(2px 2px at 86% 14%, #ffe8b0, transparent), radial-gradient(1px 1px at 93% 32%, #fff, transparent), radial-gradient(1.5px 1.5px at 6% 38%, #fff, transparent),
+      radial-gradient(1px 1px at 55% 35%, #fff, transparent), radial-gradient(1px 1px at 30% 40%, #fff, transparent); }
+    .moon { top: 110px; left: 250px; width: 150px; height: 150px; border-radius: 50%; background: #fff3cf; box-shadow: 0 0 60px 12px rgba(255, 220, 150, 0.5);
+      -webkit-mask: radial-gradient(circle at 70% 35%, transparent 0 42%, #000 43%); mask: radial-gradient(circle at 70% 35%, transparent 0 42%, #000 43%); }
+    .dunes { left: 0; bottom: 0; width: 1920px; height: 420px; }
+
+    /* Hanging lanterns */
+    .lantern { top: 0; z-index: 4; transform-origin: 50% 0; animation: swing 4s ease-in-out infinite alternate; }
+    .lantern .chain { width: 3px; margin: 0 auto; background: var(--gold); }
+    .lantern .body { position: relative; width: 70px; height: 120px; margin: 0 auto; }
+    .lantern .cap { width: 50px; height: 26px; margin: 0 auto; background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-deep)); clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%); }
+    .lantern .glass { width: 70px; height: 80px; background: radial-gradient(circle at 50% 55%, #fff4c0 0 12%, #ffb43a 40%, #c8553d 90%);
+      clip-path: polygon(15% 0, 85% 0, 100% 30%, 85% 100%, 15% 100%, 0 30%); box-shadow: inset 0 0 0 4px var(--gold); }
+    .lantern .glass::after { content: ""; position: absolute; left: 0; top: 26px; width: 70px; height: 80px;
+      background: repeating-linear-gradient(90deg, transparent 0 14px, rgba(176, 125, 42, 0.9) 14px 17px); clip-path: polygon(15% 0, 85% 0, 100% 30%, 85% 100%, 15% 100%, 0 30%); }
+    .lantern .base { width: 40px; height: 16px; margin: 0 auto; background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-deep)); clip-path: polygon(0 0, 100% 0, 60% 100%, 40% 100%); }
+    .lantern .halo { position: absolute; left: 50%; top: 60px; width: 300px; height: 300px; margin-left: -150px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 180, 60, 0.35), transparent 65%); }
+    @keyframes swing { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+
+    /* Ornamental band */
+    .band { left: 0; right: 0; height: 44px; z-index: 5; }
+
+    /* Arch frame */
+    .arch-wrap { position: relative; width: 980px; height: 820px; margin-top: -30px; }
+    .arch-wrap svg { position: absolute; inset: 0; }
+    .arch-content { position: absolute; inset: 270px 90px 60px; display: flex; flex-direction: column; align-items: center; }
+    .ar { font: 700 58px "El Messiri"; color: var(--gold); direction: rtl; text-shadow: 0 0 20px rgba(232, 187, 95, 0.5); }
+    .arch-content h1 { margin: 4px 0 0; font: 700 124px/1 "El Messiri"; color: var(--ink); text-shadow: 0 4px 30px rgba(255, 180, 80, 0.45); }
+    .arch-content .sub { margin: 16px 0 0; font: 500 32px "El Messiri"; color: var(--sand); }
+    .medallion { margin-top: 30px; padding: 12px 56px 16px; border: 3px solid var(--gold); border-radius: 60px; background: rgba(13, 20, 64, 0.8); box-shadow: 0 0 0 8px rgba(232, 187, 95, 0.18); }
+    .medallion span { font: 700 90px/1 "El Messiri"; color: var(--gold); font-variant-numeric: tabular-nums; }
+    .socials { position: absolute; bottom: 36px; left: 0; right: 0; z-index: 6; display: flex; justify-content: center; gap: 20px; font: 500 26px "El Messiri"; }
+    .socials span { padding: 6px 26px; border-radius: 30px; background: rgba(13, 20, 64, 0.75); border: 2px solid var(--gold); }
+    .socials i { font-style: normal; font-weight: 700; color: var(--gold); margin-right: 10px; }
+
+    /* ---- component strip ---- */
+    .strip { background: linear-gradient(180deg, #121a4d, #0a0f33); }
+    .strip .tag { color: var(--gold); }
+    .m-badge { width: 120px; height: 120px; margin-bottom: -50px; z-index: 2; padding: 26px; color: var(--indigo); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe3a3, var(--gold) 55%, var(--gold-deep)); box-shadow: 0 0 30px rgba(232, 187, 95, 0.6), 0 0 0 5px var(--indigo), 0 0 0 8px var(--gold); }
+    .m-card { min-width: 580px; padding: 80px 60px 32px; text-align: center; background: linear-gradient(180deg, #1b2a6e, #0d1440); border: 3px solid var(--gold); border-radius: 290px 290px 18px 18px / 150px 150px 18px 18px; box-shadow: 0 0 40px rgba(232, 187, 95, 0.3); }
+    .m-kind { font: 700 26px "El Messiri"; letter-spacing: 0.15em; color: var(--gold); }
+    .m-who { font: 700 70px/1.1 "El Messiri"; }
+    .m-plate { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 16px 30px 18px; background: linear-gradient(90deg, var(--teal), #137286, var(--teal)); border-top: 4px solid var(--gold); border-bottom: 4px solid var(--gold); position: relative; }
+    .m-live { font: 700 22px "El Messiri"; letter-spacing: 0.3em; color: var(--gold); }
+    .m-name { font: 700 54px/1.1 "El Messiri"; }
+    .m-goal-top { font: 700 26px "El Messiri"; margin-bottom: 8px; }
+    .m-goal-num { color: var(--gold); }
+    .m-track { height: 24px; border-radius: 12px; background: #0a0f33; border: 2px solid var(--gold); }
+    .m-fill { border-radius: 12px; background: linear-gradient(90deg, var(--terra), var(--gold)); box-shadow: 0 0 14px rgba(232, 187, 95, 0.6); }
+    .m-msg { padding: 12px 22px; border-radius: 22px 22px 22px 4px; background: rgba(14, 85, 102, 0.55); border: 2px solid rgba(232, 187, 95, 0.5); font: 500 25px "El Messiri"; }
+    .m-msg b { display: block; color: var(--gold); font-size: 20px; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <div class="abs stars"></div>
+      <div class="abs moon"></div>
+      <svg class="abs dunes" viewBox="0 0 1920 420" preserveAspectRatio="none">
+        <path fill="#7a3a4a" d="M0 220 C300 120 520 140 760 210 C1000 280 1200 120 1480 150 C1700 170 1820 220 1920 200 V420 H0Z"/>
+        <path fill="#4a2248" d="M0 300 C220 230 480 250 700 300 C960 360 1180 250 1420 270 C1640 290 1800 320 1920 300 V420 H0Z"/>
+        <path fill="#26143a" d="M0 360 C300 320 560 340 860 380 C1120 410 1400 330 1920 360 V420 H0Z"/>
+      </svg>
+      <svg class="abs band" style="top:0" viewBox="0 0 1920 44" preserveAspectRatio="none">
+        <defs><pattern id="lattice" width="44" height="44" patternUnits="userSpaceOnUse">
+          <rect width="44" height="44" fill="#0d1440"/><path d="M22 2 42 22 22 42 2 22Z" fill="none" stroke="#e8bb5f" stroke-width="2.5"/><circle cx="22" cy="22" r="5" fill="#c8553d"/><circle cx="0" cy="0" r="4" fill="#e8bb5f"/><circle cx="44" cy="0" r="4" fill="#e8bb5f"/><circle cx="0" cy="44" r="4" fill="#e8bb5f"/><circle cx="44" cy="44" r="4" fill="#e8bb5f"/></pattern></defs>
+        <rect width="1920" height="44" fill="url(#lattice)"/><rect y="40" width="1920" height="4" fill="#e8bb5f"/>
+      </svg>
+      <div class="abs lantern" style="left:120px"><div class="chain" style="height:110px"></div><div class="body"><div class="halo"></div><div class="cap"></div><div class="glass"></div><div class="base"></div></div></div>
+      <div class="abs lantern" style="left:420px; animation-delay:-1.5s"><div class="chain" style="height:40px"></div><div class="body"><div class="halo"></div><div class="cap"></div><div class="glass"></div><div class="base"></div></div></div>
+      <div class="abs lantern" style="right:420px; animation-delay:-2.5s"><div class="chain" style="height:70px"></div><div class="body"><div class="halo"></div><div class="cap"></div><div class="glass"></div><div class="base"></div></div></div>
+      <div class="abs lantern" style="right:120px; animation-delay:-.7s"><div class="chain" style="height:140px"></div><div class="body"><div class="halo"></div><div class="cap"></div><div class="glass"></div><div class="base"></div></div></div>
+    </div>
+    <main class="stage">
+      <div class="arch-wrap">
+        <svg viewBox="0 0 980 820">
+          <defs><linearGradient id="archfill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1440" stop-opacity=".92"/><stop offset="1" stop-color="#1a1250" stop-opacity=".88"/></linearGradient></defs>
+          <!-- Pointed (ogee-style) arch -->
+          <path d="M40 820 V380 C40 250 190 220 320 170 C420 130 470 90 490 20 C510 90 560 130 660 170 C790 220 940 250 940 380 V820 Z" fill="url(#archfill)" stroke="#e8bb5f" stroke-width="6"/>
+          <path d="M70 820 V386 C70 270 210 246 332 198 C430 160 474 124 490 66 C506 124 550 160 648 198 C770 246 910 270 910 386 V820" fill="none" stroke="#e8bb5f" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round"/>
+          <circle cx="490" cy="20" r="14" fill="#e8bb5f"/>
+          <path d="M490 170 l14 28 30 4 -22 21 6 30 -28 -15 -28 15 6 -30 -22 -21 30 -4z" fill="#e8bb5f" opacity=".9"/>
+        </svg>
+        <div class="arch-content">
+          <div class="ar">البث يبدأ قريبًا</div>
+          <h1>Starting Soon</h1>
+          <p class="sub">pour the mint tea, the night is young</p>
+          <div class="medallion"><span>04:59</span></div>
+        </div>
+      </div>
+    </main>
+    <div class="socials"><span><i>twitch</i>novamoonpetal</span><span><i>youtube</i>@NovaMoonpetal</span><span><i>x</i>@nova_moonpetal</span></div>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    window.MOCK = {
+      theme: "Desert Nights (Arabian)",
+      kind: "NEW FOLLOWER",
+      who: "StarryMochi",
+      badge: '<svg viewBox="0 0 64 64"><path fill="currentColor" d="M26 4h12v5H26zM22 10h20l8 14-6 30H20l-6-30z"/><path fill="#e8bb5f" d="M28 26h8v20h-8z" opacity=".6"/><path fill="currentColor" d="M24 56h16l-4 6h-8z"/></svg>',
+      live: "LIVE",
+      goalTitle: "Caravan Goal",
+      chat: [["StarryMochi", "مرحبا everyone ✨"], ["moonlit_kay", "the lanterns!!"], ["pixelpudding", "1001 nights vibes"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>

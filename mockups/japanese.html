@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Sakura Shrine (Japanese)</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --washi: #f7efe0; --washi-2: #eee2c9; --red: #d23a2a; --red-deep: #9e2419; --ink: #1f1a24; --indigo: #233a6b; --sakura: #f5b3c6; --gold: #c9a24a; }
+    body { font-family: "DM Sans", "Zen Maru Gothic", sans-serif; color: var(--ink); }
+    .jp { font-family: "Shippori Mincho B1", serif; }
+    .hero { background: radial-gradient(ellipse at 50% 30%, #fffaf0, var(--washi) 55%, var(--washi-2)); }
+    .fiber { inset: 0; opacity: 0.35; background:
+      repeating-linear-gradient(115deg, transparent 0 18px, rgba(180, 150, 100, 0.08) 18px 19px),
+      repeating-linear-gradient(35deg, transparent 0 27px, rgba(180, 150, 100, 0.06) 27px 28px); }
+
+    .sun { top: 90px; left: 50%; width: 560px; height: 560px; margin-left: -280px; border-radius: 50%; background: radial-gradient(circle at 45% 40%, #ea5a45, var(--red) 60%, var(--red-deep)); opacity: 0.95; }
+    .fuji { left: 520px; bottom: 250px; width: 1920px; height: 330px; }
+    .torii { left: 170px; bottom: 170px; width: 420px; height: 480px; z-index: 3; }
+    .waves { left: 0; bottom: 0; width: 1920px; height: 270px; z-index: 4; }
+
+    .petal { position: absolute; top: -40px; width: 22px; height: 16px; background: var(--sakura); border-radius: 80% 0 80% 0; z-index: 7; opacity: 0.9; animation: fall linear infinite; }
+    @keyframes fall { to { transform: translate(-220px, 1180px) rotate(720deg); } }
+
+    .vertical { right: 160px; top: 110px; z-index: 6; writing-mode: vertical-rl; font: 800 70px/1.15 "Shippori Mincho B1"; color: var(--ink); letter-spacing: 0.12em; }
+    .hanko { right: 150px; top: 760px; width: 130px; height: 130px; z-index: 6; display: grid; place-items: center; color: #fff; font: 800 84px "Shippori Mincho B1"; background: var(--red); border-radius: 12px; transform: rotate(6deg); box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.35); }
+
+    .card { position: relative; margin-top: 60px; padding: 36px 70px 40px; background: rgba(255, 252, 245, 0.94); border: 4px solid var(--ink); box-shadow: 16px 16px 0 var(--red); }
+    .card::before { content: ""; position: absolute; left: -4px; right: -4px; top: -4px; height: 16px; background: var(--red); }
+    .eyebrow { font: 700 26px "DM Sans"; letter-spacing: 0.4em; color: var(--red); margin-top: 10px; }
+    .card h1 { margin: 6px 0 0; font: 800 132px/1 "Fraunces"; font-optical-sizing: auto; letter-spacing: -0.01em; }
+    .card .sub { margin: 16px 0 0; font: 500 32px "DM Sans"; color: #5a4d4a; }
+    .timer { display: inline-flex; align-items: baseline; gap: 20px; margin-top: 26px; padding: 8px 40px 12px; background: var(--indigo); color: var(--washi); }
+    .timer small { font: 700 22px "DM Sans"; letter-spacing: 0.3em; color: var(--sakura); }
+    .timer span { font: 800 88px/1 "Fraunces"; font-variant-numeric: tabular-nums; }
+    .socials { display: flex; gap: 18px; margin-top: 40px; font: 700 25px "DM Sans"; }
+    .socials span { padding: 8px 22px; background: var(--ink); color: var(--washi); }
+    .socials i { font-style: normal; color: var(--sakura); margin-right: 10px; }
+
+    /* ---- component strip ---- */
+    .strip { background: var(--indigo); color: var(--washi); }
+    .strip .tag { color: var(--sakura); }
+    .m-alert { z-index: 1; }
+    .m-badge { width: 120px; height: 120px; margin-bottom: -44px; z-index: 2; display: grid; place-items: center; color: #fff; font: 800 70px "Shippori Mincho B1"; background: var(--red); border-radius: 12px; transform: rotate(-6deg); box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.35), 0 10px 20px rgba(0, 0, 0, 0.3); }
+    .m-card { min-width: 600px; padding: 66px 56px 32px; text-align: center; color: var(--ink); background: var(--washi); border: 4px solid var(--ink); box-shadow: 12px 12px 0 var(--red); }
+    .m-kind { font: 700 22px "DM Sans"; letter-spacing: 0.35em; color: var(--red); }
+    .m-who { font: 800 70px/1.05 "Fraunces"; }
+    .m-plate { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; width: 100%; padding: 16px 20px 40px; background: var(--washi); color: var(--ink);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 75.5% 100%, 75.5% 72%, 74.5% 72%, 74.5% 100%, 50.5% 100%, 50.5% 72%, 49.5% 72%, 49.5% 100%, 25.5% 100%, 25.5% 72%, 24.5% 72%, 24.5% 100%, 0 100%); border-top: 14px solid var(--red); }
+    .m-live { font: 800 26px "Shippori Mincho B1"; color: var(--red); letter-spacing: 0.3em; }
+    .m-name { font: 800 54px "Fraunces"; }
+    .m-goal { position: relative; z-index: 1; }
+    .m-goal-top { font: 700 26px "DM Sans"; margin-bottom: 8px; }
+    .m-goal-num { color: var(--sakura); font-family: "Fraunces"; }
+    .m-track { height: 22px; background: rgba(255, 255, 255, 0.15); }
+    .m-fill { background: linear-gradient(90deg, var(--sakura), var(--red)); }
+    .m-fill::after { content: ""; position: absolute; right: -14px; top: -8px; width: 28px; height: 38px; background: var(--sakura); border-radius: 80% 0 80% 0; transform: rotate(30deg); }
+    .m-chat { position: relative; z-index: 1; }
+    .m-msg { padding: 12px 20px; background: var(--washi); color: var(--ink); font: 500 24px "DM Sans"; border-left: 8px solid var(--red); }
+    .m-msg b { display: block; color: var(--indigo); font-size: 19px; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <div class="abs fiber"></div>
+      <div class="abs sun"></div>
+      <svg class="abs fuji" viewBox="0 0 1920 330" preserveAspectRatio="none">
+        <path fill="#8c9bbd" d="M0 330 L0 260 C300 250 500 230 700 180 L880 40 C920 16 1000 16 1040 40 L1220 180 C1420 230 1620 250 1920 260 L1920 330Z"/>
+        <path fill="#fffaf0" d="M880 40 C920 16 1000 16 1040 40 L1110 96 L1070 90 L1040 112 L1000 88 L960 110 L920 88 L880 104 L826 92Z"/>
+        <path fill="#b4bfd6" d="M0 330 L0 290 C360 280 700 270 960 300 C1240 270 1560 280 1920 290 L1920 330Z"/>
+      </svg>
+      <svg class="abs torii" viewBox="0 0 420 480">
+        <path fill="#1f1a24" d="M0 22 C120 44 300 44 420 22 L412 58 C300 76 120 76 8 58Z"/>
+        <rect fill="#d23a2a" x="20" y="58" width="380" height="20"/>
+        <rect fill="#d23a2a" x="36" y="120" width="348" height="22"/>
+        <rect fill="#d23a2a" x="196" y="78" width="28" height="42"/>
+        <path fill="#d23a2a" d="M74 70 H108 L118 480 H64Z M312 70 H346 L356 480 H302Z"/>
+        <rect fill="#1f1a24" x="58" y="460" width="66" height="20"/><rect fill="#1f1a24" x="296" y="460" width="66" height="20"/>
+      </svg>
+      <svg class="abs waves" viewBox="0 0 1920 270" preserveAspectRatio="xMidYMax slice">
+        <defs><pattern id="seigaiha" width="120" height="60" patternUnits="userSpaceOnUse">
+          <rect width="120" height="60" fill="#233a6b"/>
+          <g fill="none" stroke="#f7efe0" stroke-width="4">
+            <g id="w"><circle cx="60" cy="60" r="56" fill="#233a6b"/><circle cx="60" cy="60" r="44"/><circle cx="60" cy="60" r="32"/><circle cx="60" cy="60" r="20"/></g>
+            <use href="#w" x="-60" y="-30"/><use href="#w" x="60" y="-30"/><use href="#w" x="0" y="0"/>
+          </g></pattern></defs>
+        <path fill="url(#seigaiha)" d="M0 90 C240 40 480 40 720 80 C960 120 1200 30 1440 60 C1640 84 1800 70 1920 50 V270 H0Z"/>
+        <path fill="none" stroke="#f7efe0" stroke-width="6" d="M0 90 C240 40 480 40 720 80 C960 120 1200 30 1440 60 C1640 84 1800 70 1920 50"/>
+      </svg>
+      <div class="abs vertical jp">まもなく配信開始</div>
+      <div class="abs hanko jp">桜</div>
+      <div id="petals"></div>
+    </div>
+    <main class="stage">
+      <div class="card">
+        <div class="eyebrow">NOVA MOONPETAL</div>
+        <h1>Starting Soon</h1>
+        <p class="sub">tea is steeping, cherry blossoms are falling</p>
+        <div class="timer"><small>BEGINS IN</small><span>04:59</span></div>
+      </div>
+      <div class="socials"><span><i>twitch</i>novamoonpetal</span><span><i>youtube</i>@NovaMoonpetal</span><span><i>x</i>@nova_moonpetal</span></div>
+    </main>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    (function () {
+      let a = 9;
+      const r = () => ((a = (a * 16807) % 2147483647) / 2147483647);
+      const host = document.getElementById("petals");
+      for (let i = 0; i < 34; i++) {
+        const p = document.createElement("i");
+        p.className = "petal";
+        const d = 9 + r() * 8;
+        Object.assign(p.style, { left: `${r() * 110}%`, animationDuration: `${d}s`, animationDelay: `${-r() * d}s`, transform: `scale(${0.6 + r() * 0.8})` });
+        host.append(p);
+      }
+    })();
+    window.MOCK = {
+      theme: "Sakura Shrine (Japanese)",
+      kind: "NEW FOLLOWER",
+      who: "StarryMochi",
+      badge: '<span class="jp">桜</span>',
+      live: "配信中",
+      goalTitle: "Follower Goal",
+      chat: [["StarryMochi", "konbanwa~ 🌸"], ["moonlit_kay", "the seigaiha waves are so nice"], ["pixelpudding", "otsukare for today!"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>

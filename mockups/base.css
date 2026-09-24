@@ -1,0 +1,54 @@
+/* Shared layout for theme mockups: a 1920×1080 hero scene + a 1920×540 component strip */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { width: 1920px; background: #111; overflow: hidden; }
+
+.hero {
+  position: relative;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+}
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 5;
+}
+.deco, .deco * { pointer-events: none; }
+.abs { position: absolute; }
+
+.strip {
+  position: relative;
+  width: 1920px;
+  height: 540px;
+  display: grid;
+  grid-template-columns: 760px 560px 420px;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 50px 40px;
+  overflow: hidden;
+}
+.strip .tag {
+  position: absolute;
+  top: 18px;
+  left: 50px;
+  font: 700 16px/1 system-ui, sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.cell { display: flex; flex-direction: column; gap: 34px; align-items: center; justify-content: center; }
+.m-alert { position: relative; display: flex; flex-direction: column; align-items: center; }
+.m-badge svg { width: 100%; height: 100%; }
+.m-chat { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.m-goal { width: 100%; }
+.m-goal-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.m-track { position: relative; overflow: visible; }
+.m-fill { position: absolute; left: 0; top: 0; bottom: 0; }
+.m-goal-top span { white-space: nowrap; }

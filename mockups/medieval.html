@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Castle Hall (Medieval)</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --stone: #2a2521; --parch: #f2e3bf; --parch-dark: #d9c08c; --ink: #3a2413; --crimson: #8c1c1c; --gold: #d6a548; }
+    body { font-family: "EB Garamond", serif; color: var(--ink); }
+    .hero { background: #1a1512; }
+    .wall { inset: 0; }
+    .shade { inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(255, 170, 70, 0.18), transparent 60%), radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.75)); }
+
+    /* Torches */
+    .torch { top: 600px; width: 40px; height: 170px; z-index: 3; }
+    .torch::before { content: ""; position: absolute; left: 8px; top: 60px; width: 24px; height: 110px; background: linear-gradient(90deg, #3a2414, #6b4424, #3a2414); clip-path: polygon(0 0, 100% 0, 70% 100%, 30% 100%); }
+    .torch::after { content: ""; position: absolute; left: 0; top: 50px; width: 40px; height: 16px; background: #555; border-radius: 4px; }
+    .flame { position: absolute; left: -10px; top: -30px; width: 60px; height: 90px; border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+      background: radial-gradient(ellipse at 50% 75%, #fff6c2 0 15%, #ffc640 35%, #ff6a1a 60%, transparent 72%); filter: blur(1px); animation: flick 0.35s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+    .glow { position: absolute; left: -230px; top: -250px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 150, 50, 0.35), transparent 65%); animation: pulse 2.2s ease-in-out infinite; }
+    @keyframes flick { to { transform: scale(0.92, 1.08) rotate(3deg); } }
+    @keyframes pulse { 50% { opacity: 0.7; } }
+
+    /* Banners */
+    .banner { top: 0; width: 200px; height: 560px; z-index: 2; background: linear-gradient(90deg, #6d1414, var(--crimson) 30%, #a52424 50%, var(--crimson) 70%, #6d1414);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%); box-shadow: inset 0 0 0 10px var(--gold); }
+    .banner::before { content: ""; position: absolute; inset: 0; border: 8px solid var(--gold); border-top: 0; clip-path: inherit; }
+    .banner .crest { position: absolute; left: 50%; top: 190px; width: 110px; height: 130px; margin-left: -55px; }
+    .rod { top: 0; height: 14px; width: 250px; background: linear-gradient(#e2b55a, #8a6424); border-radius: 7px; z-index: 3; }
+
+    /* Parchment scroll */
+    .scroll { position: relative; margin-top: 30px; width: 1060px; padding: 60px 90px 56px; background:
+      radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.5), transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(150, 100, 40, 0.25), transparent 50%), var(--parch);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 0 60px rgba(140, 90, 30, 0.45); }
+    .scroll::before, .scroll::after { content: ""; position: absolute; left: -30px; right: -30px; height: 56px; border-radius: 28px;
+      background: linear-gradient(180deg, #b8955a, var(--parch) 35%, #c9a86a 65%, #7b5a2c); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5); }
+    .scroll::before { top: -30px; } .scroll::after { bottom: -30px; }
+    .hear { font: 700 30px "Cinzel"; letter-spacing: 0.35em; color: var(--crimson); }
+    .hear::before, .hear::after { content: " ❦ "; color: var(--gold); }
+    .scroll h1 { margin: 10px 0 0; font: 900 104px/1.05 "Cinzel Decorative"; color: var(--ink); text-shadow: 0 2px 0 rgba(255, 255, 255, 0.5); }
+    .scroll h1 span { color: var(--crimson); }
+    .scroll .sub { margin: 14px 0 0; font: italic 500 36px "EB Garamond"; color: #5a3a1e; }
+    .rule { margin: 26px auto; width: 60%; height: 2px; background: linear-gradient(90deg, transparent, var(--ink), transparent); }
+    .when { display: flex; align-items: center; justify-content: center; gap: 30px; }
+    .seal { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; color: #f5d7a0; font: 700 44px "Cinzel";
+      background: radial-gradient(circle at 35% 30%, #c43a3a, #7c1111 70%); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5), inset 0 0 0 10px rgba(0, 0, 0, 0.15), inset 0 0 0 14px rgba(255, 190, 120, 0.25); transform: rotate(-8deg); }
+    .when .time { font: 700 96px "Cinzel"; color: var(--ink); letter-spacing: 0.04em; }
+    .when small { display: block; font: 700 22px "Cinzel"; letter-spacing: 0.3em; color: var(--crimson); }
+    .socials { margin-top: 90px; display: flex; gap: 20px; font: 500 28px "EB Garamond"; color: var(--parch); }
+    .socials span { padding: 8px 26px; background: rgba(20, 12, 8, 0.8); border: 2px solid var(--gold); }
+    .socials i { font: 700 20px "Cinzel"; font-style: normal; letter-spacing: 0.15em; color: var(--gold); margin-right: 10px; }
+
+    /* ---- component strip ---- */
+    .strip { background: radial-gradient(ellipse at 50% 0, #3a2c20, #151008 70%); color: var(--parch); }
+    .strip .tag { color: var(--gold); }
+    .m-badge { width: 130px; height: 130px; margin-bottom: -60px; z-index: 2; padding: 30px; border-radius: 50%; color: #f5d7a0;
+      background: radial-gradient(circle at 35% 30%, #c43a3a, #7c1111 70%); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6), inset 0 0 0 9px rgba(255, 190, 120, 0.25); }
+    .m-card { min-width: 600px; padding: 74px 60px 34px; text-align: center; color: var(--ink); background: var(--parch); box-shadow: inset 0 0 50px rgba(140, 90, 30, 0.5), 0 20px 40px rgba(0, 0, 0, 0.6);
+      clip-path: polygon(0 4%, 6% 0, 50% 3%, 94% 0, 100% 5%, 98% 50%, 100% 95%, 93% 100%, 50% 97%, 7% 100%, 0 96%, 2% 50%); }
+    .m-kind { font: 700 24px "Cinzel"; letter-spacing: 0.2em; color: var(--crimson); }
+    .m-who { font: 900 64px "Cinzel Decorative"; }
+    .m-plate { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 18px 20px 36px; background: linear-gradient(90deg, #6d1414, var(--crimson), #6d1414);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%); box-shadow: inset 0 0 0 6px var(--gold); }
+    .m-live { font: 700 20px "Cinzel"; letter-spacing: 0.4em; color: var(--gold); }
+    .m-name { font: 700 50px "Cinzel"; color: #f8e6c0; }
+    .m-goal-top { font: 700 24px "Cinzel"; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .m-goal-num { color: var(--gold); }
+    .m-track { height: 26px; background: #1a120b; border: 3px solid var(--gold); border-radius: 4px; }
+    .m-fill { background: linear-gradient(180deg, #ffe39a, var(--gold) 50%, #9c6f22); }
+    .m-msg { padding: 12px 20px; background: var(--parch); color: var(--ink); font: 500 26px "EB Garamond"; border-left: 6px solid var(--crimson); }
+    .m-msg b { display: block; font: 700 18px "Cinzel"; letter-spacing: 0.1em; color: var(--crimson); }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <svg class="abs wall" width="1920" height="1080">
+        <defs>
+          <pattern id="bricks" width="160" height="80" patternUnits="userSpaceOnUse">
+            <rect width="160" height="80" fill="#231d19"/>
+            <rect x="3" y="3" width="154" height="34" rx="4" fill="#3a322b"/>
+            <rect x="-77" y="43" width="154" height="34" rx="4" fill="#342c26"/>
+            <rect x="83" y="43" width="154" height="34" rx="4" fill="#3d342d"/>
+          </pattern>
+        </defs>
+        <rect width="1920" height="1080" fill="url(#bricks)"/>
+      </svg>
+      <div class="abs shade"></div>
+      <div class="abs rod" style="left:95px"></div>
+      <div class="abs banner" style="left:120px"><svg class="crest" viewBox="0 0 64 76"><path fill="#d6a548" d="M32 2 60 10v26c0 18-12 30-28 38C16 66 4 54 4 36V10z"/><path fill="#8c1c1c" d="M40 16a18 18 0 1 0 12 30A15 15 0 0 1 40 16z"/></svg></div>
+      <div class="abs rod" style="right:95px"></div>
+      <div class="abs banner" style="right:120px"><svg class="crest" viewBox="0 0 64 76"><path fill="#d6a548" d="M32 2 60 10v26c0 18-12 30-28 38C16 66 4 54 4 36V10z"/><path fill="#8c1c1c" d="M40 16a18 18 0 1 0 12 30A15 15 0 0 1 40 16z"/></svg></div>
+      <div class="abs torch" style="left:345px"><div class="glow"></div><div class="flame"></div></div>
+      <div class="abs torch" style="right:345px"><div class="glow"></div><div class="flame" style="animation-delay:-.2s"></div></div>
+    </div>
+    <main class="stage">
+      <div class="scroll">
+        <div class="hear">Hear ye, hear ye</div>
+        <h1>The Stream <span>Shall</span> Begin</h1>
+        <p class="sub">gather ’round the hearth, good folk of the realm</p>
+        <div class="rule"></div>
+        <div class="when"><div class="seal">N</div><div><small>by the hourglass</small><span class="time">04:59</span></div></div>
+      </div>
+      <div class="socials"><span><i>TWITCH</i>novamoonpetal</span><span><i>YOUTUBE</i>@NovaMoonpetal</span><span><i>X</i>@nova_moonpetal</span></div>
+    </main>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    window.MOCK = {
+      theme: "Castle Hall (Medieval)",
+      kind: "A new follower hath arrived",
+      who: "Sir Mochi",
+      badge: '<svg viewBox="0 0 64 64"><path fill="currentColor" d="M8 22l12 10 12-20 12 20 12-10-5 28H13z"/><rect fill="currentColor" x="13" y="52" width="38" height="6" rx="2"/></svg>',
+      live: "NOW LIVE",
+      goalTitle: "Royal Treasury",
+      chat: [["StarryMochi", "Huzzah! 🍺"], ["moonlit_kay", "long live the queen"], ["pixelpudding", "the bard hath arrived"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Lofi Café</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --wood: #5a3b28; --wood-dark: #3a261a; --cream: #f6e8d2; --latte: #d9b48f; --amber: #f2a65a; --leaf: #6f9160; --chalk: #2e3833; --ink: #3a261a; }
+    body { font-family: "DM Sans", sans-serif; color: var(--ink); }
+    .hero { background: linear-gradient(180deg, #4a3226, #2f2019); }
+    .wallpaper { inset: 0; background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 60px, transparent 60px 120px); }
+
+    /* Rainy window */
+    .window { left: 120px; top: 110px; width: 620px; height: 560px; border: 22px solid var(--wood-dark); border-radius: 10px; overflow: hidden;
+      background: radial-gradient(circle at 20% 70%, rgba(242, 166, 90, 0.7) 0 18px, transparent 40px), radial-gradient(circle at 55% 60%, rgba(255, 120, 150, 0.55) 0 14px, transparent 34px),
+      radial-gradient(circle at 80% 75%, rgba(120, 190, 255, 0.55) 0 16px, transparent 38px), radial-gradient(circle at 35% 45%, rgba(255, 230, 150, 0.5) 0 10px, transparent 28px),
+      linear-gradient(180deg, #1c2a44, #3b3f63 70%, #574a6a); box-shadow: 0 0 0 6px #2a1b12, 0 30px 50px rgba(0, 0, 0, 0.5); }
+    .window::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 18px; margin-left: -9px; background: var(--wood-dark); }
+    .window::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 18px; margin-top: -9px; background: var(--wood-dark); }
+    .rain { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, transparent 0 22px, rgba(255, 255, 255, 0.18) 22px 23px); background-size: 200% 200%; animation: rain 0.6s linear infinite; }
+    @keyframes rain { to { background-position: -40px 120px; } }
+    .sill { left: 90px; top: 670px; width: 680px; height: 30px; background: linear-gradient(#7a5236, var(--wood)); border-radius: 4px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); }
+
+    /* Plant */
+    .pot { left: 570px; top: 590px; width: 110px; height: 84px; background: #c7744a; clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%); z-index: 2; }
+    .leaves { left: 500px; top: 400px; width: 250px; height: 220px; z-index: 1; }
+
+    /* Hanging bulbs */
+    .bulb { top: 0; z-index: 3; }
+    .bulb .wire { width: 3px; margin: 0 auto; background: #1a120c; }
+    .bulb .glass { width: 46px; height: 60px; margin: -2px auto 0; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%; background: radial-gradient(circle at 50% 60%, #fff6d8, #ffc873 55%, #f08a34); box-shadow: 0 0 40px 18px rgba(255, 180, 90, 0.45), 0 0 120px 60px rgba(255, 160, 70, 0.18); }
+
+    /* Counter + mug */
+    .counter { left: 0; right: 0; bottom: 0; height: 250px; background: linear-gradient(180deg, #8a5d3e 0 26px, var(--wood) 26px, var(--wood-dark)); box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4); z-index: 4; }
+    .mug { left: 1560px; bottom: 222px; width: 150px; height: 130px; z-index: 5; background: var(--cream); border-radius: 0 0 50px 50px; box-shadow: inset -18px 0 0 rgba(0, 0, 0, 0.08); }
+    .mug::after { content: ""; position: absolute; right: -58px; top: 30px; width: 60px; height: 70px; border: 16px solid var(--cream); border-left: 0; border-radius: 0 40px 40px 0; }
+    .mug::before { content: ""; position: absolute; left: 10px; right: 10px; top: 0; height: 18px; border-radius: 50%; background: #6b3e22; }
+    .steam { bottom: 360px; width: 20px; height: 110px; z-index: 5; border-radius: 50%; border-left: 6px solid rgba(255, 255, 255, 0.45); filter: blur(2px); animation: steam 3s ease-in-out infinite; }
+    @keyframes steam { 0% { transform: translateY(20px) scaleY(0.6); opacity: 0; } 40% { opacity: 1; } 100% { transform: translateY(-40px) scaleY(1.1) skewX(-10deg); opacity: 0; } }
+
+    /* Chalkboard sign */
+    .board-wrap { position: relative; margin-left: 560px; margin-top: -190px; }
+    .board { position: relative; width: 820px; padding: 44px 50px 40px; background: radial-gradient(ellipse at 40% 30%, #3c4842, var(--chalk)); border: 20px solid #8a5d3e; border-radius: 8px; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55), inset 0 0 40px rgba(0, 0, 0, 0.4); color: #f4f1ea; }
+    .board .menu { font: 700 34px "Caveat"; color: var(--amber); }
+    .board h1 { margin: 0; font: 800 108px/1 "Fraunces"; color: #fbf6ec; font-style: italic; }
+    .board .sub { margin: 10px 0 0; font: 700 40px "Caveat"; color: #d9e3dc; }
+    .board .time { display: inline-block; margin-top: 18px; padding: 0 30px; font: 700 110px/1.1 "Caveat"; color: #fff; border: 4px dashed rgba(255, 255, 255, 0.6); border-radius: 20px; }
+    .board .doodle { position: absolute; right: 40px; top: 36px; font: 700 42px "Caveat"; color: #f6b7c8; transform: rotate(8deg); }
+    .socials { position: absolute; left: 0; right: 0; bottom: 70px; z-index: 6; display: flex; justify-content: center; gap: 20px; font: 700 25px "DM Sans"; }
+    .socials span { padding: 8px 22px; border-radius: 30px; background: var(--cream); color: var(--ink); box-shadow: 0 6px 0 #b98f6a; }
+    .socials i { font-style: normal; color: #b0612e; margin-right: 8px; }
+
+    /* ---- component strip ---- */
+    .strip { background: linear-gradient(180deg, #3a261a, #2a1b12); }
+    .strip .tag { color: var(--latte); }
+    .m-alert { flex-direction: row; align-items: center; }
+    .m-badge { width: 130px; height: 130px; margin-right: -26px; z-index: 2; padding: 28px; border-radius: 50%; color: var(--cream); background: #b0612e; box-shadow: 0 8px 0 #7d4220; }
+    .m-card { min-width: 560px; padding: 30px 40px 30px 60px; background: #fffaf0; transform: rotate(-1.5deg); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+      -webkit-mask: radial-gradient(10px at 50% 100%, transparent 98%, #000) 0 0 / 26px 100% repeat-x; }
+    .m-kind { font: 700 22px "DM Sans"; letter-spacing: 0.3em; color: #b0612e; border-bottom: 3px dashed var(--latte); padding-bottom: 10px; }
+    .m-who { margin-top: 8px; font: 700 76px "Caveat"; color: var(--ink); }
+    .m-plate { display: flex; flex-direction: column; align-items: center; width: 100%; padding: 16px; background: var(--cream); border: 6px solid var(--wood); border-radius: 18px; box-shadow: 0 10px 0 var(--wood-dark); }
+    .m-live { font: 700 20px "DM Sans"; letter-spacing: 0.3em; color: #b0612e; }
+    .m-live::before { content: "☕ "; }
+    .m-name { font: 800 52px "Fraunces"; font-style: italic; }
+    .m-goal { color: var(--cream); }
+    .m-goal-top { font: 700 36px "Caveat"; margin-bottom: 6px; }
+    .m-goal-num { color: var(--amber); }
+    .m-track { height: 26px; border-radius: 13px; background: #2a1b12; border: 3px solid var(--latte); }
+    .m-fill { border-radius: 13px; background: linear-gradient(90deg, #6b3e22, var(--latte)); }
+    .m-msg { padding: 12px 18px; background: #fff3a8; font: 700 30px "Caveat"; transform: rotate(-1deg); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35); }
+    .m-msg:nth-child(2) { background: #ffd1dc; transform: rotate(1.2deg); }
+    .m-msg:nth-child(3) { background: #cdebc6; }
+    .m-msg b { display: block; font: 700 17px "DM Sans"; color: #7a4a2a; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <div class="abs wallpaper"></div>
+      <div class="abs window"><div class="rain"></div></div>
+      <div class="abs sill"></div>
+      <svg class="abs leaves" viewBox="0 0 250 220"><g fill="#6f9160"><ellipse cx="80" cy="120" rx="26" ry="70" transform="rotate(-35 80 120)"/><ellipse cx="170" cy="110" rx="26" ry="72" transform="rotate(38 170 110)"/><ellipse cx="125" cy="90" rx="24" ry="80"/></g><g fill="#8fb27c"><ellipse cx="55" cy="170" rx="18" ry="46" transform="rotate(-60 55 170)"/><ellipse cx="195" cy="170" rx="18" ry="46" transform="rotate(60 195 170)"/></g></svg>
+      <div class="abs pot"></div>
+      <div class="abs bulb" style="left:900px"><div class="wire" style="height:90px"></div><div class="glass"></div></div>
+      <div class="abs bulb" style="left:1260px"><div class="wire" style="height:40px"></div><div class="glass"></div></div>
+      <div class="abs bulb" style="left:1640px"><div class="wire" style="height:120px"></div><div class="glass"></div></div>
+      <div class="abs counter"></div>
+      <div class="abs mug"></div>
+      <div class="abs steam" style="left:1600px"></div>
+      <div class="abs steam" style="left:1635px; animation-delay:-1s"></div>
+      <div class="abs steam" style="left:1670px; animation-delay:-2s"></div>
+    </div>
+    <main class="stage">
+      <div class="board-wrap"><div class="board">
+        <div class="menu">~ today's special ~</div>
+        <h1>Starting Soon</h1>
+        <p class="sub">brewing the stream, pull up a chair</p>
+        <div class="time">04:59</div>
+        <div class="doodle">♡ ☕</div>
+      </div></div>
+    </main>
+    <div class="socials"><span><i>twitch</i>novamoonpetal</span><span><i>youtube</i>@NovaMoonpetal</span><span><i>x</i>@nova_moonpetal</span></div>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    window.MOCK = {
+      theme: "Lofi Café",
+      kind: "ORDER UP · NEW FOLLOWER",
+      who: "StarryMochi",
+      badge: '<svg viewBox="0 0 64 64"><path fill="currentColor" d="M8 22h40v14a18 18 0 0 1-18 18h-4A18 18 0 0 1 8 36z"/><path fill="none" stroke="currentColor" stroke-width="5" d="M48 26h4a7 7 0 0 1 0 14h-5"/><path fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M20 6c-3 4 3 6 0 10M30 4c-3 4 3 6 0 10M40 6c-3 4 3 6 0 10"/></svg>',
+      live: "NOW BREWING",
+      goalTitle: "coffee fund",
+      chat: [["StarryMochi", "one oat latte pls"], ["moonlit_kay", "rain sounds + lofi = perfect"], ["pixelpudding", "studying with you today!"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>

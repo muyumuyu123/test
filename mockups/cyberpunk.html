@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Mockup — Neon Grid (Cyberpunk)</title>
+  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="stylesheet" href="base.css">
+  <style>
+    :root { --cyan: #00f0ff; --pink: #ff2bd6; --yellow: #f5ff3b; --bg: #07020f; --ink: #e9f9ff; }
+    body { font-family: "Rajdhani", sans-serif; color: var(--ink); }
+
+    .hero { background: radial-gradient(ellipse at 50% 62%, #3a0b4d 0%, #14052a 45%, var(--bg) 80%); }
+
+    /* Perspective floor grid */
+    .floor {
+      left: -50%; right: -50%; bottom: -300px; height: 780px;
+      background:
+        linear-gradient(transparent 0 94%, rgba(255, 43, 214, 0.8) 94%) 0 0 / 100% 70px,
+        linear-gradient(90deg, transparent 0 96%, rgba(0, 240, 255, 0.7) 96%) 0 0 / 80px 100%;
+      transform: perspective(500px) rotateX(62deg);
+      transform-origin: 50% 0;
+      -webkit-mask: linear-gradient(transparent, #000 30%);
+      animation: floor 2s linear infinite;
+    }
+    @keyframes floor { to { background-position: 0 70px, 0 0; } }
+    .horizon { left: 0; right: 0; top: 700px; height: 4px; background: var(--pink); box-shadow: 0 0 30px 8px var(--pink); }
+
+    .city { left: 0; bottom: 380px; width: 1920px; height: 420px; }
+    .city rect.b { fill: url(#bld); stroke: rgba(0, 240, 255, 0.18); stroke-width: 2; }
+    .city rect.w { opacity: 0.55; }
+    .scrim { inset: 0; z-index: 4; background: radial-gradient(ellipse 900px 420px at 50% 47%, rgba(7, 2, 15, 0.85), transparent 75%); }
+
+    .scan { inset: 0; z-index: 8; background: repeating-linear-gradient(transparent 0 3px, rgba(0, 0, 0, 0.28) 3px 4px); }
+    .vignette { inset: 0; z-index: 7; background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.7)); }
+
+    /* HUD corner brackets */
+    .hud { width: 120px; height: 120px; border: 4px solid var(--cyan); filter: drop-shadow(0 0 8px var(--cyan)); z-index: 6; }
+    .hud.tl { top: 40px; left: 40px; border-right: 0; border-bottom: 0; }
+    .hud.tr { top: 40px; right: 40px; border-left: 0; border-bottom: 0; }
+    .hud.bl { bottom: 40px; left: 40px; border-right: 0; border-top: 0; }
+    .hud.br { bottom: 40px; right: 40px; border-left: 0; border-top: 0; }
+    .hud-text { font: 600 20px "Rajdhani"; letter-spacing: 0.25em; color: var(--cyan); opacity: 0.8; z-index: 6; }
+
+    .neon-sign {
+      right: 70px; top: 430px; z-index: 4;
+      writing-mode: vertical-rl; text-orientation: upright;
+      font: 900 44px "Orbitron"; letter-spacing: 0.05em;
+      color: #fff; padding: 22px 12px; border: 3px solid var(--pink); border-radius: 8px;
+      text-shadow: 0 0 6px var(--pink), 0 0 20px var(--pink), 0 0 40px var(--pink);
+      box-shadow: 0 0 20px var(--pink), inset 0 0 20px rgba(255, 43, 214, 0.5);
+      animation: flicker 4s infinite;
+    }
+    @keyframes flicker { 0%, 18%, 22%, 62%, 64%, 100% { opacity: 1; } 20%, 63% { opacity: 0.35; } }
+
+    .eyebrow { font: 600 30px "Rajdhani"; letter-spacing: 0.35em; color: var(--yellow); text-shadow: 0 0 12px rgba(245, 255, 59, 0.6); }
+    .glitch {
+      position: relative; margin: 10px 0 0;
+      font: 900 150px/1 "Orbitron"; letter-spacing: 0.04em; color: #fff;
+      text-shadow: 0 0 10px var(--cyan), 0 0 40px var(--cyan);
+    }
+    .glitch::before, .glitch::after { content: attr(data-text); position: absolute; inset: 0; }
+    .glitch::before { color: var(--pink); transform: translate(-6px, 2px); clip-path: inset(18% 0 58% 0); text-shadow: none; animation: g1 2.6s steps(2) infinite; }
+    .glitch::after { color: var(--cyan); transform: translate(6px, -2px); clip-path: inset(62% 0 12% 0); text-shadow: none; animation: g2 3.1s steps(2) infinite; }
+    @keyframes g1 { 50% { clip-path: inset(40% 0 35% 0); transform: translate(8px, 0); } }
+    @keyframes g2 { 50% { clip-path: inset(8% 0 75% 0); transform: translate(-8px, 0); } }
+    .sub { margin: 22px 0 0; font: 500 34px "Rajdhani"; color: #c9b8ff; }
+    .sub b { color: var(--cyan); }
+
+    .timer {
+      margin-top: 46px; padding: 18px 70px 20px; position: relative;
+      background: rgba(7, 2, 15, 0.88);
+      clip-path: polygon(30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+      border: 0;
+    }
+    .timer::before { content: ""; position: absolute; inset: 0; border: 3px solid var(--cyan); clip-path: inherit; }
+    .timer small { display: block; font: 700 20px "Rajdhani"; letter-spacing: 0.4em; color: var(--pink); }
+    .timer span { font: 800 104px/1.05 "Orbitron"; color: #fff; text-shadow: 0 0 20px var(--cyan); font-variant-numeric: tabular-nums; }
+
+    .socials { display: flex; gap: 22px; margin-top: 46px; font: 700 26px "Rajdhani"; }
+    .socials span { padding: 8px 22px; border: 2px solid rgba(0, 240, 255, 0.6); background: rgba(7, 2, 15, 0.7); }
+    .socials i { font-style: normal; color: var(--pink); margin-right: 10px; }
+
+    /* ---- component strip ---- */
+    .strip {
+      background:
+        linear-gradient(rgba(0, 240, 255, 0.07) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(90deg, rgba(0, 240, 255, 0.07) 1px, transparent 1px) 0 0 / 40px 40px,
+        #0a0416;
+    }
+    .strip .tag { color: var(--cyan); }
+    .m-badge {
+      width: 120px; height: 120px; margin-bottom: -40px; z-index: 2; padding: 26px; color: #0a0416;
+      background: linear-gradient(135deg, var(--cyan), var(--pink));
+      clip-path: polygon(25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%, 0 50%);
+    }
+    .m-card {
+      min-width: 620px; padding: 58px 50px 30px; text-align: center; position: relative;
+      background: rgba(20, 5, 40, 0.92);
+      clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+      box-shadow: inset 0 0 0 3px var(--pink);
+    }
+    .m-kind { font: 700 24px "Rajdhani"; letter-spacing: 0.4em; color: var(--yellow); }
+    .m-who { font: 900 64px "Orbitron"; color: #fff; text-shadow: 3px 0 var(--pink), -3px 0 var(--cyan); margin-top: 6px; }
+    .m-plate {
+      display: flex; flex-direction: column; padding: 18px 40px 20px 34px; width: 100%;
+      background: linear-gradient(90deg, rgba(255, 43, 214, 0.25), rgba(0, 240, 255, 0.1));
+      border-left: 8px solid var(--cyan);
+      clip-path: polygon(0 0, 100% 0, calc(100% - 30px) 100%, 0 100%);
+    }
+    .m-live { font: 700 20px "Rajdhani"; letter-spacing: 0.4em; color: var(--pink); }
+    .m-live::before { content: "● "; }
+    .m-name { font: 900 50px "Orbitron"; color: #fff; }
+    .m-goal-top { font: 700 26px "Rajdhani"; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 10px; }
+    .m-goal-num { color: var(--yellow); font-family: "Orbitron"; }
+    .m-track { height: 28px; border: 2px solid var(--cyan); }
+    .m-fill { margin: 3px; background: repeating-linear-gradient(90deg, var(--cyan) 0 18px, transparent 18px 24px); filter: drop-shadow(0 0 6px var(--cyan)); }
+    .m-msg { padding: 12px 18px; background: rgba(0, 240, 255, 0.06); border-left: 4px solid var(--pink); font: 600 24px "Rajdhani"; }
+    .m-msg b { display: block; color: var(--cyan); font-family: "Orbitron"; font-size: 18px; letter-spacing: 0.1em; }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="deco">
+      <svg class="abs city" id="city" viewBox="0 0 1920 420" preserveAspectRatio="none"></svg>
+      <div class="abs floor"></div>
+      <div class="abs horizon"></div>
+      <div class="abs scrim"></div>
+      <div class="abs neon-sign">LIVE</div>
+      <i class="abs hud tl"></i><i class="abs hud tr"></i><i class="abs hud bl"></i><i class="abs hud br"></i>
+      <div class="abs hud-text" style="top:60px; left:190px">SYS://STREAM_NODE_07</div>
+      <div class="abs hud-text" style="bottom:60px; right:190px">SIGNAL ▮▮▮▮▯ 98%</div>
+      <div class="abs vignette"></div>
+      <div class="abs scan"></div>
+    </div>
+    <main class="stage">
+      <div class="eyebrow">// NOVA_MOONPETAL.EXE</div>
+      <h1 class="glitch" data-text="STARTING SOON">STARTING SOON</h1>
+      <p class="sub">&gt; jacking in… <b>grab your energy drink</b></p>
+      <div class="timer"><small>T-MINUS</small><span>04:59</span></div>
+      <div class="socials"><span><i>TWITCH</i>novamoonpetal</span><span><i>YT</i>@NovaMoonpetal</span><span><i>X</i>@nova_moonpetal</span></div>
+    </main>
+  </section>
+  <section class="strip"></section>
+
+  <script>
+    // Procedural skyline with lit windows
+    (function () {
+      let a = 11;
+      const r = () => ((a = (a * 16807) % 2147483647) / 2147483647);
+      const svg = document.getElementById("city");
+      let x = 0, out = "";
+      const colors = ["#00f0ff", "#ff2bd6", "#f5ff3b"];
+      while (x < 1920) {
+        const w = 60 + r() * 110, h = 120 + r() * 290;
+        out += `<rect class="b" x="${x}" y="${420 - h}" width="${w}" height="${h}"/>`;
+        for (let wy = 420 - h + 14; wy < 410; wy += 22)
+          for (let wx = x + 10; wx < x + w - 12; wx += 18)
+            if (r() < 0.12) out += `<rect class="w" x="${wx}" y="${wy}" width="8" height="10" fill="${colors[Math.floor(r() * 3)]}"/>`;
+        x += w + 4;
+      }
+      svg.innerHTML = `<defs><linearGradient id="bld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241046"/><stop offset="1" stop-color="#0d0520"/></linearGradient></defs>` + out;
+    })();
+    window.MOCK = {
+      theme: "Neon Grid (Cyberpunk)",
+      kind: "NEW FOLLOWER",
+      who: "StarryMochi",
+      live: "ON AIR",
+      goalTitle: "Follower goal",
+      chat: [["StarryMochi", "gm netrunners"], ["moonlit_kay", "this overlay goes so hard"], ["pixelpudding", "glitch text is clean"]],
+    };
+  </script>
+  <script src="mock.js"></script>
+</body>
+</html>
